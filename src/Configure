@@ -1,0 +1,17 @@
+Configure() {
+  declare -Ag config
+  config=(
+    [config_path]="$HOME/.axon.sh"
+    [config_file]="axon.sh.conf"
+    [log_path]="$HOME/.axon.sh"
+    [log_file]="axon.sh.log"
+    [log_level]="INFO"
+    [verbosity]="WARN"
+    [homeserver]=""
+    [admin_user]="admin"
+    [admin_token]=""
+    [save_token]="true"
+    [device_id]=""
+    [save_id]="true"
+  )
+}

@@ -1,0 +1,46 @@
+MatrixLogin() {
+
+  DoLogin() {
+    local request_body="$(ReturnMatrixBody m_login)"
+    Log debug "${FUNCNAME[0]}: Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
+    Request "${m_login_api[method]}" "$request_body" "${m_login_api[path]}" "access_token"
+    config[admin_token]="${key_values[access_token]}"
+    WriteConfiguration
+#    curl --request "${m_login_api[method]}" --data "$(ReturnMatrixBody m_login)" --write-out ' %{response_code}' --silent "https://${config[homeserver]}${m_login_api[path]}"
+ }
+
+  read -r -p "domain(${config[homeserver]}):" input_domain
+    if [ ! -z "$input_domain" ]; then
+      config[homeserver]="$input_domain"
+    fi
+  read -r -p "username(${config[admin_user]}):" input_username
+    if [ ! -z "$input_username" ]; then
+      config[admin_user]="$input_username"
+    fi
+  if [ -z "${config[admin_token]}" ]; then
+    read -s -r -p "password:" input_password
+      if [ ! -z "$input_password" ]; then
+        admin_password="$input_password"
+      fi
+  else
+    echo "Access token already present"
+    return 0;
+  fi
+  read -r -p "$(echo -e -n '\nSave access token? (Potentially unsafe!) (Y/n)')" input_save_token_pref
+    case "$input_save_token_pref" in
+      [yY]|[Yy][Ee][Ss] ) config[save_token]="true";;
+      [Nn]|[Nn][Oo]     ) config[save_token]="false";;
+    esac
+
+  WriteConfiguration
+  ReadConfiguration
+  GenDeviceId
+  Log debug "${FUNCNAME[0]}: Save ID preference is '${config[save_id]}'"
+  Log debug "${FUNCNAME[0]}: Device ID is '${config[device_id]}'"
+  WriteConfiguration
+  DefineMatrixEndpoints
+  DefineMatrixParams
+  DoLogin
+
+  global_prompt="[axon($input_username@$input_domain)]>"
+}

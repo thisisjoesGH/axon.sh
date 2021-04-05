@@ -1,0 +1,31 @@
+LogFile() {
+  local file_log_type="${1^^}"
+  local file_log_message="$2"
+
+#  declare -A config
+#  config=(
+#    [log_level]="debug"
+#    [log_file]="test.log"
+#  )
+
+  local log_level="${config[log_level]^^}"
+#  echo "Log level is ${config[log_level]^^}"
+
+  DoLogFile() {
+    echo "[$(date '+%d/%b/%Y:%H:%m:%S')] ${file_log_type} - $file_log_message" >> "${config[log_path]}/${config[log_file]}"
+  }
+
+  case $file_log_type in
+    DEBUG  ) if [[ "$log_level" = @(DEBUG) ]]; then DoLogFile; fi;;
+    INFO   ) if [[ "$log_level" = @(DEBUG|INFO) ]]; then DoLogFile; fi;;
+    WARN   ) if [[ "$log_level" = @(DEBUG|INFO|WARN) ]]; then DoLogFile; fi;;
+    ERROR  ) if [[ "$log_level" = @(DEBUG|INFO|WARN|ERROR) ]]; then DoLogFile; fi;;
+    CONFIG ) if [[ "$log_level" != @(NONE) ]]; then DoLogFile; fi;;
+    *      ) if [[ "$log_level" = @(DEBUG) ]]; then DoLogFile; Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}'"; fi;;
+  esac
+}
+
+#Log error "ur screwed lol"
+#Log debug "oh no there are bugs in here"
+#Log info "did you know I'm a bash program?"
+#Log warn "this is your last warning!"

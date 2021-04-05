@@ -1,0 +1,4 @@
+Log() {
+  LogTerm "$1" "$2"
+  LogFile "$1" "$2"
+}

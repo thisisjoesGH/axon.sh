@@ -1,0 +1,8 @@
+GetOpts() {
+  while getopts ":hq" opt; do
+    case ${opt} in
+      h ) echo "Help not implemented.";;
+      q ) config[quiet]="true";;
+    esac
+  done
+}

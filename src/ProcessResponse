@@ -1,0 +1,12 @@
+ProcessResponse() {
+  Log debug "${FUNCNAME[0]}: Got args $@"
+  local response_body="$1"
+  local request_keys=($2)
+
+  declare -Ag key_values
+
+  for key in "${request_keys[@]}"; do
+    key_values+=(["$key"]="$(echo -n $response_body | jq -r .$key)")
+#    echo "${key_values[$key]}"
+  done
+}

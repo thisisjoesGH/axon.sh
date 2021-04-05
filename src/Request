@@ -1,0 +1,25 @@
+Request() {
+  local request_method="$1"
+  local request_data="$2"
+  local request_endpoint="$3"
+  local request_keys="$4"
+  local request_uri="${config[homeserver]}$request_endpoint"
+
+  Log info "Using method '$request_method' in request to '$request_uri'"
+
+  oIFS="$IFS"
+  IFS="|"
+  local request_response=($(curl --request "$request_method" --data "$request_data"  --write-out '|%{response_code}' --silent "https://$request_uri"))
+  IFS="$oIFS"
+  
+  local request_body="${request_response[0]}"
+  local status_code="${request_response[1]}"
+
+#  for part in "$request_response"; do    
+
+  if CheckStatusCode "$status_code"; then
+    ProcessResponse "$request_body" "$request_keys"
+  else
+    Log error "Request failed while using method '$request_method' in request to '$request_uri'"
+  fi
+}

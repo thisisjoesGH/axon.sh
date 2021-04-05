@@ -1,0 +1,7 @@
+CreateFiles() {
+  if [ ! -d "${config[config_path]}" ]; then
+    mkdir "${config[config_path]}"
+    touch "${config[config_path]}"/"${config[config_file]}"
+    touch "${config[config_path]}"/"${config[log_file]}"
+  fi
+}

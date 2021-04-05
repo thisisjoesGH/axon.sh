@@ -1,0 +1,12 @@
+Main() {
+  Configure
+  CreateFiles
+  ReadConfiguration
+#  WriteConfiguration
+  DefineStatusCodes
+  CheckDependencies
+  Motd
+  Prompt
+}
+
+Main

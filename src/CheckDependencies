@@ -1,0 +1,19 @@
+CheckDependencies() {
+  declare dependencies
+  dependencies=(
+    curl
+    shuf
+    perl
+    jq
+  )
+
+  Log info "Checking for dependencies..."
+  for dependency in "${dependencies[@]}"; do
+    if command -v "$dependency" >/dev/null 2>&1 ; then
+      Log info "Dependency satisfied: $dependency"
+    else
+      Log error "Dependency not satisfied: $dependency"
+      exit 1
+    fi
+  done
+}

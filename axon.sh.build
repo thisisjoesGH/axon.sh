@@ -1,0 +1,26 @@
+# Add build files to this file. One per line.
+Configure
+CreateFiles
+ReadConfiguration
+WriteConfiguration
+GetOpts
+LogFile
+LogTerm
+Log
+#ReturnError
+#DefineCommands
+MatrixLogin
+SynapseVersion
+Prompt
+Motd
+CheckDependencies
+GenDeviceId
+DefineMatrixEndpoints
+DefineMatrixParams
+ReturnMatrixBody
+DefineSynapseEndpoints
+DefineStatusCodes
+CheckStatusCode
+Request
+ProcessResponse
+Main

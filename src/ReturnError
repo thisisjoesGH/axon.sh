@@ -1,0 +1,15 @@
+ReturnError() {
+  declare -A error_codes
+  error_codes=(
+    [AX9048]="Dependency not satisfied."
+  )
+
+  local error_code="$1"
+
+  local error=" * * Axon Error: $1: ${error_codes[$1]}"
+
+  if [ ! -z "${config[log_level]}" ]; then
+    Log error "$error"
+  fi
+  echo "$error"
+}

@@ -1,0 +1,19 @@
+LogTerm() {
+  local term_log_type="${1^^}"
+  local term_log_message="$2"
+
+  local verbosity="${config[verbosity]^^}"
+
+  DoLogTerm() {
+    echo "[$(date '+%d/%b/%Y:%H:%m:%S')] $term_log_type - $term_log_message"
+  }
+
+  case $term_log_type in
+    DEBUG  ) if [[ "$verbosity" = @(DEBUG) ]]; then DoLogTerm; fi;;
+    INFO   ) if [[ "$verbosity" = @(DEBUG|INFO) ]]; then DoLogTerm; fi;;
+    WARN   ) if [[ "$verbosity" = @(DEBUG|INFO|WARN) ]]; then DoLogTerm; fi;;
+    ERROR  ) if [[ "$verbosity" = @(DEBUG|INFO|WARN|ERROR) ]]; then DoLogTerm; fi;;
+    CONFIG ) if [[ "$verbosity" = @(DEBUG|INFO) ]]; then DoLogTerm; fi;;
+    *      ) if [[ "$verbosity" = @(DEBUG) ]]; then DoLogTerm; Log debug "Invalid term log type '$term_log_type' in context '${FUNCNAME[2]}'"; fi;;
+  esac
+}

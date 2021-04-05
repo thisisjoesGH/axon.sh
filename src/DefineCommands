@@ -1,0 +1,9 @@
+DefineCommands() {
+  Login() {
+    read -r -p "domain:" input_domain
+    read -r -p "username:" input_username
+    read -s -r -p "password:" input_password
+    read -r -p "$(echo -e -n '\nSave access token? (Potentially unsafe!) (Y/n)')" input_save_token_pref
+    global_prompt="[axon($input_username@$input_domain)]>"
+  }
+}

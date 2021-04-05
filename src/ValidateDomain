@@ -1,0 +1,9 @@
+ValidateDomain() {
+  local result=$(perl -pe 's/(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}$)/pass/g' <<< "$1")
+  if [ "$result" = "pass" ]; then
+    return 0;
+  else
+    echo -e '\nError: Not a valid domain.\n'
+    return 1;
+  fi
+}

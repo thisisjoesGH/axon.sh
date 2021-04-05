@@ -1,0 +1,16 @@
+DefineSynapseEndpoints() {
+  declare -Ag s_version_api
+  declare -Ag s_room_membership_api
+
+  s_version_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/server_version"
+    [variables]=""
+  )
+ 
+  s_room_membership_api=(
+    [method]="POST"
+    [path]="/_synapse/admin/v1/join/<room_id_or_alias>"
+    [variables]="room_id_or_alias"
+  )
+}

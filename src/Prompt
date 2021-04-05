@@ -1,0 +1,14 @@
+Prompt() {
+  global_prompt="[axon]>"
+  while true; do
+    local prompt="$global_prompt"
+    read -r -p "$prompt" prompt_input
+    case "$prompt_input" in
+      help    ) echo "Type 'login' to login or 'exit' to exit.";;
+      login   ) MatrixLogin;;
+      version ) SynapseVersion;;
+      exit    ) exit 0;;
+      *       ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;
+    esac
+  done
+}

@@ -1,0 +1,16 @@
+SynapseVersion() {
+
+  GetVersion() {
+#    ReturnMatrixBody m_login
+#    echo "${s_version_api[method]} ${config[homeserver]}${s_version_api[path]}"
+    Request "${s_version_api[method]}" "" "${s_version_api[path]}" "server_version python_version"
+    echo "Server version: ${key_values[server_version]}"
+    echo "Python version: ${key_values[python_version]}"
+ }
+  if [ ! -z "${config[homeserver]}" ]; then
+    DefineSynapseEndpoints
+    GetVersion
+  else
+    Log error "${FUNCNAME[0]}: Failed to get server version. No homeserver is configured."
+  fi
+}

@@ -1,0 +1,38 @@
+CheckStatusCode() {
+#  local response_body="$1"
+  local status_code="$1"
+
+  Log info "Got HTTP status code '$status_code','${http_status_codes[$status_code]}' from '${config[homeserver]}'"
+
+  Informational() {
+    Log error "Server returned unsupported status code '$status_code'"
+  }
+
+  Successful() {
+    Log info "Server returned success, continuing..."
+    return 0
+  }
+
+  Redirect() {
+    Log error "Server returned unsupported status code '$status_code'"
+    return 1
+  }
+
+  ClientError() {
+    Log error "Server returned client error '$status_code','${http_status_codes[$status_code]}'"
+    return 1
+  }
+
+  ServerError() {
+    Log error "Server returned server error. '$status_code','${http_status_codes[$status_code]}'"
+    return 1
+  }
+
+  case "$status_code" in
+    1?? ) Informational;;
+    2?? ) Successful;;
+    3?? ) Redirect;;
+    4?? ) ClientError;;
+    5?? ) ServerError;;
+  esac
+}

@@ -1,0 +1,9 @@
+DefineMatrixEndpoints() {
+  declare -Ag m_login_api
+  m_login_api=(
+    [method]="POST"
+    [path]="/_matrix/client/r0/login"
+    [variables]=""
+    [body_params]="m_login_params"
+  )
+}

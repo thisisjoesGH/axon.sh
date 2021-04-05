@@ -1,0 +1,11 @@
+DefineMatrixParams() {
+  declare -Ag m_login_params
+  m_login_params=(
+    [type]="m.login.password"
+    [identifier]="m.id.user"
+    [user]="${config[admin_user]}"
+    [password]="$admin_password"
+    [token]="${config[admin_token]}"
+    [device_id]="${config[device_id]}"
+  )
+}
