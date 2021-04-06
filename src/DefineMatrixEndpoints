@@ -3,7 +3,7 @@ DefineMatrixEndpoints() {
   m_login_api=(
     [method]="POST"
     [path]="/_matrix/client/r0/login"
-    [variables]=""
+    [url_params]=""
     [body_params]="m_login_params"
   )
 }
