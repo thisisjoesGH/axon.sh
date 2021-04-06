@@ -1,0 +1,39 @@
+kind: pipeline
+type: release
+
+trigger:
+  event:
+    - tag
+
+steps:
+  - name: "Build Script"
+    image: ubuntu
+    pull: if-not-exists
+    commands:
+      - wget https://git.thisisjoes.site/joe/linac/raw/branch/dev/linac
+      - chmod +x linac
+      - mkdir build
+      - ./linac build axon.sh.build
+      - mv build/axon.sh.build axon.sh
+
+- name: "Sign Release Artifacts"
+  image: plugins/gpgsign
+  settings:
+    key:
+      from_secret: gpg_key
+    files:
+      - axon.sh
+    detach_sign: true
+
+- name: "Create Gitea Release"
+  image: plugins/gitea-release
+  settings:
+    api_key:
+      from_secret: api_key
+    base_url: https://git.thisisjoes.site
+    files: axon.sh
+    checksum:
+      - md5
+      - sha256
+    title: release
+    prerelease: true
