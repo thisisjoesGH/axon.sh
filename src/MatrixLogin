@@ -1,7 +1,7 @@
 MatrixLogin() {
 
   DoLogin() {
-    local request_body="$(ReturnMatrixBody m_login)"
+    local request_body="$(ReturnRequestBody m_login)"
     Log debug "${FUNCNAME[0]}: Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
     Request "${m_login_api[method]}" "$request_body" "${m_login_api[path]}" "access_token"
     config[admin_token]="${key_values[access_token]}"
