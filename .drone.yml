@@ -31,7 +31,9 @@ steps:
       api_key:
         from_secret: api_key
       base_url: https://git.thisisjoes.site
-      files: axon.sh
+      files:
+        - axon.sh
+        - axon.sh.asc
       checksum:
         - md5
         - sha256
