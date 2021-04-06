@@ -7,6 +7,20 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/server_version"
     [variables]=""
   )
+
+  s_user_admin_query_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v2/users/<user_id>"
+    [variables]="user_id"
+    [body_params]=""
+  )
+
+  s_user_admin_create_api=(
+    [method]="PUT"
+    [path]="/_synapse/admin/v2/users/<user_id>"
+    [variables]="user_id"
+    [body_params]="s_user_admin_create_params"
+  )
  
   s_room_membership_api=(
     [method]="POST"
