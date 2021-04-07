@@ -1,6 +1,6 @@
 DefineSynapseParams() {
   declare -Ag s_user_create_params
-  s_user_admin_create_params=(
+  s_user_create_params=(
     [password]=""
     [displayname]=""
     [admin]="false"
