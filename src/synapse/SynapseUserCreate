@@ -25,6 +25,7 @@ SynapseUserCreate() {
         [yY]|[Yy][Ee][Ss] ) user_is_admin="true";;
         [Nn]|[Nn][Oo]     ) user_is_admin="false";;
       esac
+  fi
 
     DoUserCreate
 }
