@@ -10,7 +10,7 @@ Request() {
 
   oIFS="$IFS"
   IFS="|"
-  local request_response=($(curl --request "$request_method" --header "$request_header" -data "$request_data"  --write-out '|%{response_code}' --silent "https://$request_uri"))
+  local request_response=($(curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent "https://$request_uri"))
   IFS="$oIFS"
   
   local request_body="${request_response[0]}"
