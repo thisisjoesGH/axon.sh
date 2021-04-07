@@ -13,7 +13,7 @@ SynapseUserCreate() {
   elif [ -z "${config[admin_user]}" ]; then
     Log error "No user account configured! Aborting."
     return 1
-  elif [ -z "${config[admin_token]}"]; then
+  elif [ -z "${config[admin_token]}" ]; then
     Log error "No access token found! Aborting."
     return 1
   else
