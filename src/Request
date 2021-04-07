@@ -3,13 +3,14 @@ Request() {
   local request_data="$2"
   local request_endpoint="$3"
   local request_keys="$4"
+  local request_header="Authorization: Bearer ${config[admin_token]}"
   local request_uri="${config[homeserver]}$request_endpoint"
 
   Log info "Using method '$request_method' in request to '$request_uri'"
 
   oIFS="$IFS"
   IFS="|"
-  local request_response=($(curl --request "$request_method" --data "$request_data"  --write-out '|%{response_code}' --silent "https://$request_uri"))
+  local request_response=($(curl --request "$request_method" --header "$request_header" -data "$request_data"  --write-out '|%{response_code}' --silent "https://$request_uri"))
   IFS="$oIFS"
   
   local request_body="${request_response[0]}"
