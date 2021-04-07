@@ -1,5 +1,7 @@
 DefineSynapseEndpoints() {
   declare -Ag s_version_api
+  declare -Ag s_use_query_api
+  declare -Ag s_user_create_api
   declare -Ag s_room_membership_api
 
   s_version_api=(

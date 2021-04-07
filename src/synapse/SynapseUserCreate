@@ -27,5 +27,7 @@ SynapseUserCreate() {
       esac
   fi
 
+    DefineSynapseEndpoints
+    DefineSynapseParams
     DoUserCreate
 }
