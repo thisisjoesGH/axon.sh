@@ -1,0 +1,30 @@
+SynapseUserAdminCreate() {
+
+  DoUserAdminCreate() {
+    local request_body
+    request_body="$(ReturnRequestBody s_user_admin_create)"
+    Log debug "${FUNCNAME[0]}: Assembled request with method '${s_user_admin_create_api[method]}', body '$request_body', to be sent to '${s_user_admin_api[path]}'"
+    #Request "${s_user_admin_create_api[method]}" "$request_body" "${s_user_admin_create_api[path]}" ""
+  }
+
+  if [ -z "${config[homeserver]}" ]; then
+    Log error "No homeserver configured! Aborting."
+    return 1
+  else if [ -z "${config[admin_user]}" ]; then
+    Log error "No user account configured! Aborting."
+    return 1
+  else if [ -z "${config[admin_token]}"]; then
+    Log error "No access token found! Aborting."
+    return 1
+  else
+    Log info "${FUNCNAME[0]}: Creating new user on homeserver ${config[homeserver]}"
+    read -r -p "New user name:" input_user_name
+    read -r -p "New user password:" input_user_password
+    read -r -p "Make new user admin? (Y/n): input_user_is_admin
+      case "$input_user_is_admin" in
+        [yY]|[Yy][Ee][Ss] ) user_is_admin="true";;
+        [Nn]|[Nn][Oo]     ) user_is_admin="false";;
+      esac
+
+    DoUserAdminCreate
+}

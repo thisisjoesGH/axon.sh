@@ -11,6 +11,7 @@ Log
 #DefineCommands
 matrix/MatrixLogin
 synapse/SynapseVersion
+synapse/SynapseUserAdminCreate
 Prompt
 Motd
 CheckDependencies
