@@ -16,7 +16,7 @@ WriteConfiguration() {
     if [ -z "${config[device_id]}" ]; then
       Log warn "${FUNCNAME[0]}: User preference set to save device ID, but no device ID found."
     else
-      Log info "${FUNCNAME[0]}: Saving device ID to config file '${config[config_path]}/${config[config_]}'"
+      Log info "${FUNCNAME[0]}: Saving device ID to config file '${config[config_path]}/${config[config_file]}'"
     fi
   fi
   for i in "${!config[@]}"; do
