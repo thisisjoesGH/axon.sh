@@ -9,18 +9,18 @@ DefineSynapseEndpoints() {
     [body_params]=""
   )
 
-  s_user_admin_query_api=(
+  s_user_query_api=(
     [method]="GET"
     [path]="/_synapse/admin/v2/users/<user_id>"
     [url_params]="user_id"
     [body_params]=""
   )
 
-  s_user_admin_create_api=(
+  s_user_create_api=(
     [method]="PUT"
     [path]="/_synapse/admin/v2/users/<user_id>"
     [url_params]="user_id"
-    [body_params]="s_user_admin_create_params"
+    [body_params]="s_user_create_params"
   )
  
   s_room_membership_api=(
