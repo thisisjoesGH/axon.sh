@@ -28,11 +28,17 @@ CheckStatusCode() {
     return 1
   }
 
+  UnknownCode() {
+    Log error "Received malformed or unknown status code '$status_code'"
+    return 1
+  }
+
   case "$status_code" in
     1?? ) Informational;;
     2?? ) Successful;;
     3?? ) Redirect;;
     4?? ) ClientError;;
     5?? ) ServerError;;
+    *   ) UnknownCode;;
   esac
 }
