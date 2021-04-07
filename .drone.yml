@@ -10,6 +10,8 @@ steps:
     image: ubuntu
     pull: if-not-exists
     commands:
+      - apt update
+      - apt install wget
       - wget https://git.thisisjoes.site/joe/linac/raw/branch/dev/linac
       - chmod +x linac
       - mkdir build
