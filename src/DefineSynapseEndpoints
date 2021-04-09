@@ -13,22 +13,22 @@ DefineSynapseEndpoints() {
 
   s_user_query_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v2/users/<user_id>"
-    [url_params]="user_id"
+    [path]="/_synapse/admin/v2/users/${s_user_query_url_params[user_id]}"
+    [url_params]="s_user_query_url_params"
     [body_params]=""
   )
 
   s_user_create_api=(
     [method]="PUT"
-    [path]="/_synapse/admin/v2/users/<user_id>"
-    [url_params]="user_id"
-    [body_params]="s_user_create_params"
+    [path]="/_synapse/admin/v2/users/${s_create_url_params[user_id]}"
+    [url_params]="s_user_create_url_params"
+    [body_params]="s_user_create__body_params"
   )
  
   s_room_membership_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/join/<room_id_or_alias>"
-    [url_params]="room_id_or_alias"
+    [path]="/_synapse/admin/v1/join/${s_room_membership_url_params[room_id_or_alias]}"
+    [url_params]="s_room_membership_url_params"
     [body_params]=""
   )
 }
