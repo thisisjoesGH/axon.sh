@@ -22,13 +22,13 @@ SynapseUserCreate() {
     Log info "${FUNCNAME[0]}: Creating new user on homeserver ${config[homeserver]}"
 
     read -r -p "New user name:" input_user_name
-      s_user_create_params[displayname]="$input_user_name"
+      s_user_create_body_params[displayname]="$input_user_name"
     read -r -p "New user password:" input_user_password
-      s_user_create_params[password]="$input_user_password"
+      s_user_create_body_params[password]="$input_user_password"
     read -r -p "Make new user admin? (Y/n):" input_user_is_admin
       case "$input_user_is_admin" in
-        [yY]|[Yy][Ee][Ss] ) s_user_create_params[admin]="true";;
-        [Nn]|[Nn][Oo]     ) s_user_create_params[admin]="false";;
+        [yY]|[Yy][Ee][Ss] ) s_user_create_body_params[admin]="true";;
+        [Nn]|[Nn][Oo]     ) s_user_create_body_params[admin]="false";;
       esac
   fi
 
