@@ -22,7 +22,7 @@ DefineSynapseEndpoints() {
     [method]="PUT"
     [path]="/_synapse/admin/v2/users/${s_user_create_url_params[user_id]}"
     [url_params]="s_user_create_url_params"
-    [body_params]="s_user_create__body_params"
+    [body_params]="s_user_create_body_params"
   )
  
   s_room_membership_api=(
