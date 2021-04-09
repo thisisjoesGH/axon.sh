@@ -22,6 +22,9 @@ SynapseUserCreate() {
     Log info "${FUNCNAME[0]}: Creating new user on homeserver ${config[homeserver]}"
 
     read -r -p "New user name:" input_user_name
+      local user_id="@$input_username:${config[homeserver]}"
+      local user_id="$(EncodeUrl $user_id)"
+      s_user_create_url_params[user_id]="$user_id"
       s_user_create_body_params[displayname]="$input_user_name"
     read -r -p "New user password:" input_user_password
       s_user_create_body_params[password]="$input_user_password"
