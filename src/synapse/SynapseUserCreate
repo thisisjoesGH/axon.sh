@@ -17,7 +17,6 @@ SynapseUserCreate() {
     Log error "No access token found! Aborting."
     return 1
   else
-    DefineSynapseEndpoints
     DefineSynapseParams
 
     Log info "${FUNCNAME[0]}: Creating new user on homeserver ${config[homeserver]}"
@@ -33,5 +32,6 @@ SynapseUserCreate() {
       esac
   fi
 
+    DefineSynapseEndpoints
     DoUserCreate
 }
