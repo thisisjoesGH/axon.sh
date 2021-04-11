@@ -15,4 +15,4 @@ In early development. Currently supports:
 
 ### running
 
- Invoke like any other bash script, e.g. `bash build/axon.build.sh`
+ Invoke like any other bash script, e.g. `bash build/axon.sh.build.sh`
