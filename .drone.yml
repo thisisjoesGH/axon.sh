@@ -16,7 +16,7 @@ steps:
       - chmod +x linac
       - mkdir build
       - ./linac build axon.sh.build
-      - mv build/axon.sh.build axon.sh
+      - mv build/axon.sh.build.sh axon.sh
 
   - name: "Sign Release Artifacts"
     image: plugins/gpgsign
