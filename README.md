@@ -6,6 +6,8 @@ In early development. Currently supports:
  - logging in with username and password
  - retrieving and saving access token
  - getting server version information
+ - creating new users
+ - sending server notices
 
  ## How to use
  
