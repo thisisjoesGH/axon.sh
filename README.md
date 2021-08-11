@@ -13,7 +13,8 @@ In early development. Currently supports:
  
 ### building
 
- This project uses [LINAC](https://git.thisisjoes.site/joe/linac). Build it with `linac build axon.sh.build`
+ This project uses [LINAC](https://git.thisisjoes.site/joe/linac). To use the provided version of LINAC to build
+ axon.sh, do `./utils/linac build axon.sh.build`.
 
 ### running
 
