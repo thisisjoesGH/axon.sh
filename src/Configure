@@ -8,6 +8,8 @@ Configure() {
     [log_level]="INFO"
     [verbosity]="WARN"
     [homeserver]=""
+    [scheme]="https"
+    [port]="443"
     [admin_user]="admin"
     [admin_token]=""
     [save_token]="true"
