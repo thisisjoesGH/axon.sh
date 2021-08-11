@@ -8,6 +8,7 @@ Prompt() {
       login   ) MatrixLogin;;
       version ) SynapseVersion;;
       create  ) SynapseUserCreate;;
+      notice  ) SynapseServerNotice;;
       exit    ) exit 0;;
       *       ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;
     esac

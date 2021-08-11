@@ -12,6 +12,7 @@ Log
 matrix/MatrixLogin
 synapse/SynapseVersion
 synapse/SynapseUserCreate
+synapse/SynapseServerNotice
 Prompt
 Motd
 CheckDependencies
