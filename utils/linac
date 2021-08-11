@@ -1,0 +1,214 @@
+#!/bin/bash
+# shellcheck disable=SC1090
+projectName='LINAC'
+projectDescription='LINAC is not a compiler'
+projectVersion='0.4.5'
+projectAuthor='Joe <joe@thisisjoes.site>'
+projectLicense='GPLv3'
+Configure() {
+  declare -Ag config
+  config=(
+    [config_path]="config"
+    [config_file]="linac.conf"
+    [src_path]="src/"
+    [build_path]="build/"
+    [debug_enabled]="false"
+  )
+}
+ReadConfiguration() {
+  if [ -f "${config[config_path]}"/"${config[config_file]}" ]; then
+    while read -r line
+    do
+      if echo "$line" | grep -F = &>/dev/null
+      then
+        varname=$(echo "$line" | cut -d '=' -f 1)
+        config[$varname]=$(echo "$line" | cut -d '=' -f 2-)
+      fi
+    done < "${config[config_path]}"/"${config[config_file]}"
+  fi
+}
+CreateFiles() {
+  if [ ! -d "${config[config_path]}" ]; then
+    mkdir "${config[config_path]}"
+    mkdir "${config[src_path]}"
+    mkdir "${config[build_path]}"
+    touch "${config[config_path]}"/"${config[config_file]}"
+  fi
+}
+InitCheck() {
+  local count
+  count="$(find . -maxdepth 1 -type f -regextype egrep -regex '.*\.(info|build)' 2>/dev/null | wc -l)"
+
+  if [ "$count" != 0 ]; then
+    for file in *.info; do
+      . "$file"
+    done
+  else
+    echo 'Project info not found. Have you initialized a project?' && exit 0;
+  fi
+}
+DebugPrint() {
+  if "${config[debug_enabled]}"; then
+    echo "${FUNCNAME[1]} says: $*"
+  fi
+}
+ProcessBuildFile() {
+  local files
+  mapfile -t files < <(grep -Ev '^\s*\#' "$1";)
+  for ((i=0;i<"${#files[*]}";i++));do
+    echo "${config[src_path]}${files[i]}"
+  done
+}
+BuildProject() {
+  local files
+  local target="$1"
+  MakeStub "$target"
+  mapfile -t files < <(ProcessBuildFile "$1")
+  shift
+  arg="$*"
+  arg="${arg#?}"
+  case "$arg" in
+    d )
+      DebugPrint "Debug build enabled."
+      DebugPrint "Args are $*"
+      DebugPrint "Arg is $arg"
+      for ((i=0;i<"${#files[*]}";i++));do
+        cat "${files[$i]}";
+      done >> "${config[build_path]}""$target"'.sh'
+      ;;   
+
+    * )
+      DebugPrint "Stripped build enabled."
+      DebugPrint "Args are $*"
+      DebugPrint "Arg is $arg"
+      for ((i=0;i<"${#files[*]}";i++));do
+        grep -Ev '^\s*\#' "${files[$i]}";
+      done >> "${config[build_path]}""$target"'.sh'
+      ;;
+  esac
+}
+InitProject() {
+  available_licenses=('' 'GPLv3' 'Apache License 2.0' 'MIT')
+
+  GetInitInfo() {
+    while [[ -z "$init_name" ]]; do
+      read -r -p "$(echo -e '\nWhat is the project'\''s name? ')" init_name
+    done
+    read -r -p "$(echo -e '\nPlease enter a description for the project. ')" init_description
+    read -r -p "$(echo -e '\nWho is the project'\''s author? ')" init_author
+    echo -e '\nPlease select a license for the project:\n'
+    for ((i=1;i<"${#available_licenses[*]}";i++)); do
+      echo -e "  [$i] ${available_licenses[$i]}"
+    done
+    read -r -p "" init_license_num
+    init_license=${available_licenses[$init_license_num]}
+
+    CreateFiles
+    WriteInitInfo
+  }
+
+  WriteInitInfo() {
+    echo -e "projectName=$init_name" > "$init_name.info"
+    {
+       echo -e "projectDescription=$init_description"
+       echo -e "projectAuthor=$init_author"
+       echo -e "projectLicense=$init_license"
+    } >> "$init_name.info"
+
+    echo -e "# Add build files to this file. One per line." > "$init_name.build"
+  }
+
+  local count
+  count="$(find . -maxdepth 1 -type f -regextype egrep -regex '.*\.(info|build)' 2>/dev/null | wc -l)"
+
+  if [ "$count" != 0 ]; then
+    read -r -p "$(echo -e 'It looks like there is already another LINAC project in this directory! Are you sure you want to initialize a new project? (Y/n) ')" init_confirm
+    case "$init_confirm" in
+      [yY]|[Yy][Ee][Ss] ) GetInitInfo;;
+      [Nn]|[Nn][Oo] ) exit 0;;
+      *    ) exit 0;;
+    esac
+  else
+    GetInitInfo
+  fi
+}
+MakeStub() {
+  echo '#!/bin/bash' > "${config[build_path]}$1.sh"
+  if [ -n "${config[shellcheck_ignore]}" ]; then
+    echo "# shellcheck disable=${config[shellcheck_ignore]}" >> "${config[build_path]}$1.sh"
+  fi
+  cat "${projectName,,}"'.info' >> "${config[build_path]}$1.sh"
+}
+PrintInfo() {
+  echo -e "${projectName} ${projectVersion}"' - '"${projectDescription}"
+  echo -e 'Licensed '"${projectLicense}"' by '"${projectAuthor}\n"
+}
+SubInit() {
+  InitProject
+}
+SubBuild() {
+  InitCheck
+  BuildProject "$@"
+}
+SubHelp() {
+    case "$@" in
+      "build" )
+        echo "  Builds a project from the given file. The file must contain a list of source files from your configured"
+        echo "  source directory. (Source directory may be configured by defining 'src_path' in 'linac.conf')"
+      ;;
+      "init" )
+        echo "  Initializes a new project in the current directory. Starts a wizard which asks for basic information"
+        echo "  about your project, then creates the necessary files and directories."
+      ;;
+      "help" )
+        echo  "  Shows a help message with basic usage information. Takes another command as an option and provides"
+        echo  "  additional information for that command. Did you really need help with 'help'?"
+      ;;
+      * )
+        echo "Error: '$*' is not a known command."
+        echo "       Run 'linac help' for a list of known commands."
+        exit 1
+      ;;
+    esac
+}
+SubCommand() {
+  subcommand="$1"
+  case "$subcommand" in
+    "" | "-h" | "--help" | "help" )
+       shift
+       local arg_count
+       arg_count=$(echo -n "$@" | wc -w)
+
+       if [ "$arg_count" != 0 ]; then
+         SubHelp "$@"
+       else
+         echo 'Usage: linac <command> [options]'
+         echo "  Commands:"
+         echo "        help [command]           Shows this help. Takes another command as an option."
+         echo "        build [build file]       Builds project from the given file."
+         echo "        init                     Initializes a new project in the current directory."
+       fi
+      ;;
+    * )
+      Configure
+      ReadConfiguration
+      DebugPrint "Args are $*"
+      shift
+      DebugPrint "Shifted args"
+      DebugPrint "Args are $*"
+      if ! command -v Sub"${subcommand^}" > /dev/null; then
+        echo "Error: '$subcommand' is not a known command."
+        echo "       Run 'linac help' for a list of known commands."
+        exit 1
+      else
+        Sub"${subcommand^}" "$@"
+      fi
+      ;;
+  esac
+}
+Main() {
+  SubCommand "$@"
+}
+
+PrintInfo
+Main "$@"
