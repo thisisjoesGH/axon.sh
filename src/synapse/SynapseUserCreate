@@ -3,7 +3,7 @@ SynapseUserCreate() {
   DoUserCreate() {
     local request_body
     request_body="$(ReturnRequestBody s_user_create)"
-    Log debug "${FUNCNAME[0]}: Assembled request with method '${s_user_create_api[method]}', body '$request_body', to be sent to '${s_user_create_api[path]}'"
+    Log debug "Assembled request with method '${s_user_create_api[method]}', body '$request_body', to be sent to '${s_user_create_api[path]}'"
     Request "${s_user_create_api[method]}" "$request_body" "${s_user_create_api[path]}" ""
   }
 
@@ -19,15 +19,15 @@ SynapseUserCreate() {
   else
     DefineSynapseParams
 
-    Log info "${FUNCNAME[0]}: Creating new user on homeserver ${config[homeserver]}"
+    Log info "Creating new user on homeserver ${config[homeserver]}"
 
     read -r -p "New user name:" input_user_name
       local user_id="@$input_user_name:${config[homeserver]}"
-      Log debug "${FUNCNAME[0]}: User ID is '$user_id'"
+      Log debug "User ID is '$user_id'"
       local user_id="$(EncodeUrl $user_id)"
-      Log debug "${FUNCNAME[0]}: User ID encoded as '$user_id'"
+      Log debug "User ID encoded as '$user_id'"
       s_user_create_url_params[user_id]="$user_id"
-      Log debug "${FUNCNAME[0]}: URL 'user_id' param set to '${s_user_create_url_params[user_id]}'"
+      Log debug "URL 'user_id' param set to '${s_user_create_url_params[user_id]}'"
     read -r -p "New user password:" input_user_password
       s_user_create_body_params[password]="$input_user_password"
     read -r -p "Make new user admin? (Y/n):" input_user_is_admin

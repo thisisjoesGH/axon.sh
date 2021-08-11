@@ -1,0 +1,39 @@
+SynapseServerNotice() {
+
+  DoSendNotice() {
+    local request_body
+    request_body="$(ReturnRequestBody s_server_notice)"
+    Log debug "Assembled request with method '${s_server_notice_api[method]}', body '$request_body', to be sent to '${s_server_notice_api[path]}'"
+    Request "${s_server_notice_api[method]}" "$request_body" "${s_server_notice_api[path]}" ""
+  }
+
+  if [ -z "${config[homeserver]}" ]; then
+    Log error "No homeserver configured! Aborting."
+    return 1
+  elif [ -z "${config[admin_user]}" ]; then
+    Log error "No user account configured! Aborting."
+    return 1
+  elif [ -z "${config[admin_token]}" ]; then
+    Log error "No access token found! Aborting."
+    return 1
+  else
+    DefineSynapseParams
+
+    Log info "Sending server notice on homeserver ${config[homeserver]}"
+
+    read -r -p "Target user name:" input_user_name
+      local user_id="@$input_user_name:${config[homeserver]}"
+      Log debug "User ID is '$user_id'"
+      s_server_notice_body_params[user_id]="$user_id"
+      Log debug "URL 'user_id' param set to '${s_server_notice_body_params[user_id]}'"
+    read -r -p "Message type (m.room.message):" input_msg_type
+      if [ ! -z "$input_msg_type" ]; then
+        s_server_notice_body_params[msg_type]="$input_msg_type"
+      fi
+    read -r -p "Message body:" input_msg_body
+      s_server_notice_body_params[body]="$input_msg_body"
+  fi
+
+    DefineSynapseEndpoints
+    DoSendNotice
+}

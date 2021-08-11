@@ -3,9 +3,9 @@ GenDeviceId() {
     local device_id="axon-"
     local device_id+="$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 6 | head -n 1)"
     config[device_id]="$device_id"
-    Log info "${FUNCNAME[0]}: Generated new device ID '${config[device_id]}'"
+    Log info "Generated new device ID '${config[device_id]}'"
   else
     local device_id="${config[device_id]}"
-    Log info "${FUNCNAME[0]}: Using existing device ID '$device_id'"
+    Log info "Using existing device ID '$device_id'"
   fi
 }

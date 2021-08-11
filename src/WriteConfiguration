@@ -1,22 +1,22 @@
 WriteConfiguration() {
   if [ "${config[save_token]}" != true ]; then
-    Log info "${FUNCNAME[0]}: Not saving access token due to user preference."
+    Log info "Not saving access token due to user preference."
     config[admin_token]=""
   else
     if [ -z "${config[admin_token]}" ]; then
-      Log warn "${FUNCNAME[0]}: User preference set to save access token, but no access token found."
+      Log warn "User preference set to save access token, but no access token found."
     else
-      Log warn "${FUNCNAME[0]}: Saving access token to config file '${config[config_path]}/${config[config_]}'"
+      Log warn "Saving access token to config file '${config[config_path]}/${config[config_]}'"
     fi
   fi
   if [ "${config[save_id]}" != true ]; then
-    Log info "${FUNCNAME[0]}: Not saving device ID due to user preference."
+    Log info "Not saving device ID due to user preference."
     config[device_id]=""
   else
     if [ -z "${config[device_id]}" ]; then
-      Log warn "${FUNCNAME[0]}: User preference set to save device ID, but no device ID found."
+      Log warn "User preference set to save device ID, but no device ID found."
     else
-      Log info "${FUNCNAME[0]}: Saving device ID to config file '${config[config_path]}/${config[config_file]}'"
+      Log info "Saving device ID to config file '${config[config_path]}/${config[config_file]}'"
     fi
   fi
   for i in "${!config[@]}"; do

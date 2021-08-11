@@ -1,12 +1,12 @@
 ReturnRequestBody() {
   local body_to_define="$1"
-  Log debug "${FUNCNAME[0]}: Got asked to define body '$body_to_define'"
+  Log debug "Got asked to define body '$body_to_define'"
   declare -n api
   api="${body_to_define}_api"
-  Log debug "${FUNCNAME[0]}: Defining body for '$api'"
+  Log debug "Defining body for '$api'"
   declare -n params
   params="${api[body_params]}"
-  Log debug "${FUNCNAME[0]}: Using params '$params'"
+  Log debug "Using params '$params'"
   case "$body_to_define" in
     m_login         ) echo -n '{"type":"'"${params[type]}"'","identifier":{"type":"'"${params[identifier]}"'","user":"'"${params[user]}"'"},"password":"'"${params[password]}"'","device_id":"'"${params[device_id]}"'"}';;
     s_server_notice ) echo -n '{"user_id":"'"${params[user_id]}"'","content":{"msgtype":"'"${params[msg_type]}"'","body":"'"${params[body]}"'"}}';;

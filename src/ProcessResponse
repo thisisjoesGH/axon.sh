@@ -1,5 +1,5 @@
 ProcessResponse() {
-  Log debug "${FUNCNAME[0]}: Got args $@"
+  Log debug "Got args $@"
   local response_body="$1"
   local request_keys=($2)
 

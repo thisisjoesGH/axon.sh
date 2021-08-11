@@ -2,7 +2,7 @@ MatrixLogin() {
 
   DoLogin() {
     local request_body="$(ReturnRequestBody m_login)"
-    Log debug "${FUNCNAME[0]}: Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
+    Log debug "Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
     Request "${m_login_api[method]}" "$request_body" "${m_login_api[path]}" "access_token"
     config[admin_token]="${key_values[access_token]}"
     WriteConfiguration
@@ -35,8 +35,8 @@ MatrixLogin() {
   WriteConfiguration
   ReadConfiguration
   GenDeviceId
-  Log debug "${FUNCNAME[0]}: Save ID preference is '${config[save_id]}'"
-  Log debug "${FUNCNAME[0]}: Device ID is '${config[device_id]}'"
+  Log debug "Save ID preference is '${config[save_id]}'"
+  Log debug "Device ID is '${config[device_id]}'"
   WriteConfiguration
   DefineMatrixEndpoints
   DefineMatrixParams
