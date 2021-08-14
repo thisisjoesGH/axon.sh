@@ -6,6 +6,7 @@ Prompt() {
     case "$prompt_input" in
       help    ) echo "Type 'login' to login or 'exit' to exit.";;
       login   ) MatrixLogin;;
+      whoami  ) MatrixWhoAmI;;
       version ) SynapseVersion;;
       create  ) SynapseUserCreate;;
       notice  ) SynapseServerNotice;;

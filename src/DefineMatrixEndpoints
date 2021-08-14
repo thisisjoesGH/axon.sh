@@ -1,9 +1,18 @@
 DefineMatrixEndpoints() {
   declare -Ag m_login_api
+  declare -Ag m_whoami_api
+
   m_login_api=(
     [method]="POST"
     [path]="/_matrix/client/r0/login"
     [url_params]=""
     [body_params]="m_login_params"
+  )
+
+  m_whoami_api=(
+	  [method]="GET"
+    [path]="/_matrix/client/r0/account/whoami"
+    [url_params]=""
+    [body_params]=""
   )
 }

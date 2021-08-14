@@ -1,0 +1,24 @@
+MatrixWhoAmI() {
+
+  DoWhoAmI() {
+    Log debug "Assembled request with method '${m_whoami_api[method]}', body '$request_body', to be sent to '${m_whoami_api[path]}'"
+    Request "${m_whoami_api[method]}" "" "${m_whoami_api[path]}" "user_id"
+    echo "Authenticated as: ${key_values[user_id]}"
+ }
+
+  if [ -z "${config[homeserver]}" ]; then
+    Log error "Failed to determine identity. No homeserver is configured."
+    Prompt
+  fi
+  if [ -z "${config[admin_user]}" ]; then
+    Log error "Failed to determine identity. No user is configured."
+    Prompt
+  fi
+  if [ -z "${config[admin_token]}" ]; then
+    Log error "Failed to determine identity. No access token is present. Do 'login' first."
+    Prompt
+  fi
+
+  DefineMatrixEndpoints
+  DoWhoAmI
+}

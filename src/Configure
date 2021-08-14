@@ -10,7 +10,7 @@ Configure() {
     [homeserver]=""
     [scheme]="https"
     [port]="443"
-    [admin_user]="admin"
+    [admin_user]=""
     [admin_token]=""
     [save_token]="true"
     [device_id]=""
