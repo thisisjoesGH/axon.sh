@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion='0.4.5'
+projectVersion=0.5.1
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -88,7 +88,7 @@ BuildProject() {
   esac
 }
 InitProject() {
-  available_licenses=('' 'GPLv3' 'Apache License 2.0' 'MIT')
+  available_licenses=('' 'GPLv3' 'AGPLv3')
 
   GetInitInfo() {
     while [[ -z "$init_name" ]]; do
@@ -132,6 +132,17 @@ InitProject() {
     GetInitInfo
   fi
 }
+BumpVersion() {
+  local expression='(.*=).?([0-9]{1,})\.([0-9]{1,})\.([0-9]{1,}).?'
+  local part="$1"
+  local file="${projectName,,}.info"
+
+  case "$part" in
+    major ) sed -E -i "s/$expression/echo \1\$((\2+1)).0.0/ge" "$file";;
+    minor ) sed -E -i "s/$expression/echo \1\2.\$((\3+1)).0/ge" "$file";;
+    patch ) sed -E -i "s/$expression/echo \1\2.\3.\$((\4+1))/ge" "$file";;
+  esac
+}
 MakeStub() {
   echo '#!/bin/bash' > "${config[build_path]}$1.sh"
   if [ -n "${config[shellcheck_ignore]}" ]; then
@@ -146,6 +157,9 @@ PrintInfo() {
 SubInit() {
   InitProject
 }
+SubBump() {
+  BumpVersion "$@"
+}
 SubBuild() {
   InitCheck
   BuildProject "$@"
@@ -155,6 +169,10 @@ SubHelp() {
       "build" )
         echo "  Builds a project from the given file. The file must contain a list of source files from your configured"
         echo "  source directory. (Source directory may be configured by defining 'src_path' in 'linac.conf')"
+      ;;
+     "bump" )
+        echo "  Bumps the project version in the project info file. Takes a version number name as an option:"
+        echo "  One of either 'major','minor', or 'patch'. (Version must follow SemVer to be bumped, e.g. '2.3.1'.)"
       ;;
       "init" )
         echo "  Initializes a new project in the current directory. Starts a wizard which asks for basic information"
@@ -186,6 +204,7 @@ SubCommand() {
          echo "  Commands:"
          echo "        help [command]           Shows this help. Takes another command as an option."
          echo "        build [build file]       Builds project from the given file."
+         echo "        bump [version]           Bumps the project version. Accepts 'major','minor','patch'."
          echo "        init                     Initializes a new project in the current directory."
        fi
       ;;
