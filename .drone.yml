@@ -10,12 +10,9 @@ steps:
     image: ubuntu
     pull: if-not-exists
     commands:
-      - apt -y update
-      - apt -y install wget
-      - wget https://git.thisisjoes.site/joe/linac/raw/branch/dev/linac
-      - chmod +x linac
+      - chmod +x ./utils/linac
       - mkdir build
-      - ./linac build axon.sh.build
+      - ./utils/linac build axon.sh.build
       - mv build/axon.sh.build.sh axon.sh
 
   - name: "Sign Release Artifacts"
