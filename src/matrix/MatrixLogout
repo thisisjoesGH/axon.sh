@@ -1,0 +1,34 @@
+MatrixLogout() {
+
+  DoLogout() {
+    Log debug "Assembled request with method '${m_logout_api[method]}', body '$request_body', to be sent to '${m_logout_api[path]}'"
+    Request "${m_logout_api[method]}" "" "${m_logout_api[path]}" ""
+    config[admin_user]=""
+    config[admin_token]=""
+    config[device_id]=""
+    WriteConfiguration
+ }
+
+  if [ -z "${config[homeserver]}" ]; then
+    Log error "Failed to logout. No homeserver is configured."
+    Prompt
+  fi
+  if [ -z "${config[admin_user]}" ]; then
+    Log error "Failed to logout. No user is configured."
+    Prompt
+  fi
+  if [ -z "${config[admin_token]}" ]; then
+    Log error "Failed to logout. No access token is present."
+    Prompt
+  fi
+
+  read -r -p "$(echo -e -n '\nYour local session will be erased and your access token will be invalidated. Logout anyway? (Y/n)')" input_logout_confirm
+  case "$input_logout_confirm" in
+    [yY]|[Yy][Ee][Ss] ) echo "Logging out...";;
+    [Nn]|[Nn][Oo]     ) Prompt;;
+  esac
+
+  ReadConfiguration
+  DefineMatrixEndpoints
+  DoLogout
+}

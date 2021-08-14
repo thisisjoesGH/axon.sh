@@ -10,6 +10,7 @@ Log
 #ReturnError
 #DefineCommands
 matrix/MatrixLogin
+matrix/MatrixLogout
 matrix/MatrixWhoAmI
 synapse/SynapseVersion
 synapse/SynapseUserCreate
