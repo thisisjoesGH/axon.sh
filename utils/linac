@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion=0.5.1
+projectVersion=0.5.2
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -158,6 +158,7 @@ SubInit() {
   InitProject
 }
 SubBump() {
+  InitCheck
   BumpVersion "$@"
 }
 SubBuild() {
