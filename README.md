@@ -15,7 +15,7 @@ In early development. Currently supports:
 ### building
 
  This project uses [LINAC](https://git.thisisjoes.site/joe/linac). To use the provided version of LINAC to build
- axon.sh, do `./utils/linac build axon.sh.build`.
+ axon.sh, do `mkdir build && ./utils/linac build axon.sh.build`.
 
 ### running
 
