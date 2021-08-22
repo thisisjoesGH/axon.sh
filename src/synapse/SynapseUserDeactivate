@@ -1,0 +1,40 @@
+SynapseUserDeactivate() {
+
+  DoUserDeactivate() {
+    local request_body
+    request_body="$(ReturnRequestBody s_user_deactivate)"
+    Log debug "Assembled request with method '${s_user_deactivate_api[method]}', body '$request_body', to be sent to '${s_user_deactivate_api[path]}'"
+#    Request "${s_user_deactivate_api[method]}" "$request_body" "${s_user_deactivate_api[path]}" ""
+  }
+
+  if [ -z "${config[homeserver]}" ]; then
+    Log error "No homeserver configured! Aborting."
+    return 1
+  elif [ -z "${config[admin_user]}" ]; then
+    Log error "No user account configured! Aborting."
+    return 1
+  elif [ -z "${config[admin_token]}" ]; then
+    Log error "No access token found! Aborting."
+    return 1
+  else
+    DefineSynapseParams
+
+    Log info "Deactivating user on homeserver ${config[homeserver]}"
+
+    read -r -p "Username to deactivate:" input_user_name
+      local user_id="@$input_user_name:${config[homeserver]}"
+      Log debug "User ID is '$user_id'"
+      local user_id="$(EncodeUrl $user_id)"
+      Log debug "User ID encoded as '$user_id'"
+      s_user_deactivate_url_params[user_id]="$user_id"
+      Log debug "URL 'user_id' param set to '${s_user_deactivate_url_params[user_id]}'"
+    read -r -p "Erase user profile? (Y/n):" input_user_is_erased
+      case "$input_user_is_erased" in
+        [yY]|[Yy][Ee][Ss] ) s_user_deactivate_body_params[erase]="true";;
+        [Nn]|[Nn][Oo]     ) s_user_deactivate_body_params[erase]="false";;
+      esac
+  fi
+
+    DefineSynapseEndpoints
+    DoUserDeactivate
+}
