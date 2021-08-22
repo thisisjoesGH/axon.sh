@@ -4,16 +4,15 @@ Prompt() {
     local prompt="$global_prompt"
     read -r -p "$prompt" prompt_input
     case "$prompt_input" in
-      help       ) echo "Type 'login' to login or 'exit' to exit.";;
-      login      ) MatrixLogin;;
-      logout     ) MatrixLogout;;
-      whoami     ) MatrixWhoAmI;;
-      version    ) SynapseVersion;;
-      create     ) SynapseUserCreate;;
-      deactivate ) SynapseUserDeactivate;;
-      notice     ) SynapseServerNotice;;
-      exit       ) exit 0;;
-      *          ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;
+      help    ) echo "Type 'login' to login or 'exit' to exit.";;
+      login   ) MatrixLogin;;
+      logout  ) MatrixLogout;;
+      whoami  ) MatrixWhoAmI;;
+      version ) SynapseVersion;;
+      create  ) SynapseUserCreate;;
+      notice  ) SynapseServerNotice;;
+      exit    ) exit 0;;
+      *       ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;
     esac
   done
 }
