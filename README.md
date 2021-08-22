@@ -8,6 +8,7 @@ In early development. Currently supports:
  - retrieving and saving access token
  - getting server version information
  - creating new users
+ - resetting user password
  - deactivating users
  - sending server notices
 
