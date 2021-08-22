@@ -11,6 +11,7 @@ Prompt() {
       version    ) SynapseVersion;;
       create     ) SynapseUserCreate;;
       deactivate ) SynapseUserDeactivate;;
+      shadowban  ) SynapseUserShadowban;;
       notice     ) SynapseServerNotice;;
       exit       ) exit 0;;
       *          ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;

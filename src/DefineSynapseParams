@@ -5,6 +5,7 @@ DefineSynapseParams() {
   declare -Ag s_user_create_body_params
   declare -Ag s_user_deactivate_url_params
   declare -Ag s_user_deactivate_body_params
+  declare -Ag s_user_shadowban_url_params
 
   s_server_notice_body_params=(
     [user_id]=""
@@ -32,5 +33,9 @@ DefineSynapseParams() {
 
   s_user_deactivate_body_params=(
     [erase]="false"
+  )
+
+  s_user_shadowban_url_params=(
+    [user_id]=""
   )
 }

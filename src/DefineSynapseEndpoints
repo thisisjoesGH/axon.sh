@@ -3,6 +3,7 @@ DefineSynapseEndpoints() {
   declare -Ag s_server_notice_api
   declare -Ag s_use_query_api
   declare -Ag s_user_create_api
+  declare -Ag s_user_shadowban_api
   declare -Ag s_room_membership_api
   declare -Ag s_user_deactivate_api
 
@@ -41,6 +42,13 @@ DefineSynapseEndpoints() {
     [body_params]="s_user_deactivate_body_params"
   )
  
+  s_user_shadowban_api=(
+    [method]="POST"
+    [path]="/_synapse/admin/v1/users/${s_user_shadowban_url_params[user_id]}/shadow_ban"
+    [url_params]="s_user_shadowban_url_params"
+    [body_params]=""
+  )
+
   s_room_membership_api=(
     [method]="POST"
     [path]="/_synapse/admin/v1/join/${s_room_membership_url_params[room_id_or_alias]}"

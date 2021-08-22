@@ -15,6 +15,7 @@ matrix/MatrixWhoAmI
 synapse/SynapseVersion
 synapse/SynapseUserCreate
 synapse/SynapseUserDeactivate
+synapse/SynapseUserShadowban
 synapse/SynapseServerNotice
 Prompt
 Motd
