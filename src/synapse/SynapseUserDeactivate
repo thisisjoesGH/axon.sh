@@ -4,7 +4,7 @@ SynapseUserDeactivate() {
     local request_body
     request_body="$(ReturnRequestBody s_user_deactivate)"
     Log debug "Assembled request with method '${s_user_deactivate_api[method]}', body '$request_body', to be sent to '${s_user_deactivate_api[path]}'"
-#    Request "${s_user_deactivate_api[method]}" "$request_body" "${s_user_deactivate_api[path]}" ""
+    Request "${s_user_deactivate_api[method]}" "$request_body" "${s_user_deactivate_api[path]}" ""
   }
 
   if [ -z "${config[homeserver]}" ]; then
