@@ -36,5 +36,5 @@ steps:
       checksum:
         - md5
         - sha256
-      title: release
+      title: "Automated Release"
       prerelease: true
