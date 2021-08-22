@@ -8,11 +8,12 @@ ReturnRequestBody() {
   params="${api[body_params]}"
   Log debug "Using params '${!params}'"
   case "$body_to_define" in
-    m_login           ) echo -n '{"type":"'"${params[type]}"'","identifier":{"type":"'"${params[identifier]}"'","user":"'"${params[user]}"'"},"password":"'"${params[password]}"'","device_id":"'"${params[device_id]}"'"}';;
-    s_server_notice   ) echo -n '{"user_id":"'"${params[user_id]}"'","content":{"msgtype":"'"${params[msg_type]}"'","body":"'"${params[body]}"'"}}';;
-    s_user_create     ) echo -n '{"password":"'"${params[password]}"'","displayname":"'"${params[displayname]}"'","admin":"'"${params[admin]}"'"}';;
-    s_user_deactivate ) echo -n '{"erase":'"${params[erase]}"'}';;
-    *                 ) Log error "Requested unknown body '$body_to_define' for endpoint '$api' with params '$params'";;
+    m_login               ) echo -n '{"type":"'"${params[type]}"'","identifier":{"type":"'"${params[identifier]}"'","user":"'"${params[user]}"'"},"password":"'"${params[password]}"'","device_id":"'"${params[device_id]}"'"}';;
+    s_server_notice       ) echo -n '{"user_id":"'"${params[user_id]}"'","content":{"msgtype":"'"${params[msg_type]}"'","body":"'"${params[body]}"'"}}';;
+    s_user_create         ) echo -n '{"password":"'"${params[password]}"'","displayname":"'"${params[displayname]}"'","admin":"'"${params[admin]}"'"}';;
+    s_user_reset_password ) echo -n '{"new_password":"'"${params[password]}"'","logout_devices":'"${params[logout]}"'}';;
+    s_user_deactivate     ) echo -n '{"erase":'"${params[erase]}"'}';;
+    *                     ) Log error "Requested unknown body '$body_to_define' for endpoint '$api' with params '$params'";;
   esac
 }
 

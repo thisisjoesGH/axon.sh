@@ -10,6 +10,7 @@ Prompt() {
       whoami     ) MatrixWhoAmI;;
       version    ) SynapseVersion;;
       create     ) SynapseUserCreate;;
+      resetpass  ) SynapseUserResetPassword;;
       deactivate ) SynapseUserDeactivate;;
       shadowban  ) SynapseUserShadowban;;
       notice     ) SynapseServerNotice;;
