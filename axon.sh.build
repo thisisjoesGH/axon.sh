@@ -18,6 +18,7 @@ synapse/SynapseUserResetPassword
 synapse/SynapseUserDeactivate
 synapse/SynapseUserShadowban
 synapse/SynapseServerNotice
+Help
 Prompt
 UserCommandHandler
 ServerCommandHandler
