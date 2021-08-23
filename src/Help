@@ -1,0 +1,34 @@
+Help() {
+  case "$@" in
+    login  ) echo 'Logs in to an account on a homeserver. Does not accept an MXID.';;
+    logout ) echo 'Logs out of the currently logged in account';;
+    whoami ) echo 'Prints the MXID of the currently logged in account';;
+    help   ) echo '😭😭😭';;
+    exit   ) echo 'Exits axon.sh.';;
+    server ) echo 'Usage: server <subcommand>'
+             echo '  Subcommands:'
+             echo '    version    Prints version information returned by the locally configured homeserver.'
+             echo '    address    Prints the address of the locally configured homeserver.'
+             echo '    notice     Sends a server notice to a user. Requires proper homeserver configuration.'
+           ;;
+    user   ) echo 'Usage: user <subcommand>'
+             echo '  Subcommands:'
+             echo '    create        Creates a new user.'
+             echo '    password      Resets a user'\''s password. Optionally logs the user out of all devices.'
+             echo '    deactivate    Deactivates a user. Optionally erases the user'\''s profile.'
+             echo '    shadowban     Shadowbans a user.'
+           ;;
+    ''     ) echo 'Usage: <command> [subcommand]'
+             echo '  Commands:'
+             echo '    login     Logs in to an account on a homeserver.'
+             echo '    logout    Logs out of an account on a homeserver.'
+             echo '    whoami    Prints the MXID of the currently logged in account.'
+             echo '    server    Performs homeserver related actions. Takes a subcommand as an option.'
+             echo '    user      Performs user account related actions. Takes a subcommand as an option.'
+             echo '    help      Prints usage information. Takes another command as an option.'
+             echo '    exit      Exits axon.sh.'
+           ;;
+    *      ) Log error "Unknown subcommand '$@'. Type 'help' with no options for a list of commands."
+           ;;
+  esac
+}

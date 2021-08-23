@@ -4,7 +4,7 @@ UserCommandHandler() {
     password   ) SynapseUserResetPassword;;
     deactivate ) SynapseUserDeactivate;;
     shadowban  ) SynapseUserShadowban;;
-    ''         ) Log error "Subcommand required.";;
-    *          ) Log error "Unrecognized subcommand '$@'.";;
+    ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
+    *          ) Log error "Unrecognized subcommand '$@'. Type 'help user' for a list of subcommands.";;
   esac
 }

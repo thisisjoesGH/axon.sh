@@ -4,12 +4,12 @@ Prompt() {
     local prompt="$global_prompt"
     read -r -p "$prompt" -a prompt_input
     case "${prompt_input[0]}" in
-      help       ) echo "Type 'login' to login or 'exit' to exit.";;
       login      ) MatrixLogin;;
       logout     ) MatrixLogout;;
       whoami     ) MatrixWhoAmI;;
       server     ) ServerCommandHandler "${prompt_input[1]}";;
       user       ) UserCommandHandler "${prompt_input[1]}";;
+      help       ) Help "${prompt_input[1]}";;
       exit       ) exit 0;;
       *          ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;
     esac
