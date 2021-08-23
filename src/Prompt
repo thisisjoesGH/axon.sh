@@ -2,8 +2,8 @@ Prompt() {
   global_prompt="[axon]>"
   while true; do
     local prompt="$global_prompt"
-    read -r -p "$prompt" prompt_input
-    case "$prompt_input" in
+    read -r -p "$prompt" -a prompt_input
+    case "${prompt_input[0]}" in
       help       ) echo "Type 'login' to login or 'exit' to exit.";;
       login      ) MatrixLogin;;
       logout     ) MatrixLogout;;
