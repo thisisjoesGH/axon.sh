@@ -9,10 +9,7 @@ Prompt() {
       logout     ) MatrixLogout;;
       whoami     ) MatrixWhoAmI;;
       version    ) SynapseVersion;;
-      create     ) SynapseUserCreate;;
-      resetpass  ) SynapseUserResetPassword;;
-      deactivate ) SynapseUserDeactivate;;
-      shadowban  ) SynapseUserShadowban;;
+      user       ) UserCommandHandler "${prompt_input[1]}";;
       notice     ) SynapseServerNotice;;
       exit       ) exit 0;;
       *          ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;

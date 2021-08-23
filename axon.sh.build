@@ -19,6 +19,7 @@ synapse/SynapseUserDeactivate
 synapse/SynapseUserShadowban
 synapse/SynapseServerNotice
 Prompt
+UserCommandHandler
 Motd
 CheckDependencies
 GenDeviceId
