@@ -1,0 +1,8 @@
+ServerCommandHandler() {
+  case "$@" in
+    version ) SynapseVersion;;
+    notice  ) SynapseServerNotice;;
+    ''      ) Log error "Subcommand required.";;
+    *       ) Log error "Unrecognized subcommand '$@'.";;
+  esac
+}
