@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion=0.5.2
+projectVersion=0.6.0
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -73,7 +73,7 @@ BuildProject() {
       DebugPrint "Args are $*"
       DebugPrint "Arg is $arg"
       for ((i=0;i<"${#files[*]}";i++));do
-        cat "${files[$i]}";
+        find "${files[$i]}" -type f -print0 | xargs -0 cat;
       done >> "${config[build_path]}""$target"'.sh'
       ;;   
 
@@ -82,7 +82,7 @@ BuildProject() {
       DebugPrint "Args are $*"
       DebugPrint "Arg is $arg"
       for ((i=0;i<"${#files[*]}";i++));do
-        grep -Ev '^\s*\#' "${files[$i]}";
+        grep -Ehrv '^\s*\#' "${files[$i]}";
       done >> "${config[build_path]}""$target"'.sh'
       ;;
   esac
