@@ -9,15 +9,8 @@ LogTerm
 Log
 #ReturnError
 #DefineCommands
-matrix/MatrixLogin
-matrix/MatrixLogout
-matrix/MatrixWhoAmI
-synapse/SynapseVersion
-synapse/SynapseUserCreate
-synapse/SynapseUserResetPassword
-synapse/SynapseUserDeactivate
-synapse/SynapseUserShadowban
-synapse/SynapseServerNotice
+matrix/
+synapse/
 Help
 Prompt
 UserCommandHandler
