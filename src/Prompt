@@ -7,9 +7,9 @@ Prompt() {
       login      ) MatrixLogin;;
       logout     ) MatrixLogout;;
       whoami     ) MatrixWhoAmI;;
-      server     ) ServerCommandHandler "${prompt_input[1]}";;
-      user       ) UserCommandHandler "${prompt_input[1]}";;
-      help       ) Help "${prompt_input[1]}";;
+      server     ) ServerCommandHandler "${prompt_input[@]:1}";;
+      user       ) UserCommandHandler "${prompt_input[@]:1}";;
+      help       ) Help "${prompt_input[@]:1}";;
       exit       ) exit 0;;
       *          ) echo "Unrecognized command '$prompt_input'. Type 'help' for help.";;
     esac

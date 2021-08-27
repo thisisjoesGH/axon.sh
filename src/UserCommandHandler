@@ -1,10 +1,10 @@
 UserCommandHandler() {
-  case "$@" in
+  case "$1" in
     create     ) SynapseUserCreate;;
     password   ) SynapseUserResetPassword;;
     deactivate ) SynapseUserDeactivate;;
     shadowban  ) SynapseUserShadowban;;
     ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
-    *          ) Log error "Unrecognized subcommand '$@'. Type 'help user' for a list of subcommands.";;
+    *          ) Log error "Unrecognized subcommand '$1'. Type 'help user' for a list of subcommands.";;
   esac
 }
