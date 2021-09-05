@@ -1,5 +1,11 @@
 UserCommandHandler() {
-  case "$1" in
+  Log debug "Got args '$*'"
+  local subcommands
+  read -r -a subcommands <<< "$*"
+  Log debug "Have subcommands '${subcommands[*]}'"
+  Log debug "Testing '${subcommands[0]}'"
+  case "${subcommands[0]}" in
+    rooms      ) SynapseUserJoinedRooms;;
     create     ) SynapseUserCreate;;
     password   ) SynapseUserResetPassword;;
     deactivate ) SynapseUserDeactivate;;

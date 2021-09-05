@@ -2,6 +2,7 @@ DefineSynapseEndpoints() {
   declare -Ag s_version_api
   declare -Ag s_server_notice_api
   declare -Ag s_use_query_api
+  declare -Ag s_user_joined_rooms_api
   declare -Ag s_user_create_api
   declare -Ag s_user_reset_password_api
   declare -Ag s_user_shadowban_api
@@ -26,6 +27,13 @@ DefineSynapseEndpoints() {
     [method]="GET"
     [path]="/_synapse/admin/v2/users/${s_user_query_url_params[user_id]}"
     [url_params]="s_user_query_url_params"
+    [body_params]=""
+  )
+
+  s_user_joined_rooms_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/users/${s_user_joined_rooms_url_params[user_id]}/joined_rooms"
+    [url_params]="s_user_joined_rooms_url_params"
     [body_params]=""
   )
 
