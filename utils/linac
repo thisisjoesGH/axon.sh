@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion=0.6.0
+projectVersion=0.7.0
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -62,6 +62,11 @@ ProcessBuildFile() {
 BuildProject() {
   local files
   local target="$1"
+
+  if [ ! -d "${config[build_path]}" ]; then
+    mkdir "${config[build_path]}"
+  fi
+
   MakeStub "$target"
   mapfile -t files < <(ProcessBuildFile "$1")
   shift
@@ -111,6 +116,7 @@ InitProject() {
     echo -e "projectName=$init_name" > "$init_name.info"
     {
        echo -e "projectDescription=$init_description"
+       echo -e "projectVersion=0.1.0"
        echo -e "projectAuthor=$init_author"
        echo -e "projectLicense=$init_license"
     } >> "$init_name.info"
