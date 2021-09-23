@@ -1,6 +1,7 @@
 DefineSynapseEndpoints() {
   declare -Ag s_version_api
   declare -Ag s_server_notice_api
+  declare -Ag s_event_reports_api
   declare -Ag s_use_query_api
   declare -Ag s_user_joined_rooms_api
   declare -Ag s_user_create_api
@@ -21,6 +22,13 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/send_server_notice"
     [url_params]=""
     [body_params]="s_server_notice_body_params"
+  )
+
+  s_event_reports_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/event_reports"
+    [url_params]="s_event_reports_url_params"
+    [body_params]=""
   )
 
   s_user_query_api=(
