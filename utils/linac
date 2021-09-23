@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion=0.7.0
+projectVersion=0.7.1
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -62,6 +62,7 @@ ProcessBuildFile() {
 BuildProject() {
   local files
   local target="$1"
+  local name="${projectName,,}"
 
   if [ ! -d "${config[build_path]}" ]; then
     mkdir "${config[build_path]}"
@@ -79,7 +80,7 @@ BuildProject() {
       DebugPrint "Arg is $arg"
       for ((i=0;i<"${#files[*]}";i++));do
         find "${files[$i]}" -type f -print0 | xargs -0 cat;
-      done >> "${config[build_path]}""$target"'.sh'
+      done >> "${config[build_path]}""$name"
       ;;   
 
     * )
@@ -88,7 +89,7 @@ BuildProject() {
       DebugPrint "Arg is $arg"
       for ((i=0;i<"${#files[*]}";i++));do
         grep -Ehrv '^\s*\#' "${files[$i]}";
-      done >> "${config[build_path]}""$target"'.sh'
+      done >> "${config[build_path]}""$name"
       ;;
   esac
 }
@@ -150,11 +151,13 @@ BumpVersion() {
   esac
 }
 MakeStub() {
-  echo '#!/bin/bash' > "${config[build_path]}$1.sh"
+  local name="${projectName,,}"
+
+  echo '#!/bin/bash' > "${config[build_path]}$name"
   if [ -n "${config[shellcheck_ignore]}" ]; then
-    echo "# shellcheck disable=${config[shellcheck_ignore]}" >> "${config[build_path]}$1.sh"
+    echo "# shellcheck disable=${config[shellcheck_ignore]}" >> "${config[build_path]}$name"
   fi
-  cat "${projectName,,}"'.info' >> "${config[build_path]}$1.sh"
+  cat "${projectName,,}"'.info' >> "${config[build_path]}$name"
 }
 PrintInfo() {
   echo -e "${projectName} ${projectVersion}"' - '"${projectDescription}"
