@@ -7,29 +7,19 @@ SynapseUserShadowban() {
     Request "${s_user_shadowban_api[method]}" "$request_body" "${s_user_shadowban_api[path]}" ""
   }
 
-  if [ -z "${config[homeserver]}" ]; then
-    Log error "No homeserver configured! Aborting."
-    return 1
-  elif [ -z "${config[admin_user]}" ]; then
-    Log error "No user account configured! Aborting."
-    return 1
-  elif [ -z "${config[admin_token]}" ]; then
-    Log error "No access token found! Aborting."
-    return 1
-  else
-    DefineSynapseParams
+  CheckLoginStatus || return 1
+  DefineSynapseParams
 
-    Log info "Shadowbanning user on homeserver ${config[homeserver]}"
+  Log info "Shadowbanning user on homeserver ${config[homeserver]}"
 
-    read -r -p "Username to shadowban:" input_user_name
-      local user_id="@$input_user_name:${config[homeserver]}"
-      Log debug "User ID is '$user_id'"
-      local user_id="$(EncodeUrl $user_id)"
-      Log debug "User ID encoded as '$user_id'"
-      s_user_shadowban_url_params[user_id]="$user_id"
-      Log debug "URL 'user_id' param set to '${s_user_shadowban_url_params[user_id]}'"
-  fi
+  read -r -p "Username to shadowban:" input_user_name
+    local user_id="@$input_user_name:${config[homeserver]}"
+    Log debug "User ID is '$user_id'"
+    local user_id="$(EncodeUrl $user_id)"
+    Log debug "User ID encoded as '$user_id'"
+    s_user_shadowban_url_params[user_id]="$user_id"
+    Log debug "URL 'user_id' param set to '${s_user_shadowban_url_params[user_id]}'"
 
-    DefineSynapseEndpoints
-    DoUserShadowban
+  DefineSynapseEndpoints
+  DoUserShadowban
 }

@@ -25,6 +25,7 @@ DefineSynapseEndpoints
 DefineSynapseParams
 DefineStatusCodes
 CheckStatusCode
+CheckLoginStatus
 EncodeUrl
 Request
 ProcessResponse
