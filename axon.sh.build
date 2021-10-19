@@ -17,6 +17,7 @@ UserCommandHandler
 ServerCommandHandler
 Motd
 CheckDependencies
+CatchStream
 GenDeviceId
 DefineMatrixEndpoints
 DefineMatrixParams

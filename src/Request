@@ -12,9 +12,16 @@ Request() {
 
   Log info "Using method '$request_method' in request to '$request_uri'"
 
+  local std_out
+  local std_err
+  CatchStream std_out std_err curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent --fail-with-body --show-error "$request_uri"
+
+  local return_code="$?"
   oIFS="$IFS"
   IFS="|"
-  local request_response=($(curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent "$request_uri"))
+  local request_response
+  read -r -a request_response <<< "$std_out"
+  local request_error="$std_err"
   IFS="$oIFS"
   
   local request_body="${request_response[0]}"
@@ -25,6 +32,7 @@ Request() {
   if CheckStatusCode "$status_code"; then
     ProcessResponse "$request_body" "$request_keys"
   else
-    Log error "Request failed while using method '$request_method' in request to '$request_uri'"
+    Log error "Request failed while using method '$request_method' in request to '$request_uri'."
+    Log debug "Got code '$return_code', message '$request_error'."
   fi
 }
