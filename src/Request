@@ -34,5 +34,6 @@ Request() {
   else
     Log error "Request failed while using method '$request_method' in request to '$request_uri'."
     Log debug "Got code '$return_code', message '$request_error'."
+    Log debug "Got body '$request_body'".
   fi
 }
