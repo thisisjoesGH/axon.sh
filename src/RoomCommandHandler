@@ -1,0 +1,8 @@
+RoomCommandHandler() {
+  case "$1" in
+    purge  ) SynapsePurgeHistory;;
+    delete ) SynapseDeleteRoom;;
+    ''     ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
+    *      ) Log error "Unrecognized subcommand '$1'. Type 'help room' for a list of subcommands.";;
+  esac
+}

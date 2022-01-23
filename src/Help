@@ -13,7 +13,8 @@ Help() {
            ;;
     room   ) echo 'Usage: room <subcommand>'
              echo '  Subcommands:'
-             echo '    purge    Purges events from a room up to the given date or timestamp. Optionally includes local events.'
+             echo '    purge     Purges events from a room up to the given date or timestamp. Optionally includes local events.'
+             echo '    delete    Forces all local users to leave a room. Optionally deletes all events and blocks future joins.'
            ;;
     user   ) echo 'Usage: user <subcommand>'
              echo '  Subcommands:'

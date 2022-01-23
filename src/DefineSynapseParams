@@ -1,7 +1,10 @@
+#shellcheck disable=SC2034
 DefineSynapseParams() {
   declare -Ag s_server_notice_body_params
   declare -Ag s_purge_history_url_params
   declare -Ag s_purge_history_body_params
+  declare -Ag s_delete_room_url_params
+  declare -Ag s_delete_room_body_params
   declare -Ag s_user_query_url_params
   declare -Ag s_user_joined_rooms_url_params
   declare -Ag s_user_create_url_params
@@ -25,6 +28,15 @@ DefineSynapseParams() {
   s_purge_history_body_params=(
     [delete_local_events]="false"
     [purge_up_to_ts]=""
+  )
+
+  s_delete_room_url_params=(
+    [room_id]=""
+  )
+
+  s_delete_room_body_params=(
+    [block]="false"
+    [purge]="false"
   )
 
   s_user_query_url_params=(
