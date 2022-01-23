@@ -11,6 +11,10 @@ Help() {
              echo '    address    Prints the address of the locally configured homeserver.'
              echo '    notice     Sends a server notice to a user. Requires proper homeserver configuration.'
            ;;
+    room   ) echo 'Usage: room <subcommand>'
+             echo '  Subcommands:'
+             echo '    purge    Purges events from a room up to the given date or timestamp. Optionally includes local events.'
+           ;;
     user   ) echo 'Usage: user <subcommand>'
              echo '  Subcommands:'
              echo '    create        Creates a new user.'
@@ -24,6 +28,7 @@ Help() {
              echo '    logout    Logs out of an account on a homeserver.'
              echo '    whoami    Prints the MXID of the currently logged in account.'
              echo '    server    Performs homeserver related actions. Takes a subcommand as an option.'
+             echo '    room      Performs room related actions. Takes a subcommand as an option.'
              echo '    user      Performs user account related actions. Takes a subcommand as an option.'
              echo '    help      Prints usage information. Takes another command as an option.'
              echo '    exit      Exits axon.sh.'
