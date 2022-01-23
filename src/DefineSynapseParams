@@ -1,12 +1,13 @@
-#shellcheck disable=SC2034
 DefineSynapseParams() {
   declare -Ag s_server_notice_body_params
+  declare -Ag s_event_reports_url_params
   declare -Ag s_purge_history_url_params
   declare -Ag s_purge_history_body_params
   declare -Ag s_delete_room_url_params
   declare -Ag s_delete_room_body_params
   declare -Ag s_user_query_url_params
   declare -Ag s_user_joined_rooms_url_params
+  declare -Ag s_user_modify_body_params
   declare -Ag s_user_create_url_params
   declare -Ag s_user_create_body_params
   declare -Ag s_user_reset_password_url_params
@@ -19,6 +20,14 @@ DefineSynapseParams() {
     [user_id]=""
     [msg_type]="m.room.message"
     [body]=""
+  )
+
+  s_event_reports_url_params=(
+    [from]="0"
+    [limit]="10"
+    [dir]="b"
+    [user_id]=""
+    [room_id]=""
   )
 
   s_purge_history_url_params=(
@@ -45,6 +54,22 @@ DefineSynapseParams() {
 
   s_user_joined_rooms_url_params=(
     [user_id]=""
+  )
+
+  s_user_modify_body_params=(
+    [user_id]=""
+    [password]=""
+    [displayname]=""
+    [avatar_url]=""
+    [admin]="false"
+    [deactivated]="false"
+    [list_from]="0"
+    [list_limit]="5"
+    [list_name]=""
+    [list_guests]="false"
+    [list_deactivated]="false"
+    [order_by]="name"
+    [order_dir]="f"
   )
 
   s_user_create_url_params=(
