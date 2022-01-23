@@ -14,6 +14,7 @@ synapse/
 Help
 Prompt
 UserCommandHandler
+RoomCommandHandler
 ServerCommandHandler
 Motd
 CheckDependencies
@@ -27,6 +28,7 @@ DefineSynapseParams
 DefineStatusCodes
 CheckStatusCode
 CheckLoginStatus
+GetUnixTimestampMs
 EncodeUrl
 Request
 ProcessResponse

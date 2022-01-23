@@ -8,6 +8,7 @@ Prompt() {
       logout     ) MatrixLogout;;
       whoami     ) MatrixWhoAmI;;
       server     ) ServerCommandHandler "${prompt_input[@]:1}";;
+      room       ) RoomCommandHandler "${prompt_input[@]:1}";;
       user       ) UserCommandHandler "${prompt_input[@]:1}";;
       help       ) Help "${prompt_input[@]:1}";;
       exit       ) exit 0;;
