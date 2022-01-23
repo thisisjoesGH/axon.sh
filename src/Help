@@ -21,6 +21,7 @@ Help() {
              echo '    password      Resets a user'\''s password. Optionally logs the user out of all devices.'
              echo '    deactivate    Deactivates a user. Optionally erases the user'\''s profile.'
              echo '    shadowban     Shadowbans a user.'
+             echo '    rooms         Shows all rooms a user is currently a member of.'
            ;;
     ''     ) echo 'Usage: <command> [subcommand]'
              echo '  Commands:'
