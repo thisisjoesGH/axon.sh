@@ -4,6 +4,6 @@ ServerCommandHandler() {
     notice  ) SynapseServerNotice;;
     address ) if [ -z "${config[homeserver]}" ]; then Log error "No homeserver configured!"; else echo "${config[homeserver]}"; fi;;
     ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands.";;
-    *       ) Log error "Unrecognized subcommand '$1'. Type 'help user' for a list of subcommands.";;
+    *       ) Log error "Unrecognized subcommand '$1'. Type 'help server' for a list of subcommands.";;
   esac
 }
