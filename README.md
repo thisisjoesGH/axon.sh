@@ -13,6 +13,8 @@ In early development. Currently supports:
  - creating new users
  - resetting user password
  - deactivating users
+ - purging room history
+ - deleting and blocking rooms
  - sending server notices
 
  ## How to use
