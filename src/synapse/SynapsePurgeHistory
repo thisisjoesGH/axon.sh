@@ -19,7 +19,9 @@ SynapsePurgeHistory() {
     s_purge_history_url_params[room_id]="$room_id"
     Log debug "URL 'room_id' param set to '${s_purge_history_url_params[room_id]}'"
   read -r -p "Relative date or timestamp:" input_timestamp
-    local timestamp="$(GetUnixTimestampMs "$input_timestamp")"
+    local timestamp
+    exec 42>&1
+    timestamp="$(GetUnixTimestampMs "$input_timestamp" >&42)" || return 1
     Log debug "Unix timestamp is '$timestamp'"
     s_purge_history_body_params[purge_up_to_ts]="$timestamp"
   read -r -p "Delete local events? (y/N):" input_delete_local_events
