@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090,SC2004
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion=0.9.1
+projectVersion=0.9.2
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -154,7 +154,18 @@ BuildProject() {
 
   Log debug "Using target '$target'"
   MakeStub "$target"
-  mapfile -t files < <(ProcessBuildFile "$target")
+
+  local paths
+  mapfile -t paths < <(ProcessBuildFile "$target")
+  Log debug "Paths are '${paths[*]}'"
+
+  local files
+  mapfile -t files < <(for i in "${paths[@]}"; do find "$i" -type f; done)
+
+  local file_count
+  file_count="$(printf "%02d" "${#files[*]}")"
+  Log debug "File count is '$file_count'"
+
   option="${option#?}"
   Log debug "Option is '$option'"
   case "$option" in
@@ -172,24 +183,25 @@ BuildProject() {
   esac
 
   if [[ "$strip_comments" == true ]]; then
-    for ((i=0;i<"${#files[*]}";i++));do
-      Log info "Building script from source file '${files[$i]}' ($(( $i + 1 ))/${#files[*]})"
-      grep -Ehrv '^\s*\#' -- "${files[$i]}" ||
-        {
-          Log error "Encountered error while building script from source file '${files[$i]}' ($(( $i + 1 ))/${#files[*]})"
-          return 1
-        }
-    done >> "${config[build_path]}""$name"
+    local args='-Ehrv'
+    local pattern='^\s*\#'
   else
+    local args='-Ehr'
+    local pattern='.*'
+  fi
+  Log debug "Args are '$args'"
+  Log debug "Pattern is '$pattern'"
+
+    local file_counter
     for ((i=0;i<"${#files[*]}";i++));do
-      Log info "Building script from source file '${files[$i]}' ($(( $i + 1 ))/${#files[*]})"
-      find -- "${files[$i]}" -type f -print0 | xargs -0 cat ||
+      file_counter="$(printf "%02d" "$(( $i + 1 ))")"
+      Log info "Building script from source file ($file_counter/$file_count) '${files[$i]}'"
+      grep "$args" "$pattern" -- "${files[$i]}" >> "${config[build_path]}""$name" ||
         {
-          Log error "Encountered error while building script from source file '${files[$i]}' ($(( $i + 1 ))/${#files[*]})"
+          Log error "Encountered error while building script from source file ($file_counter/$file_count) '${files[$i]}'"
           return 1
         }
-    done >> "${config[build_path]}""$name"
-  fi
+    done
 }
 InitProject() {
   available_licenses=('' 'GPLv3' 'AGPLv3')
