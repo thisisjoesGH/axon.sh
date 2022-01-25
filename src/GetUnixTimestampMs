@@ -1,19 +1,15 @@
 GetUnixTimestampMs() {
+  local -n ref
+  ref="$1"
+
   local stdout
   local stderr
 
-  CatchStream stdout stderr date -d "$1" +'%s'
-
-  local return_code="$?"
-
-  [[ "$return_code" == 0  ]] ||
+  CatchStream stdout stderr date -d "$ref" +'%s' ||
     {
-      Log error "Encountered error while converting to Unix timestamp: '$stderr'"
+      Log error "Encountered error while getting Unix timestamp: '$stderr'"
       return 1
     }
 
-  local timestamp="$stdout"
-  local timestamp=$(( "$timestamp" * 1000 ))
-
-  echo "$timestamp"
+  ref=$(( "$stdout" * 1000 ))
 }
