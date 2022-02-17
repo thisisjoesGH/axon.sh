@@ -1,0 +1,25 @@
+CheckServerSupport() {
+  local minimum_version="$1"
+
+  if [[ "$minimum_version" == "" ]]; then
+    Log info "Requested API has no defined minimum version, skipping check"
+    return 0
+  fi
+
+  DefineSynapseEndpoints
+  Request "${s_version_api[method]}" "" "${s_version_api[path]}" "server_version"
+
+  local test_version="${key_values[server_version]}"
+
+  if [[ "$minimum_version" =~ "rc" ]] && [[ ! "$test_version" =~ "rc" ]]; then
+    test_version+="rc99"
+  fi
+  
+  if [[ ! "$test_version" < "$minimum_version" ]]; then
+    Log info "Server meets minimum version requirement for the requested API, continuing..."
+    return 0
+  else
+    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${key_values[server_version]}', minimum version '$minimum_version'"
+    ConfirmContinue || return 1
+  fi
+}

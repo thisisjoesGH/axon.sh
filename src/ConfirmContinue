@@ -1,0 +1,9 @@
+ConfirmContinue() {
+  local response
+  read -r -p "$(echo -e 'Continue anyway? (y/N)')" response
+  case "$response" in
+    [Yy]|[Yy][Ee][Ss] ) Log info "Got affirmative response, continuing..."; return 0;;
+    [Nn]|[Nn][Oo]|''  ) Log info "Got negative or empty response, aborting"; return 1;;
+    *                 ) Log error "Invalid response '$response'"; ConfirmContinue;;
+  esac
+}
