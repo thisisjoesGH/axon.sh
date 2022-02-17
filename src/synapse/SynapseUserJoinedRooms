@@ -9,6 +9,7 @@ SynapseUserJoinedRooms() {
   }
 
   CheckLoginStatus || return 1
+  CheckServerSupport "${s_user_joined_rooms_api[minimum_version]}" || return 1
   DefineSynapseParams
 
   Log info "Getting joined rooms for user on ${config[homeserver]}"

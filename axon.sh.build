@@ -28,6 +28,8 @@ DefineSynapseParams
 DefineStatusCodes
 CheckStatusCode
 CheckLoginStatus
+CheckServerSupport
+ConfirmContinue
 GetUnixTimestampMs
 EncodeUrl
 Request

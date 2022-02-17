@@ -7,6 +7,9 @@ SynapseVersion() {
     echo "Server version: ${key_values[server_version]}"
     echo "Python version: ${key_values[python_version]}"
  }
+
+  CheckLoginStatus || return 1
+
   if [ ! -z "${config[homeserver]}" ]; then
     DefineSynapseEndpoints
     GetVersion

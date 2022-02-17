@@ -9,6 +9,8 @@ SynapseServerNotice() {
 
   CheckLoginStatus || return 1
   DefineSynapseParams
+  DefineSynapseEndpoints
+  CheckServerSupport "${s_server_notice_api[minimum_version]}" || return 1
 
   Log info "Sending server notice on homeserver ${config[homeserver]}"
 
@@ -24,6 +26,5 @@ SynapseServerNotice() {
   read -r -p "Message body:" input_msg_body
     s_server_notice_body_params[body]="$input_msg_body"
 
-  DefineSynapseEndpoints
   DoSendNotice
 }

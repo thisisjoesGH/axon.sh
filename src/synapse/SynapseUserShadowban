@@ -8,6 +8,7 @@ SynapseUserShadowban() {
   }
 
   CheckLoginStatus || return 1
+  CheckServerSupport "${s_user_shadowban_api[minimum_version]}" || return 1
   DefineSynapseParams
 
   Log info "Shadowbanning user on homeserver ${config[homeserver]}"
