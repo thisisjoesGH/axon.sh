@@ -14,7 +14,7 @@ Request() {
 
   local std_out
   local std_err
-  CatchStream std_out std_err curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent --show-error "$request_uri"
+  CatchStream std_out std_err curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent --show-error "$request_uri" --connect-timeout 60
 
   local return_code="$?"
   if [[ "$return_code" > 0 ]]; then
