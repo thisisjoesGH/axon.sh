@@ -1,4 +1,5 @@
 SynapseUserJoinedRooms() {
+  Log debug "Got args '$*'"
 
   DoGetJoinedRooms() {
     local request_body

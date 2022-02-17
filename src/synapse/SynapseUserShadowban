@@ -1,4 +1,5 @@
 SynapseUserShadowban() {
+  Log debug "Got args '$*'"
 
   DoUserShadowban() {
     local request_body

@@ -5,11 +5,11 @@ UserCommandHandler() {
   Log debug "Have subcommands '${subcommands[*]}'"
   Log debug "Testing '${subcommands[0]}'"
   case "${subcommands[0]}" in
-    rooms      ) SynapseUserJoinedRooms;;
-    create     ) SynapseUserCreate;;
-    password   ) SynapseUserResetPassword;;
-    deactivate ) SynapseUserDeactivate;;
-    shadowban  ) SynapseUserShadowban;;
+    rooms      ) SynapseUserJoinedRooms "${subcommands[@]:1}";;
+    create     ) SynapseUserCreate "${subcommands[@]:1}";;
+    password   ) SynapseUserResetPassword "${subcommands[@]:1}";;
+    deactivate ) SynapseUserDeactivate "${subcommands[@]:1}";;
+    shadowban  ) SynapseUserShadowban "${subcommands[@]:1}";;
     ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
     *          ) Log error "Unrecognized subcommand '$1'. Type 'help user' for a list of subcommands.";;
   esac

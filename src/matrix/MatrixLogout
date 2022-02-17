@@ -1,4 +1,5 @@
 MatrixLogout() {
+  Log debug "Got args '$*'"
 
   DoLogout() {
     Log debug "Assembled request with method '${m_logout_api[method]}', body '$request_body', to be sent to '${m_logout_api[path]}'"

@@ -1,4 +1,5 @@
 SynapsePurgeHistory() {
+  Log debug "Got args '$*'"
 
   DoPurgeHistory() {
     local request_body

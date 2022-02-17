@@ -1,4 +1,5 @@
 MatrixLogin() {
+  Log debug "Got args '$*'"
 
   DoLogin() {
     local request_body="$(ReturnRequestBody m_login)"

@@ -1,4 +1,5 @@
 SynapseServerNotice() {
+  Log debug "Got args '$*'"
 
   DoSendNotice() {
     local request_body

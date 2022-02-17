@@ -1,4 +1,5 @@
 SynapseUserCreate() {
+  Log debug "Got args '$*'"
 
   DoUserCreate() {
     local request_body

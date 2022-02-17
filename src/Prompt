@@ -4,9 +4,9 @@ Prompt() {
     local prompt="$global_prompt"
     read -r -p "$prompt" -a prompt_input
     case "${prompt_input[0]}" in
-      login      ) MatrixLogin;;
-      logout     ) MatrixLogout;;
-      whoami     ) MatrixWhoAmI;;
+      login      ) MatrixLogin "${prompt_input[@]:1}";;
+      logout     ) MatrixLogout "${prompt_input[@]:1}";;
+      whoami     ) MatrixWhoAmI "${prompt_input[@]:1}";;
       server     ) ServerCommandHandler "${prompt_input[@]:1}";;
       room       ) RoomCommandHandler "${prompt_input[@]:1}";;
       user       ) UserCommandHandler "${prompt_input[@]:1}";;

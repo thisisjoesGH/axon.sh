@@ -1,4 +1,5 @@
 SynapseVersion() {
+  Log debug "Got args '$*'"
 
   GetVersion() {
 #    ReturnMatrixBody m_login

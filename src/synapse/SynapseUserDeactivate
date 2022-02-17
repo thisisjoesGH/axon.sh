@@ -1,4 +1,5 @@
 SynapseUserDeactivate() {
+  Log debug "Got args '$*'"
 
   DoUserDeactivate() {
     local request_body

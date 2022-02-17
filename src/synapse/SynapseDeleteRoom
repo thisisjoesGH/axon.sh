@@ -1,4 +1,5 @@
 SynapseDeleteRoom() {
+  Log debug "Got args '$*'"
 
   DoDeleteRoom() {
     local request_body

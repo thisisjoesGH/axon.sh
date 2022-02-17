@@ -1,7 +1,12 @@
 ServerCommandHandler() {
-  case "$1" in
-    version ) SynapseVersion;;
-    notice  ) SynapseServerNotice;;
+  Log debug "Got args '$*'"
+  local subcommands
+  read -r -a subcommands <<< "$*"
+  Log debug "Have subcommands '${subcommands[*]}'"
+  Log debug "Testing '${subcommands[0]}'"
+  case "${subcommands[0]}" in
+    version ) SynapseVersion "${subcommands[@]:1}";;
+    notice  ) SynapseServerNotice "${subcommands[@]:1}";;
     address ) if [ -z "${config[homeserver]}" ]; then Log error "No homeserver configured!"; else echo "${config[homeserver]}"; fi;;
     ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands.";;
     *       ) Log error "Unrecognized subcommand '$1'. Type 'help server' for a list of subcommands.";;
