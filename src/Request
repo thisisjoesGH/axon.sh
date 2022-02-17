@@ -14,7 +14,7 @@ Request() {
 
   local std_out
   local std_err
-  CatchStream std_out std_err curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent --fail-with-body --show-error "$request_uri"
+  CatchStream std_out std_err curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent --show-error "$request_uri"
 
   local return_code="$?"
   oIFS="$IFS"
@@ -33,7 +33,9 @@ Request() {
     ProcessResponse "$request_body" "$request_keys"
   else
     Log error "Request failed while using method '$request_method' in request to '$request_uri'."
-    Log debug "Got code '$return_code', message '$request_error'."
     Log debug "Got body '$request_body'".
+    ProcessResponse "$request_body" "errcode error"
+    Log error "Server returned error message '${key_values[errcode]}: ${key_values[error]}'"
+    return 1
   fi
 }
