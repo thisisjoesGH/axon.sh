@@ -2,6 +2,7 @@ CheckDependencies() {
   declare dependencies
   dependencies=(
     curl
+    date
     shuf
     jq
   )
