@@ -1,0 +1,23 @@
+ConvertUnixTimestampMs() {
+  local -n ref
+  ref="$1"
+
+  (( "$ref" >= 1000 )) ||
+    {
+      Log error "Timestamp value too low, got '$ref', minimum 1000"
+      return 1
+    }
+
+  ref="${ref::-3}"
+
+  local stdout
+  local stderr
+
+  CatchStream stdout stderr date -d "@$ref" +'%c' ||
+    {
+      Log error "Encountered error while converting Unix timestamp: '$stderr'"
+      return 1
+    }
+
+  ref="$stdout"
+}
