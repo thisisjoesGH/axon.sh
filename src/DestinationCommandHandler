@@ -1,0 +1,13 @@
+DestinationCommandHandler() {
+  Log debug "Got args '$*'"
+  local subcommands
+  read -r -a subcommands <<< "$*"
+  Log debug "Have subcommands '${subcommands[*]}'"
+  Log debug "Testing '${subcommands[0]}'"
+  case "${subcommands[0]}" in
+    details ) SynapseDestinationDetails "${subcommands[@]:1}";;
+    reset   ) SynapseDestinationReset "${subcommands[@]:1}";;
+    ''      ) Log error "Subcommand required. Type 'help destination' for a list of subcommands.";;
+    *       ) Log error "Unrecognized subcommand '$1'. Type 'help destination' for a list of subcommands.";;
+  esac
+}
