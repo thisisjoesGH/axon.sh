@@ -20,5 +20,6 @@ SynapseDestinationReset() {
     s_destination_reset_url_params[destination]="$destination"
     Log debug "URL 'destination' param set to '${s_destination_reset_url_params[destination]}'"
 
+  DefineSynapseEndpoints
   DoDestinationReset
 }

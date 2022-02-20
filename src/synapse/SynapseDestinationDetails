@@ -31,5 +31,6 @@ SynapseDestinationDetails() {
     s_destination_details_url_params[destination]="$destination"
     Log debug "URL 'destination' param set to '${s_destination_details_url_params[destination]}'"
 
+  DefineSynapseEndpoints
   DoGetDestinationDetails
 }
