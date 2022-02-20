@@ -32,6 +32,7 @@ CheckServerSupport
 ConfirmContinue
 GetUnixTimestampMs
 ConvertUnixTimestampMs
+ConvertIntervalMs
 EncodeUrl
 Request
 ProcessResponse
