@@ -1,5 +1,5 @@
 projectName=axon.sh
 projectDescription="A Matrix Synapse administration tool written in bash"
-projectVersion=0.9.4
+projectVersion=0.10.0
 projectAuthor=Joe
 projectLicense=GPLv3
