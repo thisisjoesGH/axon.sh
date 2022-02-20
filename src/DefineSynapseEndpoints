@@ -33,6 +33,7 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/federation/destinations/${s_destination_reset_url_params[destination]}/reset_connection"
     [url_params]="s_destination_reset_url_params"
     [body_params]=""
+    [minimum_version]="1.52.0rc1"
   )
 
   s_server_notice_api=(

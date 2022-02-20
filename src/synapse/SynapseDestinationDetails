@@ -19,6 +19,7 @@ SynapseDestinationDetails() {
   }
 
   CheckLoginStatus || return 1
+  DefineSynapseEndpoints
   CheckServerSupport "${s_destination_details_api[minimum_version]}" || return 1
   DefineSynapseParams
 
@@ -30,6 +31,5 @@ SynapseDestinationDetails() {
     s_destination_details_url_params[destination]="$destination"
     Log debug "URL 'destination' param set to '${s_destination_details_url_params[destination]}'"
 
-  DefineSynapseEndpoints
   DoGetDestinationDetails
 }

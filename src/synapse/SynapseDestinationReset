@@ -1,0 +1,24 @@
+SynapseDestinationReset() {
+  Log debug "Got args '$*'"
+
+  DoDestinationReset() {
+    Log debug "Assembled request with method '${s_destination_reset_api[method]}', body '$request_body', to be sent to '${s_destination_reset_api[path]}'"
+    Request "${s_destination_reset_api[method]}" "$request_body" "${s_destination_reset_api[path]}" "" || return 1
+    echo -e "\nDestination timeout reset"
+  }
+
+  CheckLoginStatus || return 1
+  DefineSynapseEndpoints
+  CheckServerSupport "${s_destination_reset_api[minimum_version]}" || return 1
+  DefineSynapseParams
+
+  Log info "Getting destination reset from ${config[homeserver]}"
+
+  read -r -p "Destination:" input_destination
+    local destination="$input_destination"
+    Log debug "Destination is '$destination'"
+    s_destination_reset_url_params[destination]="$destination"
+    Log debug "URL 'destination' param set to '${s_destination_reset_url_params[destination]}'"
+
+  DoDestinationReset
+}

@@ -14,6 +14,7 @@ Help() {
     destination ) echo 'Usage: destination <subcommand>'
                   echo '  Subcommands:'
                   echo '    details    Prints federation details about the given destination. Destination is a homeserver name.'
+                  echo '    reset      Resets the timeout for the given federation destination. Destination is a homeserver name.'
                 ;;
     room        ) echo 'Usage: room <subcommand>'
                   echo '  Subcommands:'
