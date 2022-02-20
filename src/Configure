@@ -6,7 +6,7 @@ Configure() {
     [log_path]="$HOME/.axon.sh"
     [log_file]="axon.sh.log"
     [log_level]="INFO"
-    [verbosity]="ERROR"
+    [verbosity]="WARN"
     [homeserver]=""
     [scheme]="https"
     [port]="443"
