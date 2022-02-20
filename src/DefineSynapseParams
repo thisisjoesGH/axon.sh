@@ -1,5 +1,7 @@
 DefineSynapseParams() {
   declare -Ag s_server_notice_body_params
+  declare -Ag s_destination_details_url_params
+  declare -Ag s_destination_reset_url_params
   declare -Ag s_event_reports_url_params
   declare -Ag s_purge_history_url_params
   declare -Ag s_purge_history_body_params
@@ -20,6 +22,14 @@ DefineSynapseParams() {
     [user_id]=""
     [msg_type]="m.room.message"
     [body]=""
+  )
+
+  s_destination_details_url_params=(
+    [destination]=""
+  )
+
+  s_destination_reset_url_params=(
+    [destination]=""
   )
 
   s_event_reports_url_params=(

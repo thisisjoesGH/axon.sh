@@ -5,37 +5,42 @@ Help() {
     whoami ) echo 'Prints the MXID of the currently logged in account';;
     help   ) echo '😭😭😭';;
     exit   ) echo 'Exits axon.sh.';;
-    server ) echo 'Usage: server <subcommand>'
-             echo '  Subcommands:'
-             echo '    version    Prints version information returned by the locally configured homeserver.'
-             echo '    address    Prints the address of the locally configured homeserver.'
-             echo '    notice     Sends a server notice to a user. Requires proper homeserver configuration.'
-           ;;
-    room   ) echo 'Usage: room <subcommand>'
-             echo '  Subcommands:'
-             echo '    purge     Purges events from a room up to the given date or timestamp. Optionally includes local events.'
-             echo '    delete    Forces all local users to leave a room. Optionally deletes all events and blocks future joins.'
-           ;;
-    user   ) echo 'Usage: user <subcommand>'
-             echo '  Subcommands:'
-             echo '    create        Creates a new user.'
-             echo '    password      Resets a user'\''s password. Optionally logs the user out of all devices.'
-             echo '    deactivate    Deactivates a user. Optionally erases the user'\''s profile.'
-             echo '    shadowban     Shadowbans a user.'
-             echo '    rooms         Shows all rooms a user is currently a member of.'
-           ;;
-    ''     ) echo 'Usage: <command> [subcommand]'
-             echo '  Commands:'
-             echo '    login     Logs in to an account on a homeserver.'
-             echo '    logout    Logs out of an account on a homeserver.'
-             echo '    whoami    Prints the MXID of the currently logged in account.'
-             echo '    server    Performs homeserver related actions. Takes a subcommand as an option.'
-             echo '    room      Performs room related actions. Takes a subcommand as an option.'
-             echo '    user      Performs user account related actions. Takes a subcommand as an option.'
-             echo '    help      Prints usage information. Takes another command as an option.'
-             echo '    exit      Exits axon.sh.'
-           ;;
-    *      ) Log error "Unknown subcommand '$@'. Type 'help' with no options for a list of commands."
-           ;;
+    server      ) echo 'Usage: server <subcommand>'
+                  echo '  Subcommands:'
+                  echo '    version    Prints version information returned by the locally configured homeserver.'
+                  echo '    address    Prints the address of the locally configured homeserver.'
+                  echo '    notice     Sends a server notice to a user. Requires proper homeserver configuration.'
+                ;;
+    destination ) echo 'Usage: destination <subcommand>'
+                  echo '  Subcommands:'
+                  echo '    details    Prints federation details about the given destination. Destination is a homeserver name.'
+                ;;
+    room        ) echo 'Usage: room <subcommand>'
+                  echo '  Subcommands:'
+                  echo '    purge     Purges events from a room up to the given date or timestamp. Optionally includes local events.'
+                  echo '    delete    Forces all local users to leave a room. Optionally deletes all events and blocks future joins.'
+                ;;
+    user        ) echo 'Usage: user <subcommand>'
+                  echo '  Subcommands:'
+                  echo '    create        Creates a new user.'
+                  echo '    password      Resets a user'\''s password. Optionally logs the user out of all devices.'
+                  echo '    deactivate    Deactivates a user. Optionally erases the user'\''s profile.'
+                  echo '    shadowban     Shadowbans a user.'
+                  echo '    rooms         Shows all rooms a user is currently a member of.'
+                ;;
+    ''          ) echo 'Usage: <command> [subcommand]'
+                  echo '  Commands:'
+                  echo '    login          Logs in to an account on a homeserver.'
+                  echo '    logout         Logs out of an account on a homeserver.'
+                  echo '    whoami         Prints the MXID of the currently logged in account.'
+                  echo '    server         Performs homeserver related actions. Takes a subcommand as an option.'
+                  echo '    destination    Performs federation destination related actions. Takes a subcommand as an option.'
+                  echo '    room           Performs room related actions. Takes a subcommand as an option.'
+                  echo '    user           Performs user account related actions. Takes a subcommand as an option.'
+                  echo '    help           Prints usage information. Takes another command as an option.'
+                  echo '    exit           Exits axon.sh.'
+                ;;
+    *           ) Log error "Unknown subcommand '$@'. Type 'help' with no options for a list of commands."
+                ;;
   esac
 }

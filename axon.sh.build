@@ -16,6 +16,7 @@ Prompt
 UserCommandHandler
 RoomCommandHandler
 ServerCommandHandler
+DestinationCommandHandler
 Motd
 CheckDependencies
 CatchStream

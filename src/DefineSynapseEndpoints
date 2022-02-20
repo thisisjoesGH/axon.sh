@@ -1,5 +1,7 @@
 DefineSynapseEndpoints() {
   declare -Ag s_version_api
+  declare -Ag s_destination_details_api
+  declare -Ag s_destination_reset_api
   declare -Ag s_server_notice_api
   declare -Ag s_event_reports_api
   declare -Ag s_purge_history_api
@@ -16,6 +18,20 @@ DefineSynapseEndpoints() {
     [method]="GET"
     [path]="/_synapse/admin/v1/server_version"
     [url_params]=""
+    [body_params]=""
+  )
+
+  s_destination_details_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/federation/destinations/${s_destination_details_url_params[destination]}"
+    [url_params]="s_destination_details_url_params"
+    [body_params]=""
+  )
+
+  s_destination_reset_api=(
+    [method]="POST"
+    [path]="/_synapse/admin/v1/federation/destinations/${s_destination_reset_url_params[destination]}/reset_connection"
+    [url_params]="s_destination_reset_url_params"
     [body_params]=""
   )
 
