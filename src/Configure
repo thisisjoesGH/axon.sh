@@ -3,6 +3,7 @@ Configure() {
   config=(
     [config_path]="$HOME/.axon.sh"
     [config_file]="axon.sh.conf"
+    [history_file]="axon.sh.hist"
     [log_path]="$HOME/.axon.sh"
     [log_file]="axon.sh.log"
     [log_level]="INFO"
