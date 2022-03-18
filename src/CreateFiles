@@ -1,7 +1,41 @@
 CreateFiles() {
-  if [ ! -d "${config[config_path]}" ]; then
-    mkdir "${config[config_path]}"
-    touch "${config[config_path]}"/"${config[config_file]}"
-    touch "${config[config_path]}"/"${config[log_file]}"
-  fi
+  local directory_paths
+  local file_paths
+  directory_paths=(
+    "${config[log_path]}"
+    "${config[config_path]}"
+  )
+  file_paths=(
+    "${config[log_path]}/${config[log_file]}"
+    "${config[config_path]}/${config[config_file]}"
+    "${config[config_path]}/${config[history_file]}"
+  )
+  local path
+  for path in "${directory_paths[@]}"; do
+    Log info "Checking for directory at '$path'..."
+    if [ ! -d "$path" ]; then
+      Log info "Creating directory at '$path'..."
+      mkdir "$path" ||
+        {
+          Log error "Failed to create directory at '$path'"
+          exit 1
+        }
+    else
+      Log info "Found '$path'"
+    fi
+  done
+  unset path
+  for path in "${file_paths[@]}"; do
+    Log info "Checking for file at '$path'..."
+    if [ ! -f "$path" ]; then
+      Log info "Creating file at '$path'..."
+      touch "$path" ||
+        {
+          Log error "Failed to create file at '$path'"
+          exit 1
+        }
+    else
+      Log info "Found '$path'"
+    fi
+  done
 }
