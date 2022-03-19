@@ -13,7 +13,7 @@ ReadConfiguration() {
     Log config "Verbosity set to '${config[verbosity]}'"
   else
     AXON_FIRST_RUN="true"
-    CreateFiles
     Log warn "First run or missing configuration, using defaults."
   fi
+  CreateFiles
 }
