@@ -1,8 +1,7 @@
 Main() {
   Configure
-  CreateFiles
   ReadConfiguration
-#  WriteConfiguration
+  WriteConfiguration
   DefineStatusCodes
   CheckDependencies
   Motd

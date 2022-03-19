@@ -1,7 +1,6 @@
 ReadConfiguration() {
-  Log debug "Reading configuration from file..."
   if [ -f "${config[config_path]}/${config[config_file]}" ]; then
-    Log debug "Found configuration file."
+    Log config "Found configuration file."
     while read -r line
     do
       if echo "$line" | grep -F = &>/dev/null
@@ -10,8 +9,11 @@ ReadConfiguration() {
         config[$varname]=$(echo "$line" | cut -d '=' -f 2-)
       fi
     done < "${config[config_path]}/${config[config_file]}"
-   Log config "Log level set to ${config[log_level]}"
+    Log config "Log level set to '${config[log_level]}'"
+    Log config "Verbosity set to '${config[verbosity]}'"
   else
-    Log warn "No configuration file found. Using defaults."
+    AXON_FIRST_RUN="true"
+    CreateFiles
+    Log warn "First run or missing configuration, using defaults."
   fi
 }
