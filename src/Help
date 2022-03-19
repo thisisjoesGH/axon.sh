@@ -29,6 +29,12 @@ Help() {
                   echo '    shadowban     Shadowbans a user.'
                   echo '    rooms         Shows all rooms a user is currently a member of.'
                 ;;
+    config      ) echo 'Usage: config [key] [value]'
+                  echo '  Prints all configuration keys and their values when no arguments are given.'
+                  echo '  Optional arguments:'
+                  echo '    [key]    The name of a configuration option. If no value argument is given, prints the current value.'
+                  echo '    [value]  The new value for the given configuration option.'
+                ;;
     ''          ) echo 'Usage: <command> [subcommand]'
                   echo '  Commands:'
                   echo '    login          Logs in to an account on a homeserver.'
@@ -37,7 +43,8 @@ Help() {
                   echo '    server         Performs homeserver related actions. Takes a subcommand as an option.'
                   echo '    destination    Performs federation destination related actions. Takes a subcommand as an option.'
                   echo '    room           Performs room related actions. Takes a subcommand as an option.'
-                  echo '    user           Performs user account related actions. Takes a subcommand as an option.'
+                  echo '    user           Performs user account related actions.'
+                  echo '    config         Prints or modifies the axon.sh configuration.'
                   echo '    help           Prints usage information. Takes another command as an option.'
                   echo '    exit           Exits axon.sh.'
                 ;;

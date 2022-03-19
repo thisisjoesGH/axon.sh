@@ -13,6 +13,7 @@ matrix/
 synapse/
 Help
 Prompt
+AxonConfig
 UserCommandHandler
 RoomCommandHandler
 ServerCommandHandler
