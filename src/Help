@@ -1,10 +1,11 @@
 Help() {
   case "$@" in
-    login  ) echo 'Logs in to an account on a homeserver. Does not accept an MXID.';;
-    logout ) echo 'Logs out of the currently logged in account';;
-    whoami ) echo 'Prints the MXID of the currently logged in account';;
-    help   ) echo '😭😭😭';;
-    exit   ) echo 'Exits axon.sh.';;
+    login   ) echo 'Logs in to an account on a homeserver. Does not accept an MXID.';;
+    logout  ) echo 'Logs out of the currently logged in account';;
+    whoami  ) echo 'Prints the MXID of the currently logged in account';;
+    version ) echo 'Prints the axon.sh version.';;
+    help    ) echo '😭😭😭';;
+    exit    ) echo 'Exits axon.sh.';;
     server      ) echo 'Usage: server <subcommand>'
                   echo '  Subcommands:'
                   echo '    version    Prints version information returned by the locally configured homeserver.'
@@ -45,6 +46,7 @@ Help() {
                   echo '    room           Performs room related actions. Takes a subcommand as an option.'
                   echo '    user           Performs user account related actions.'
                   echo '    config         Prints or modifies the axon.sh configuration.'
+                  echo '    version        Prints the axon.sh version.'
                   echo '    help           Prints usage information. Takes another command as an option.'
                   echo '    exit           Exits axon.sh.'
                 ;;
