@@ -1,11 +1,13 @@
 Prompt() {
   global_prompt="[axon]>"
+  HISTCONTROL=ignoreboth
   HISTFILE=${config[config_path]}/${config[history_file]}
+  history -n || Log warn "Failed to load history from '$HISTFILE'"
   while true; do
     local prompt="$global_prompt"
     read -e -r -p "$prompt" -d $'\n' -a prompt_input
-    history -s ${prompt_input[@]} || Log warn "Failed to add history entry to '$HISTFILE'"
-    history -n || Log warn "Failed to load history from '$HISTFILE'"
+    history -s "${prompt_input[@]}" || Log warn "Failed to append entry to history"
+    history -a || Log warn "Failed to append history to '$HISTFILE'"
     case "${prompt_input[0]}" in
       login       ) MatrixLogin "${prompt_input[@]:1}";;
       logout      ) MatrixLogout "${prompt_input[@]:1}";;
