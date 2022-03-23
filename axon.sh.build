@@ -1,6 +1,7 @@
 # Add build files to this file. One per line.
 Configure
 CreateFiles
+CheckPermissions
 ReadConfiguration
 WriteConfiguration
 GetOpts

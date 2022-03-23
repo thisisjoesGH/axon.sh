@@ -1,0 +1,35 @@
+CheckPermissions() {
+  local path="$1"
+  local permissions="$2"
+  local pattern='[0-7]{3}'
+
+  Log debug "Got path '$path', permissions '$permissions'."
+
+  if [[ ! "$permissions" =~ $pattern ]]; then
+    Log error "Invalid permissions passed. Must be octal."
+    return 1
+  fi
+
+  local std_out
+  local std_err
+  CatchStream std_out std_err stat -c '%a' "$path" ||
+  {
+    Log warn "Failed to check permissions on '$path'. stat returned error '$std_err'."
+    return 1
+  }
+
+  if [[ "$std_out" = "$permissions" ]]; then
+    Log debug "Permissions on '$path' match ('$std_out','$permissions')."
+  else
+    Log warn "Permissions on '$path' differ ('$std_out', $permissions'). Attempting to correct this..."
+    std_out=""
+    std_err=""
+    CatchStream std_out std_err chmod "$permissions" "$path" ||
+    {
+      Log error "Failed to set permissions '$permissions' on '$path'. chmod returned error '$std_err'."
+      return 1
+    }
+  fi
+  Log info "Set permissions on '$path' to '$permissions'"
+  return 0
+}
