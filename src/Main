@@ -1,8 +1,8 @@
 Main() {
   Configure
   ReadConfiguration
-  WriteConfiguration
   GenDeviceId
+  WriteConfiguration
   DefineStatusCodes
   CheckDependencies
   Motd
