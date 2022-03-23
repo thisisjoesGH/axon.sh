@@ -29,7 +29,7 @@ CheckPermissions() {
       Log error "Failed to set permissions '$permissions' on '$path'. chmod returned error '$std_err'."
       return 1
     }
+    Log info "Set permissions on '$path' to '$permissions'"
   fi
-  Log info "Set permissions on '$path' to '$permissions'"
   return 0
 }
