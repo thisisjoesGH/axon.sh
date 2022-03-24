@@ -1,20 +1,33 @@
 Configure() {
-  declare -Ag config
-  config=(
-    [config_path]="$HOME/.axon.sh"
-    [config_file]="axon.sh.conf"
-    [history_file]="axon.sh.hist"
-    [log_path]="$HOME/.axon.sh"
-    [log_file]="axon.sh.log"
-    [log_level]="INFO"
-    [verbosity]="WARN"
-    [homeserver]=""
-    [scheme]="https"
-    [port]="443"
-    [admin_user]=""
-    [admin_token]=""
-    [save_token]="true"
-    [device_id]=""
-    [save_id]="true"
-  )
+  Log debug "Got args '$*'"
+
+  local key="$1"
+  local value="$2"
+
+  case "$#" in
+    0 ) for config_key in "${!config[@]}"; do
+          printf "%-20s %s\n" "$config_key" "${config[$config_key]}"
+        done
+      ;;
+    1 ) if [[ -v config["$key"] ]]; then
+          echo "${config[$key]}"
+        else
+          Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
+          return 1
+        fi
+      ;;
+    2 ) if [[ -v config["$key"] ]]; then
+           config["$key"]="$value"
+           WriteConfiguration
+           ReadConfiguration
+           Log info "Set '$key' to '${config[$key]}'"
+        else
+          Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
+          return 1
+        fi
+      ;;
+    * ) Log error "Too many arguments! Type 'help config' for usage info."
+        return 1
+      ;;
+  esac
 }

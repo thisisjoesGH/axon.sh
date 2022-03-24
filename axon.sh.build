@@ -1,7 +1,7 @@
 # Add build files to this file. One per line.
 CheckDependencies
+DefineConfiguration
 Configure
-AxonConfig
 ReadConfiguration
 WriteConfiguration
 CreateFiles
