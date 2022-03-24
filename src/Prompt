@@ -5,7 +5,7 @@ Prompt() {
   history -n || Log warn "Failed to load history from '$HISTFILE'"
   while true; do
     local prompt="$global_prompt"
-    read -e -r -p "$prompt" -d $'\n' -a prompt_input
+    read -e -r -p "$prompt" -a prompt_input
     history -s "${prompt_input[@]}" || Log warn "Failed to append entry to history"
     history -a || Log warn "Failed to append history to '$HISTFILE'"
     case "${prompt_input[0]}" in
