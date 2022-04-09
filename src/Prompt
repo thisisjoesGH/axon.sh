@@ -7,7 +7,7 @@ Prompt() {
     local prompt="$global_prompt"
     read -e -r -p "$prompt" -a prompt_input
     history -s "${prompt_input[@]}" || Log warn "Failed to append entry to history"
-    history -a || Log warn "Failed to append history to '$HISTFILE'"
+    history -w || Log warn "Failed to write history to '$HISTFILE'"
     case "${prompt_input[0]}" in
       login       ) MatrixLogin "${prompt_input[@]:1}";;
       logout      ) MatrixLogout "${prompt_input[@]:1}";;
