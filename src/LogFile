@@ -12,7 +12,7 @@ LogFile() {
 #  echo "Log level is ${config[log_level]^^}"
 
   DoLogFile() {
-    (umask 026; echo "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[3]}: $file_log_message" 2>/dev/null >> "${config[log_path]}/${config[log_file]}") ||
+    (umask 066; echo "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[3]}: $file_log_message" 2>/dev/null >> "${config[log_path]}/${config[log_file]}") ||
     {
       return 1
     }

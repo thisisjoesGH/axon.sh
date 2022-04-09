@@ -29,14 +29,14 @@ CreateFiles() {
     Log info "Checking for file at '$path'..."
     if [ ! -f "$path" ]; then
       Log info "Creating file at '$path'..."
-      (umask 026; touch "$path") ||
+      (umask 066; touch "$path") ||
         {
           Log error "Failed to create file at '$path'"
           exit 1
         }
     else
       Log info "Found '$path'"
-      CheckPermissions "$path" "640"
+      CheckPermissions "$path" "600"
     fi
   done
 }
