@@ -1,6 +1,11 @@
 SynapseDeleteRoom() {
   Log debug "Got args '$*'"
 
+  if [[ "$1" = "status" ]]; then
+    SynapseDeleteRoomStatus || return 1
+    return 0
+  fi
+
   DoDeleteRoom() {
     local request_body
     request_body="$(ReturnRequestBody s_delete_room)"

@@ -1,0 +1,31 @@
+SynapseDeleteRoomStatus() {
+  Log debug "Got args '$*'"
+
+  DoGetDeleteRoomStatus() {
+    local request_body
+    Log debug "Assembled request with method '${s_delete_room_status_api[method]}', body '$request_body', to be sent to '${s_delete_room_status_api[path]}'"
+    local keys="status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error"
+    Request "${s_delete_room_status_api[method]}" "$request_body" "${s_delete_room_status_api[path]}" "$keys" || return 1
+    echo -e "\nDeletion job status: ${key_values[status]}"
+    if [[ "${key_values[status]}" = "failed" ]]; then
+      echo -e "Error: ${key_values[error]}"
+    fi
+    echo -e "Kicked users: ${key_values[shutdown_room.kicked_users]}"
+    echo -e "Failed to kick users: ${key_values[shutdown_room.failed_to_kick_users]}"
+    echo -e "Local aliases found: ${key_values[shutdown_room.local_aliases]}"
+    echo -e "New room ID: ${key_values[shutdown_room.new_room_id]}\n"
+  }
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_delete_room_status_api[minimum_version]}" || return 1
+  DefineSynapseParams
+
+  Log info "Getting room deletion job status from '${config[homeserver]}'"
+
+  read -r -p "Job ID:" input_job_id
+    s_delete_room_status_url_params[job_id]="$input_job_id"
+    Log debug "URL 'job_id' param set to '${s_delete_room_status_url_params[job_id]}'"
+
+  DefineSynapseEndpoints
+  DoGetDeleteRoomStatus
+}

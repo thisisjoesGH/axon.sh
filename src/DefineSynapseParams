@@ -5,8 +5,10 @@ DefineSynapseParams() {
   declare -Ag s_event_reports_url_params
   declare -Ag s_purge_history_url_params
   declare -Ag s_purge_history_body_params
+  declare -Ag s_purge_history_status_url_params
   declare -Ag s_delete_room_url_params
   declare -Ag s_delete_room_body_params
+  declare -Ag s_delete_room_status_url_params
   declare -Ag s_user_query_url_params
   declare -Ag s_user_joined_rooms_url_params
   declare -Ag s_user_modify_body_params
@@ -49,6 +51,10 @@ DefineSynapseParams() {
     [purge_up_to_ts]=""
   )
 
+  s_purge_history_status_url_params=(
+    [job_id]=""
+  )
+
   s_delete_room_url_params=(
     [room_id]=""
   )
@@ -56,6 +62,10 @@ DefineSynapseParams() {
   s_delete_room_body_params=(
     [block]="false"
     [purge]="false"
+  )
+
+  s_delete_room_status_url_params=(
+    [job_id]=""
   )
 
   s_user_query_url_params=(

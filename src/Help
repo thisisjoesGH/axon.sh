@@ -19,8 +19,12 @@ Help() {
                 ;;
     room        ) echo 'Usage: room <subcommand>'
                   echo '  Subcommands:'
-                  echo '    purge     Purges events from a room up to the given date or timestamp. Optionally includes local events.'
-                  echo '    delete    Forces all local users to leave a room. Optionally deletes all events and blocks future joins.'
+                  echo '    purge [status]     Purges events from a room up to the given date or timestamp. Optionally includes local events.'
+                  echo '                       Optional arguments:'
+                  echo '                         [status]  Gets the status of the given purge job ID.'
+                  echo '    delete [status]    Forces all local users to leave a room. Optionally deletes all events and blocks future joins.'
+                  echo '                       Optional arguments:'
+                  echo '                         [status]  Gets the status of the given deletion job ID.'
                 ;;
     user        ) echo 'Usage: user <subcommand>'
                   echo '  Subcommands:'

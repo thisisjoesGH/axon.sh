@@ -1,6 +1,11 @@
 SynapsePurgeHistory() {
   Log debug "Got args '$*'"
 
+  if [[ "$1" = "status" ]]; then
+    SynapsePurgeHistoryStatus || return 1
+    return 0
+  fi
+
   DoPurgeHistory() {
     local request_body
     request_body="$(ReturnRequestBody s_purge_history)"
