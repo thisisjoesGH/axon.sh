@@ -3,7 +3,7 @@ SynapseUserDeactivate() {
 
   DoUserDeactivate() {
     local request_body
-    request_body="$(ReturnRequestBody s_user_deactivate)"
+    ReturnRequestBody s_user_deactivate request_body
     Log debug "Assembled request with method '${s_user_deactivate_api[method]}', body '$request_body', to be sent to '${s_user_deactivate_api[path]}'"
     Request "${s_user_deactivate_api[method]}" "$request_body" "${s_user_deactivate_api[path]}" "" || return 1
   }

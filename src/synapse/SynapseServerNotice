@@ -3,7 +3,7 @@ SynapseServerNotice() {
 
   DoSendNotice() {
     local request_body
-    request_body="$(ReturnRequestBody s_server_notice)"
+    ReturnRequestBody s_server_notice request_body
     Log debug "Assembled request with method '${s_server_notice_api[method]}', body '$request_body', to be sent to '${s_server_notice_api[path]}'"
     Request "${s_server_notice_api[method]}" "$request_body" "${s_server_notice_api[path]}" "" || return 1
   }

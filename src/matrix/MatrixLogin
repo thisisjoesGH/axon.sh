@@ -2,7 +2,8 @@ MatrixLogin() {
   Log debug "Got args '$*'"
 
   DoLogin() {
-    local request_body="$(ReturnRequestBody m_login)"
+    local request_body
+    ReturnRequestBody m_login request_body
     Log debug "Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
     Request "${m_login_api[method]}" "$request_body" "${m_login_api[path]}" "access_token" || return 1
     config[admin_token]="${key_values[access_token]}"
