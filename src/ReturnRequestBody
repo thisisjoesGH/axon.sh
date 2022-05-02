@@ -13,7 +13,7 @@ ReturnRequestBody() {
     s_server_notice       ) ref='{"user_id":"'"${params[user_id]}"'","content":{"msgtype":"'"${params[msg_type]}"'","body":"'"${params[body]}"'"}}';;
     s_purge_history       ) ref='{"delete_local_events":'"${params[delete_local_events]}"',"purge_up_to_ts":'"${params[purge_up_to_ts]}"'}';;
     s_delete_room         ) ref='{"block":'"${params[block]}"',"purge":'"${params[purge]}"'}';;
-    s_user_create         ) ref='{"password":"'"${params[password]}"'","displayname":"'"${params[displayname]}"'","admin":"'"${params[admin]}"'"}';;
+    s_user_create         ) ref='{"password":"'"${params[password]}"'","displayname":"'"${params[displayname]}"'","admin":'"${params[admin]}"'}';;
     s_user_reset_password ) ref='{"new_password":"'"${params[password]}"'","logout_devices":'"${params[logout]}"'}';;
     s_user_deactivate     ) ref='{"erase":'"${params[erase]}"'}';;
     *                     ) Log error "Requested unknown body '$body_to_define' for endpoint '$api' with params '$params'";;
