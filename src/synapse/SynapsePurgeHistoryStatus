@@ -1,10 +1,12 @@
 SynapsePurgeHistoryStatus() {
   Log debug "Got args '$*'"
 
+  local job_id="$1"
+
   DoGetPurgeHistoryStatus() {
     local request_body
     Log debug "Assembled request with method '${s_purge_history_status_api[method]}', body '$request_body', to be sent to '${s_purge_history_status_api[path]}'"
-    Request "${s_purge_history_status_api[method]}" "$request_body" "${s_purge_history_status_api[path]}" "status error" || return 1
+    Request "${s_purge_history_status_api[method]}" "${s_purge_history_status_api[path]}" "status error" "$request_body" || return 1
     echo -e "Purge job status: ${key_values[status]}"
     if [[ "${key_values[status]}" = "failed" ]]; then
       echo -e "Error: '${key_values[error]}'"
@@ -18,9 +20,12 @@ SynapsePurgeHistoryStatus() {
 
   Log info "Getting purge history job status from '${config[homeserver]}'"
 
-  read -r -p "Job ID:" input_job_id
-    s_purge_history_status_url_params[job_id]="$input_job_id"
-    Log debug "URL 'job_id' param set to '${s_purge_history_status_url_params[job_id]}'"
+  [[ ! -z "$job_id" ]] || {
+    read -r -p "Job ID:" input_job_id
+    job_id="$input_job_id"
+  }
+  s_purge_history_status_url_params[job_id]="$job_id"
+  Log debug "URL 'job_id' param set to '${s_purge_history_status_url_params[job_id]}'"
 
   DefineSynapseEndpoints
   DoGetPurgeHistoryStatus

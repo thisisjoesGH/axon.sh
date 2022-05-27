@@ -3,7 +3,7 @@ MatrixLogout() {
 
   DoLogout() {
     Log debug "Assembled request with method '${m_logout_api[method]}', body '$request_body', to be sent to '${m_logout_api[path]}'"
-    Request "${m_logout_api[method]}" "" "${m_logout_api[path]}" "" || return 1
+    Request "${m_logout_api[method]}" "${m_logout_api[path]}" || return 1
     config[admin_user]=""
     config[admin_token]=""
     config[device_id]=""

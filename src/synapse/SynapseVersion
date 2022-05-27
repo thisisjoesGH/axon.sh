@@ -4,7 +4,7 @@ SynapseVersion() {
   GetVersion() {
 #    ReturnMatrixBody m_login
 #    echo "${s_version_api[method]} ${config[homeserver]}${s_version_api[path]}"
-    Request "${s_version_api[method]}" "" "${s_version_api[path]}" "server_version python_version" || return 1
+    Request "${s_version_api[method]}" "${s_version_api[path]}" "server_version python_version" || return 1
     echo "Server version: ${key_values[server_version]}"
     echo "Python version: ${key_values[python_version]}"
  }

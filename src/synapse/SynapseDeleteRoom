@@ -2,7 +2,7 @@ SynapseDeleteRoom() {
   Log debug "Got args '$*'"
 
   if [[ "$1" = "status" ]]; then
-    SynapseDeleteRoomStatus || return 1
+    SynapseDeleteRoomStatus "$2" || return 1
     return 0
   fi
 
@@ -10,7 +10,7 @@ SynapseDeleteRoom() {
     local request_body
     ReturnRequestBody s_delete_room request_body
     Log debug "Assembled request with method '${s_delete_room_api[method]}', body '$request_body', to be sent to '${s_delete_room_api[path]}'"
-    Request "${s_delete_room_api[method]}" "$request_body" "${s_delete_room_api[path]}" "delete_id" || return 1
+    Request "${s_delete_room_api[method]}" "${s_delete_room_api[path]}" "delete_id" "$request_body" || return 1
     echo -e "Deletion Job ID: ${key_values[delete_id]}\n"
   }
 

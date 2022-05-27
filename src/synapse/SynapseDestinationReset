@@ -3,7 +3,7 @@ SynapseDestinationReset() {
 
   DoDestinationReset() {
     Log debug "Assembled request with method '${s_destination_reset_api[method]}', body '$request_body', to be sent to '${s_destination_reset_api[path]}'"
-    Request "${s_destination_reset_api[method]}" "$request_body" "${s_destination_reset_api[path]}" "" || return 1
+    Request "${s_destination_reset_api[method]}" "${s_destination_reset_api[path]}" ""  "$request_body" || return 1
     echo -e "\nDestination timeout reset"
   }
 

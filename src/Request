@@ -1,20 +1,65 @@
 Request() {
-  local request_method="$1"
-  local request_data="$2"
-  local request_endpoint="$3"
-  local request_keys="$4"
-  local request_header="Authorization: Bearer ${config[admin_token]}"
-  local request_domain="${config[homeserver]}"
-  local request_scheme="${config[scheme]}"
-  local request_port="${config[port]}"
+  local method="$1"
+  local endpoint="$2"
+  local keys="$3"
+  local data="$4"
+  local host="$5"
+  local authed="$6"
+  local redirect="$7"
+  local headers="$8"
+  local scheme="${config[scheme]}"
+  local port="${config[port]}"
 
-  local request_uri="$request_scheme://$request_domain:$request_port$request_endpoint"
+  local required_parameters=('method' 'endpoint')
+  for parameter in "${required_parameters[@]}"; do
+    [[ "${!parameter}" ]] || {
+      Log error "Missing required parameter '$parameter'"
+      return 1
+    }
+  done
 
-  Log info "Using method '$request_method' in request to '$request_uri'"
+  if [[ -z "$host" ]]; then
+    host="${config[homeserver]}"
+  fi
+
+  local uri="$scheme://$host:$port$endpoint"
+  Log info "Using method '$method' in request to '$uri'"
+
+  local header_arg=''
+  for header in "${headers[@]}"; do
+    if [[ ! -z "$header" ]]; then
+      Log debug "Got header '$header'"
+      header_arg+="--header '$header' "
+    fi
+  done
+
+  if [[ "$redirect" == 'true' ]]; then
+    Log info "Following redirects for this request"
+    local redirect_arg="--location"
+  else
+    Log debug "Not following redirects for this request"
+  fi
+
+  if [[ "$authed" == 'false' ]]; then
+    Log info "Not sending authorization header for this request"
+  else
+    Log debug "Sending authorization header for this request"
+    local auth_header="Authorization: Bearer ${config[admin_token]}"
+  fi
 
   local std_out
   local std_err
-  CatchStream std_out std_err curl --request "$request_method" --header "$request_header" --data "$request_data"  --write-out '|%{response_code}' --silent --show-error "$request_uri" --connect-timeout 60
+  CatchStream std_out std_err curl --request "$method" \
+                                   ${data:+--data "$data"} \
+                                   ${redirect_arg:+"$redirect_arg"} \
+                                   ${header_arg:+"$header_arg"} \
+                                   ${auth_header:+--header "$auth_header"} \
+                                   --user-agent "${projectName}/${projectVersion}" \
+                                   --write-out '<+>%{response_code}' \
+                                   --silent \
+                                   --show-error \
+                                   --connect-timeout 60 \
+                                   "$uri"
 
   local return_code="$?"
   if [[ "$return_code" > 0 ]]; then
@@ -22,24 +67,25 @@ Request() {
     return 1
   fi
 
-  oIFS="$IFS"
-  IFS="|"
-  local request_response
-  read -r -a request_response <<< "$std_out"
-  local request_error="$std_err"
-  IFS="$oIFS"
-  
-  local request_body="${request_response[0]}"
-  local status_code="${request_response[1]}"
+  std_out="${std_out//[[:cntrl:]]/}"
+  std_out="${std_out//[[:blank:]]/}"
+  std_out="${std_out//|/}"
+  std_out="${std_out/<+>/|}"
 
-#  for part in "$request_response"; do    
+  local IFS="|"
+  read -r -a response <<< "$std_out"
+  local body="${response[0]}"
+  local status_code="${response[1]}"
+  unset IFS
 
   if CheckStatusCode "$status_code"; then
-    ProcessResponse "$request_body" "$request_keys"
+    ValidateJSON "$body" || return 1
+    ProcessResponse "$body" "$keys"
   else
-    Log error "Request failed while using method '$request_method' in request to '$request_uri'."
-    Log debug "Got body '$request_body'".
-    ProcessResponse "$request_body" "errcode error"
+    Log error "Request failed while using method '$method' in request to '$uri'."
+    Log debug "Got body '$body'".
+    ValidateJSON "$body" || return 1
+    ProcessResponse "$body" "errcode error"
     Log error "Server returned error message '${key_values[errcode]}: ${key_values[error]}'"
     return 1
   fi

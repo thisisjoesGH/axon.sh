@@ -1,0 +1,18 @@
+ValidateJSON() {
+  local json="$1"
+
+  [[ "$json" ]] || {
+    Log error "No JSON passed."
+    return 1
+  }
+
+  local std_out
+  local std_err
+
+  CatchStream std_out std_err jq -e type <<<"$json" || {
+    Log error "Invalid JSON. jq returned message '$std_err'"
+    return 1
+  }
+
+  Log info "Got valid JSON, type '$std_out'"
+}

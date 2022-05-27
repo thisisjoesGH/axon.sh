@@ -1,12 +1,14 @@
 ProcessResponse() {
-  Log debug "Got args $@"
+  Log debug "Got args $*"
   local response_body="$1"
   local request_keys=($2)
 
+  unset key_values
   declare -Ag key_values
 
   for key in "${request_keys[@]}"; do
-    key_values+=(["$key"]="$(echo -n $response_body | jq -r .$key)")
-#    echo "${key_values[$key]}"
+    Log debug "Trying key '$key'"
+    key_values+=(["$key"]="$(jq -r -e .\"$key\" <<< $response_body)")
+    Log debug "Got value '${key_values[$key]}'"
   done
 }

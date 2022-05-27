@@ -5,7 +5,7 @@ MatrixLogin() {
     local request_body
     ReturnRequestBody m_login request_body
     Log debug "Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
-    Request "${m_login_api[method]}" "$request_body" "${m_login_api[path]}" "access_token" || return 1
+    Request "${m_login_api[method]}" "${m_login_api[path]}" "access_token" "$request_body" || return 1
     config[admin_token]="${key_values[access_token]}"
     WriteConfiguration
 #    curl --request "${m_login_api[method]}" --data "$(ReturnMatrixBody m_login)" --write-out ' %{response_code}' --silent "https://${config[homeserver]}${m_login_api[path]}"
