@@ -3,6 +3,7 @@ CheckDependencies
 DefineConfiguration
 Configure
 ReadConfiguration
+ReadEnvironment
 WriteConfiguration
 CreateFiles
 CheckPermissions

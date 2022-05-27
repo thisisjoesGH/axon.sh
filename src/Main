@@ -1,6 +1,7 @@
 Main() {
   DefineConfiguration
   ReadConfiguration
+  ReadEnvironment
   GenDeviceId
   WriteConfiguration
   DefineStatusCodes

@@ -1,0 +1,16 @@
+ReadEnvironment() {
+  if [[ -n "$AXON_CONFIG" ]]; then
+    Log config "Found configuration in environment."
+    local IFS=:
+    read -r -a env_config <<< "$AXON_CONFIG"
+    unset IFS
+    for pair in "${env_config[@]}"
+    do
+      if echo "$pair" | grep -F = &>/dev/null
+      then
+        varname=$(echo "$pair" | cut -d '=' -f 1)
+        config[$varname]=$(echo "$pair" | cut -d '=' -f 2-)
+      fi
+    done
+  fi
+}
