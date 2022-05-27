@@ -2,6 +2,8 @@ Main() {
   DefineConfiguration
   ReadConfiguration
   ReadEnvironment
+  Log config "Log level set to '${config[log_level]}'"
+  Log config "Verbosity set to '${config[verbosity]}'"
   GenDeviceId
   WriteConfiguration
   DefineStatusCodes
