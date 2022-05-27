@@ -68,7 +68,6 @@ Request() {
   fi
 
   std_out="${std_out//[[:cntrl:]]/}"
-  std_out="${std_out//[[:blank:]]/}"
   std_out="${std_out//|/}"
   std_out="${std_out/<+>/|}"
 
