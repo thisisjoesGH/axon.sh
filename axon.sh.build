@@ -13,6 +13,9 @@ LogTerm
 DefineMatrixEndpoints
 DefineMatrixParams
 matrix/
+ParseMXID
+ParseServerName
+GetWellKnown
 DefineSynapseEndpoints
 DefineSynapseParams
 synapse/

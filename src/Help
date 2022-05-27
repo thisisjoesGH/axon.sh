@@ -1,6 +1,6 @@
 Help() {
   case "$@" in
-    login   ) echo 'Logs in to an account on a homeserver. Does not accept an MXID.';;
+    login   ) echo 'Logs in to an account on a homeserver.';;
     logout  ) echo 'Logs out of the currently logged in account';;
     whoami  ) echo 'Prints the MXID of the currently logged in account';;
     version ) echo 'Prints the axon.sh version.';;

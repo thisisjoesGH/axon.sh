@@ -11,24 +11,37 @@ MatrixLogin() {
 #    curl --request "${m_login_api[method]}" --data "$(ReturnMatrixBody m_login)" --write-out ' %{response_code}' --silent "https://${config[homeserver]}${m_login_api[path]}"
  }
 
-  read -r -p "domain(${config[homeserver]}):" input_domain
-    if [ ! -z "$input_domain" ]; then
-      config[homeserver]="$input_domain"
+  local input_mxid
+  local localpart
+  local domainpart
+  local homeserver
+  while read -r -p "MXID (@user:example.com):" input_mxid; do
+    if [ ! -z "$input_mxid" ]; then
+      ParseMXID "$input_mxid" localpart domainpart || continue
+      config[admin_user]="$localpart"
+      GetWellKnown "$domainpart" homeserver || continue
+      ParseServerName "$homeserver" host port
+      config[homeserver]="$host"
+      [[ "$port" ]] && config[port]="$port"
+      break
     fi
-  read -r -p "username(${config[admin_user]}):" input_username
-    if [ ! -z "$input_username" ]; then
-      config[admin_user]="$input_username"
-    fi
+  done
   if [ -z "${config[admin_token]}" ]; then
-    read -s -r -p "password:" input_password
+    local input_password
+    while read -s -r -p "password:" input_password; do
       if [ ! -z "$input_password" ]; then
         admin_password="$input_password"
+        break
+      else
+        echo
+        Log error "Password required"
       fi
+    done
   else
     echo "Access token already present"
     return 0;
   fi
-  read -r -p "$(echo -e -n '\nSave access token? (Potentially unsafe!) (Y/n)')" input_save_token_pref
+  read -r -p "$(echo -e -n '\nSave access token? (Potentially unsafe!) (y/n)')" input_save_token_pref
     case "$input_save_token_pref" in
       [yY]|[Yy][Ee][Ss] ) config[save_token]="true";;
       [Nn]|[Nn][Oo]     ) config[save_token]="false";;
@@ -43,6 +56,4 @@ MatrixLogin() {
   DefineMatrixEndpoints
   DefineMatrixParams
   DoLogin
-
-  global_prompt="[axon($input_username@$input_domain)]>"
 }
