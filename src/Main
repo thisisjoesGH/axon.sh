@@ -9,7 +9,11 @@ Main() {
   DefineStatusCodes
   CheckDependencies
   Motd
-  Prompt
+  if (( "$#" < 1 )); then
+    Prompt
+  else
+    HandleCommand "$@"
+  fi
 }
 
-Main
+Main "$@"

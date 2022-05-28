@@ -1,0 +1,19 @@
+HandleCommand() {
+  local commands
+  read -r -a commands <<<"$*"
+
+  case "${commands[0]}" in
+    login       ) MatrixLogin "${commands[@]:1}";;
+    logout      ) MatrixLogout "${commands[@]:1}";;
+    whoami      ) MatrixWhoAmI "${commands[@]:1}";;
+    server      ) ServerCommandHandler "${commands[@]:1}";;
+    destination ) DestinationCommandHandler "${commands[@]:1}";;
+    room        ) RoomCommandHandler "${commands[@]:1}";;
+    user        ) UserCommandHandler "${commands[@]:1}";;
+    config      ) Configure "${commands[@]:1}";;
+    version     ) echo "$projectName v$projectVersion";;
+    help        ) Help "${commands[@]:1}";;
+    exit        ) exit 0;;
+    *           ) echo "Unrecognized command '${commands[0]}'. Type 'help' for help.";;
+  esac
+}

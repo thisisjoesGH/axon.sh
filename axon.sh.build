@@ -23,6 +23,7 @@ synapse/
 Motd
 Prompt
 Help
+HandleCommand
 UserCommandHandler
 RoomCommandHandler
 ServerCommandHandler
