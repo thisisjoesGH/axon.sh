@@ -1,0 +1,25 @@
+MatrixResolveAlias() {
+  Log debug "Got args '$*'"
+  local alias="$1"
+
+  DoResolveAlias() {
+    Log debug "Assembled request with method '${m_resolve_alias_api[method]}', body '$request_body', to be sent to '${m_resolve_alias_api[path]}'"
+    Request "${m_resolve_alias_api[method]}" "${m_resolve_alias_api[path]}" "room_id servers" || return 1
+    echo -e "\nRoom ID: ${key_values[room_id]}"
+    echo -e "Servers: ${key_values[servers]}\n"
+  }
+
+  CheckLoginStatus || return 1
+  DefineMatrixParams
+
+  [[ ! -z "$alias" ]] || {
+    local input_alias
+    read -r -p "$(echo -e -n '\nAlias to resolve:')" input_alias
+    alias="$input_alias"
+  }
+  m_resolve_alias_url_params[alias]="$(EncodeUrl "$alias")"
+
+  ReadConfiguration
+  DefineMatrixEndpoints
+  DoResolveAlias
+}

@@ -25,6 +25,9 @@ Help() {
                   echo '    delete [status]    Forces all local users to leave a room. Optionally deletes all events and blocks future joins.'
                   echo '                       Optional arguments:'
                   echo '                         [status]  Gets the status of the given deletion job ID.'
+                  echo '    alias [alias]      Resolves the given room alias to a room ID and lists all participating homeservers.'
+                  echo '                       Optional arguments:'
+                  echo '                         [alias]  The room alias to resolve. Skips user prompt if passed.'
                 ;;
     user        ) echo 'Usage: user <subcommand>'
                   echo '  Subcommands:'
