@@ -10,7 +10,14 @@ SynapseDeleteRoom() {
     local request_body
     ReturnRequestBody s_delete_room request_body
     Log debug "Assembled request with method '${s_delete_room_api[method]}', body '$request_body', to be sent to '${s_delete_room_api[path]}'"
-    Request "${s_delete_room_api[method]}" "${s_delete_room_api[path]}" "delete_id" "$request_body" || return 1
+    local -A params=(
+      [method]="${s_delete_room_api[method]}"
+      [path]="${s_delete_room_login_api[path]}"
+      [keys]="delete_id"
+      [data]="$request_body"
+    )
+    Request params || return 1
+
     echo -e "Deletion Job ID: ${key_values[delete_id]}\n"
   }
 

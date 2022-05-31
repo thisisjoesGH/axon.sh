@@ -4,10 +4,14 @@ SynapseDeleteRoomStatus() {
   local job_id="$1"
 
   DoGetDeleteRoomStatus() {
-    local request_body
     Log debug "Assembled request with method '${s_delete_room_status_api[method]}', body '$request_body', to be sent to '${s_delete_room_status_api[path]}'"
-    local keys="status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error"
-    Request "${s_delete_room_status_api[method]}" "${s_delete_room_status_api[path]}" "$keys" "$request_body" || return 1
+    local -A params=(
+      [method]="${s_delete_room_status_api[method]}"
+      [path]="${s_delete_room_status_api[path]}"
+      [keys]="status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error"
+    )
+    Request params || return 1
+
     echo -e "\nDeletion job status: ${key_values[status]}"
     if [[ "${key_values[status]}" = "failed" ]]; then
       echo -e "Error: ${key_values[error]}"

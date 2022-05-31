@@ -1,0 +1,22 @@
+GetWellKnown() {
+  local server_name="$1"
+  local -n ref="$2"
+
+  [[ "$server_name" ]] || {
+    Log error "No server name passed."
+    return 1
+  }
+
+  local -A params=(
+    [method]="GET"
+    [host]="$server_name"
+    [path]="/.well-known/matrix/server"
+    [keys]="m.server"
+    [auth]="false"
+    [redirect]="true"
+  )
+  Request params || return 1
+
+  ref="${key_values[m.server]}"
+  Log info "Server is '$ref'"
+}

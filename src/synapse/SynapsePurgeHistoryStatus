@@ -4,9 +4,14 @@ SynapsePurgeHistoryStatus() {
   local job_id="$1"
 
   DoGetPurgeHistoryStatus() {
-    local request_body
     Log debug "Assembled request with method '${s_purge_history_status_api[method]}', body '$request_body', to be sent to '${s_purge_history_status_api[path]}'"
-    Request "${s_purge_history_status_api[method]}" "${s_purge_history_status_api[path]}" "status error" "$request_body" || return 1
+    local -A params=(
+      [method]="${s_purge_history_status_api[method]}"
+      [path]="${s_purge_history_status_api[path]}"
+      [keys]="status error"
+    )
+    Request params || return 1
+
     echo -e "Purge job status: ${key_values[status]}"
     if [[ "${key_values[status]}" = "failed" ]]; then
       echo -e "Error: '${key_values[error]}'"

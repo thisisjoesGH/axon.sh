@@ -7,7 +7,12 @@ CheckServerSupport() {
   fi
 
   DefineSynapseEndpoints
-  Request "${s_version_api[method]}" "" "${s_version_api[path]}" "server_version"
+  local -A params=(
+    [method]="${s_version_api[method]}"
+    [path]="${s_version_api[path]}"
+    [keys]="${server_version}"
+  )
+  Request params || return 1
 
   local test_version="${key_values[server_version]}"
 

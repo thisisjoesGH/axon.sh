@@ -1,17 +1,19 @@
 Request() {
-  local method="$1"
-  local endpoint="$2"
-  local keys="$3"
-  local data="$4"
-  local host="$5"
-  local authed="$6"
-  local redirect="$7"
-  local headers="$8"
+  local -n __Request_parameters="$1"
+  local method="${__Request_parameters[method]}"
+  local path="${__Request_parameters[path]}"
+  local keys="${__Request_parameters[keys]}"
+  local data="${__Request_parameters[data]}"
+  local host="${__Request_parameters[host]}"
+  local auth="${__Request_parameters[auth]}"
+  local redirect="${__Request__parameters[redirect]}"
+  local -A headers="${__Request_parameters[headers]}"
   local scheme="${config[scheme]}"
   local port="${config[port]}"
 
-  local required_parameters=('method' 'endpoint')
+  local required_parameters=('method' 'path')
   for parameter in "${required_parameters[@]}"; do
+    Log debug "Checking parameter '$parameter', value '${!parameter}'"
     [[ "${!parameter}" ]] || {
       Log error "Missing required parameter '$parameter'"
       return 1
@@ -22,16 +24,17 @@ Request() {
     host="${config[homeserver]}"
   fi
 
-  local uri="$scheme://$host:$port$endpoint"
+  local uri="$scheme://$host:$port$path"
   Log info "Using method '$method' in request to '$uri'"
 
-  local header_arg=''
-  for header in "${headers[@]}"; do
-    if [[ ! -z "$header" ]]; then
-      Log debug "Got header '$header'"
-      header_arg+="--header '$header' "
-    fi
-  done
+  local -a header_arg=()
+  if [[ ! -z "${headers[*]}" ]]; then
+    for header in "${!headers[@]}"; do
+      Log debug "Got header name '$header', value '${headers[$header]}'"
+      header_arg+=(--header "${header}: ${headers[$header]}")
+    done
+    Log debug "Constructed header arg '${header_arg[*]}'"
+  fi
 
   if [[ "$redirect" == 'true' ]]; then
     Log info "Following redirects for this request"
@@ -40,19 +43,31 @@ Request() {
     Log debug "Not following redirects for this request"
   fi
 
-  if [[ "$authed" == 'false' ]]; then
+  if [[ "$auth" == 'false' ]]; then
     Log info "Not sending authorization header for this request"
   else
     Log debug "Sending authorization header for this request"
     local auth_header="Authorization: Bearer ${config[admin_token]}"
   fi
 
+  Log debug "Assembled request '--request $method'"
+  Log debug "Assembled request '${data:+--data $data}'"
+  Log debug "Assembled request '${redirect_arg:+$redirect_arg}'"
+  Log debug "Assembled request '${header_arg[*]}'"
+  Log debug "Assembled request '${auth_header:+--header $auth_header}'"
+  Log debug "Assembled request '--user-agent ${projectName}/${projectVersion}'"
+  Log debug "Assembled request '--write-out '<+>%{response_code}''"
+  Log debug "Assembled request '--silent'"
+  Log debug "Assembled request '--show-error'"
+  Log debug "Assembled request '--connect-timeout 60'"
+  Log debug "Assembled request '$uri'"
+
   local std_out
   local std_err
   CatchStream std_out std_err curl --request "$method" \
                                    ${data:+--data "$data"} \
                                    ${redirect_arg:+"$redirect_arg"} \
-                                   ${header_arg:+"$header_arg"} \
+                                   "${header_arg[@]}" \
                                    ${auth_header:+--header "$auth_header"} \
                                    --user-agent "${projectName}/${projectVersion}" \
                                    --write-out '<+>%{response_code}' \

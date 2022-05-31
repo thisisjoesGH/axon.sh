@@ -4,8 +4,13 @@ SynapseUserCreate() {
   DoUserCreate() {
     local request_body
     ReturnRequestBody s_user_create request_body
-    Log debug "Assembled request with method '${s_user_create_api[method]}', body '$request_body', to be sent to '${s_user_create_api[path]}'"
-    Request "${s_user_create_api[method]}" "${s_user_create_api[path]}" "" "$request_body" || return 1
+    Log debug "Assembled request with method '${s__api[method]}', body '$request_body', to be sent to '${s_user_create_api[path]}'"
+    local -A params=(
+      [method]="${s_user_create_api[method]}"
+      [path]="${s_user_create_api[path]}"
+      [data]="$request_body"
+    )
+    Request params || return 1
   }
 
   CheckLoginStatus || return 1

@@ -4,7 +4,13 @@ MatrixResolveAlias() {
 
   DoResolveAlias() {
     Log debug "Assembled request with method '${m_resolve_alias_api[method]}', body '$request_body', to be sent to '${m_resolve_alias_api[path]}'"
-    Request "${m_resolve_alias_api[method]}" "${m_resolve_alias_api[path]}" "room_id servers" || return 1
+    local -A params=(
+      [method]="${m_resolve_alias_api[method]}"
+      [path]="${m_resolve_alias_api[path]}"
+      [keys]="room_id servers"
+    )
+    Request params || return 1
+
     echo -e "\nRoom ID: ${key_values[room_id]}"
     echo -e "Servers: ${key_values[servers]}\n"
   }

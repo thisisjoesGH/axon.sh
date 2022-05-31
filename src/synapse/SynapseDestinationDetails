@@ -3,7 +3,13 @@ SynapseDestinationDetails() {
 
   DoGetDestinationDetails() {
     Log debug "Assembled request with method '${s_destination_details_api[method]}', body '$request_body', to be sent to '${s_destination_details_api[path]}'"
-    Request "${s_destination_details_api[method]}" "${s_destination_details_api[path]}" "destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering" "$request_body" || return 1
+    local -A params=(
+      [method]="${s_destination_details_api[method]}"
+      [path]="${s_destination_details_api[path]}"
+      [keys]="destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering"
+    )
+    Request params || return 1
+
     echo -e "\nDestination: ${key_values[destination]}"
     if [[ "${key_values[failure_ts]}" != "null" ]]; then
       echo -e "Failed: true"
