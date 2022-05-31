@@ -2,7 +2,6 @@ SynapseUserJoinedRooms() {
   Log debug "Got args '$*'"
 
   DoGetJoinedRooms() {
-    Log debug "Assembled request with method '${s_user_joined_rooms_api[method]}', body '$request_body', to be sent to '${s_user_joined_rooms_api[path]}'"
     local -A params=(
       [method]="${s_user_joined_rooms_api[method]}"
       [path]="${s_user_joined_rooms_api[path]}"

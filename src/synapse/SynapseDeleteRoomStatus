@@ -4,7 +4,6 @@ SynapseDeleteRoomStatus() {
   local job_id="$1"
 
   DoGetDeleteRoomStatus() {
-    Log debug "Assembled request with method '${s_delete_room_status_api[method]}', body '$request_body', to be sent to '${s_delete_room_status_api[path]}'"
     local -A params=(
       [method]="${s_delete_room_status_api[method]}"
       [path]="${s_delete_room_status_api[path]}"

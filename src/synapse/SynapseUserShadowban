@@ -2,7 +2,6 @@ SynapseUserShadowban() {
   Log debug "Got args '$*'"
 
   DoUserShadowban() {
-    Log debug "Assembled request with method '${s_user_shadowban_api[method]}', body '$request_body', to be sent to '${s_user_shadowban_api[path]}'"
     local -A params=(
       [method]="${s_user_shadowban_api[method]}"
       [path]="${s_user_shadowban_api[path]}"

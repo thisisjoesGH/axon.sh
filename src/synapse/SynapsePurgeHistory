@@ -9,7 +9,7 @@ SynapsePurgeHistory() {
   DoPurgeHistory() {
     local request_body
     ReturnRequestBody s_purge_history request_body
-    Log debug "Assembled request with method '${s_purge_history_api[method]}', body '$request_body', to be sent to '${s_purge_history_api[path]}'"
+
     local -A params=(
       [method]="${s_purge_history_api[method]}"
       [path]="${s_purge_history_api[path]}"

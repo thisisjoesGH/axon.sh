@@ -3,7 +3,6 @@ MatrixResolveAlias() {
   local alias="$1"
 
   DoResolveAlias() {
-    Log debug "Assembled request with method '${m_resolve_alias_api[method]}', body '$request_body', to be sent to '${m_resolve_alias_api[path]}'"
     local -A params=(
       [method]="${m_resolve_alias_api[method]}"
       [path]="${m_resolve_alias_api[path]}"

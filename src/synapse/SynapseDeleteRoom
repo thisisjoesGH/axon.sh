@@ -9,7 +9,7 @@ SynapseDeleteRoom() {
   DoDeleteRoom() {
     local request_body
     ReturnRequestBody s_delete_room request_body
-    Log debug "Assembled request with method '${s_delete_room_api[method]}', body '$request_body', to be sent to '${s_delete_room_api[path]}'"
+
     local -A params=(
       [method]="${s_delete_room_api[method]}"
       [path]="${s_delete_room_login_api[path]}"

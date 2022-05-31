@@ -2,7 +2,6 @@ SynapseDestinationDetails() {
   Log debug "Got args '$*'"
 
   DoGetDestinationDetails() {
-    Log debug "Assembled request with method '${s_destination_details_api[method]}', body '$request_body', to be sent to '${s_destination_details_api[path]}'"
     local -A params=(
       [method]="${s_destination_details_api[method]}"
       [path]="${s_destination_details_api[path]}"

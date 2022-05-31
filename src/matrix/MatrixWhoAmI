@@ -2,7 +2,6 @@ MatrixWhoAmI() {
   Log debug "Got args '$*'"
 
   DoWhoAmI() {
-    Log debug "Assembled request with method '${m_whoami_api[method]}', body '$request_body', to be sent to '${m_whoami_api[path]}'"
     local -A params=(
       [method]="${m_whoami_api[method]}"
       [path]="${m_whoami_api[path]}"

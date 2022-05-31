@@ -4,7 +4,7 @@ MatrixLogin() {
   DoLogin() {
     local request_body
     ReturnRequestBody m_login request_body
-    Log debug "Assembled request with method '${m_login_api[method]}', body '$request_body', to be sent to '${m_login_api[path]}'"
+
     local -A params=(
       [method]="${m_login_api[method]}"
       [path]="${m_login_api[path]}"
