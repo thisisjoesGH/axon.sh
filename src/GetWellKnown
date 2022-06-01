@@ -1,6 +1,6 @@
 GetWellKnown() {
   local server_name="$1"
-  local -n ref="$2"
+  local -n __GetWellKnown_homeserver="$2"
 
   [[ "$server_name" ]] || {
     Log error "No server name passed."
@@ -17,6 +17,6 @@ GetWellKnown() {
   )
   Request params || return 1
 
-  ref="${key_values[m.server]}"
-  Log info "Server is '$ref'"
+  __GetWellKnown_homeserver="${key_values[m.server]}"
+  Log info "Server is '$__GetWellKnown_homeserver'"
 }
