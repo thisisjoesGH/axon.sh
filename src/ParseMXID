@@ -1,0 +1,33 @@
+ParseMXID() {
+  local mxid="$1"
+  local -n __ParseMXID_localpart="$2"
+  local -n __ParseMXID_homeserver="$3"
+
+  (( $# == 3 )) || {
+    Log error "Invalid number of arguments passed. Must pass 3."
+    return 1
+  }
+
+  [[ "$mxid" ]] || {
+    Log error "No MXID passed."
+    return 1
+	}
+
+  local mxid_pattern='^@[a-z0-9./=_-]+:[a-zA-Z0-9.-]+$'
+
+  if [[ ! "$mxid" =~ $mxid_pattern ]]; then
+    Log error "Invalid MXID passed."
+    return 1
+  fi
+
+  mxid="${mxid//@/}"
+
+  local array
+  local IFS=':'
+  read -ra array <<< "$mxid"
+
+  __ParseMXID_localpart="${array[0]}"
+  Log debug "Local part is '$__ParseMXID_localpart'"
+  __ParseMXID_homeserver="${array[1]}"
+  Log debug "Homeserver part is '$__ParseMXID_homeserver'"
+}
