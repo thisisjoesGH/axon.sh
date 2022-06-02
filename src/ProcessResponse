@@ -8,7 +8,26 @@ ProcessResponse() {
 
   for key in "${request_keys[@]}"; do
     Log debug "Trying key '$key'"
-    key_values+=(["$key"]="$(jq -r -e .\"$key\" <<< $response_body)")
+    local parts
+    local IFS='.'
+    read -r -a parts <<<"$key"
+    unset IFS
+    if (( "${#parts[@]}" > 1 )); then
+      local arg=''
+      for part in "${parts[@]}"; do
+        if [[ "$part" == 'm'  ]]; then
+          arg+="\"$key\""
+          break
+        else
+          arg+="\"$part\"."
+        fi
+      done
+      arg="${arg%.}"
+    else
+      local arg="\"$key\""
+    fi
+
+    key_values+=(["$key"]="$(jq -r -e ".$arg" <<< "$response_body")")
     Log debug "Got value '${key_values[$key]}'"
   done
 }
