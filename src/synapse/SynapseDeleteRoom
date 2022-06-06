@@ -12,7 +12,7 @@ SynapseDeleteRoom() {
 
     local -A params=(
       [method]="${s_delete_room_api[method]}"
-      [path]="${s_delete_room_login_api[path]}"
+      [path]="${s_delete_room_api[path]}"
       [keys]="delete_id"
       [data]="$request_body"
     )
