@@ -5,7 +5,6 @@ SynapseUserShadowban() {
     local -A params=(
       [method]="${s_user_shadowban_api[method]}"
       [path]="${s_user_shadowban_api[path]}"
-      [data]="$request_body"
     )
     Request params || return 1
   }
