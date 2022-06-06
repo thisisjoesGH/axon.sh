@@ -1,0 +1,28 @@
+ModifyJSON() {
+  Log debug "Got args '$*'"
+
+  if (( $# < 3)); then
+    Log error "Not enough parameters passed. Need 3, got $#"
+    return 1
+  fi
+
+  local json_object="$1"
+  local -n __ModifyJSON_filter="$2"
+  local -n __ModifyJSON_object="$3"
+
+  for filter in "${__ModifyJSON_filter[@]}"; do
+    Log debug "Trying filter '$filter'"
+    local std_out=''
+    local std_err=''
+    CatchStream std_out std_err jq "$filter" <<<"$json_object" || {
+      Log error "Failed to modify JSON object. Bad filter or invalid object."
+      Log debug "jq returned message '$std_err'"
+      return 1
+    }
+    json_object="$std_out"
+    Log debug "Applied filter"
+  done
+
+  __ModifyJSON_object="$json_object"
+}
+

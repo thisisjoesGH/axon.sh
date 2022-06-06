@@ -38,6 +38,7 @@ Request
 ReturnRequestBody
 ProcessResponse
 ValidateJSON
+ModifyJSON
 EncodeUrl
 GetUnixTimestampMs
 ConvertUnixTimestampMs
