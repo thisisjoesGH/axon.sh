@@ -7,6 +7,7 @@ Main() {
   GenDeviceId
   WriteConfiguration
   DefineStatusCodes
+  DefineObjects
   CheckDependencies
   Motd
   if (( "$#" < 1 )); then

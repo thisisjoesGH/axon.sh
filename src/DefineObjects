@@ -1,0 +1,60 @@
+DefineObjects() {
+  m_login_object='
+    {
+      "type":"",
+      "identifier": {
+        "type":"",
+        "user":""
+      },
+      "password":"",
+      "device_id":""
+    }
+  '
+
+  s_server_notice_object='
+    {
+      "user_id": "",
+      "content": {
+        "msgtype": "m.room.message",
+        "body": ""
+      }
+    }
+  '
+  s_purge_history_object='
+    {
+      "delete_local_events": false,
+      "purge_up_to_ts": 0
+    }
+  '
+
+  s_delete_room_object='
+    {
+      "new_room_user_id": "",
+      "room_name": "",
+      "message": "",
+      "block": false,
+      "purge": false
+    }
+  '
+
+  s_user_create_object='
+    {
+      "password": "",
+      "displayname": "",
+      "admin": false
+    }
+  '
+
+  s_user_reset_password_object='
+    {
+      "new_password": "",
+      "logout_devices": true
+    }
+  '
+
+  s_user_deactivate_object='
+    {
+      "erase": false
+    }
+  '
+}
