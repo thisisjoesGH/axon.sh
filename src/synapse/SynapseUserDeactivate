@@ -2,13 +2,13 @@ SynapseUserDeactivate() {
   Log debug "Got args '$*'"
 
   DoUserDeactivate() {
-    local request_body
-    ReturnRequestBody s_user_deactivate request_body
+    local object
+    ConstructObject s_user_deactivate object || return 1
 
     local -A params=(
       [method]="${s_user_deactivate_api[method]}"
       [path]="${s_user_deactivate_api[path]}"
-      [data]="$request_body"
+      [data]="$object"
     )
     Request params || return 1
   }

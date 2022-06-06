@@ -60,6 +60,9 @@ DefineSynapseParams() {
   )
 
   s_delete_room_body_params=(
+    [new_room_user_id]=""
+    [room_name]=""
+    [message]=""
     [block]="false"
     [purge]="false"
   )

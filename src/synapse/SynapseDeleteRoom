@@ -7,14 +7,14 @@ SynapseDeleteRoom() {
   fi
 
   DoDeleteRoom() {
-    local request_body
-    ReturnRequestBody s_delete_room request_body
+    local object
+    ConstructObject s_delete_room object || return 1
 
     local -A params=(
       [method]="${s_delete_room_api[method]}"
       [path]="${s_delete_room_api[path]}"
       [keys]="delete_id"
-      [data]="$request_body"
+      [data]="$object"
     )
     Request params || return 1
 
@@ -41,6 +41,18 @@ SynapseDeleteRoom() {
     case "$input_purge_events" in
       [yY]|[Yy][Ee][Ss] ) s_delete_room_body_params[purge]="true";;
       [Nn]|[Nn][Oo]     ) s_delete_room_body_params[purge]="false";;
+    esac
+  read -r -p "Move removed users to new room? (y/N):" input_move_users
+    case "$input_move_users" in
+      [yY]|[Yy][Ee][Ss] )
+        read -r -p "New room user name:" input_new_room_user
+          s_delete_room_body_params[new_room_user_id]="$input_new_room_user"
+        read -r -p "New room name:" input_room_name
+          s_delete_room_body_params[room_name]="$input_room_name"
+        read -r -p "New room message:" input_message
+          s_delete_room_body_params[message]="$input_message"
+      ;;
+      [Nn]|[Nn][Oo]|*   ) ;;
     esac
 
   DefineSynapseEndpoints

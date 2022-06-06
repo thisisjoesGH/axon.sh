@@ -7,14 +7,14 @@ SynapsePurgeHistory() {
   fi
 
   DoPurgeHistory() {
-    local request_body
-    ReturnRequestBody s_purge_history request_body
+    local object
+    ConstructObject s_purge_history object || return 1
 
     local -A params=(
       [method]="${s_purge_history_api[method]}"
       [path]="${s_purge_history_api[path]}"
       [keys]="purge_id"
-      [data]="$request_body"
+      [data]="$object"
     )
     Request params || return 1
 

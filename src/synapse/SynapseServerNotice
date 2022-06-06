@@ -2,13 +2,13 @@ SynapseServerNotice() {
   Log debug "Got args '$*'"
 
   DoSendNotice() {
-    local request_body
-    ReturnRequestBody s_server_notice request_body
+    local object
+    ConstructObject s_server_notice object || return 1
 
     local -A params=(
       [method]="${s_server_notice_api[method]}"
       [path]="${s_server_notice_api[path]}"
-      [data]="$request_body"
+      [data]="$object"
     )
     Request params || return 1
   }

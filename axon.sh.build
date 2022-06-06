@@ -36,6 +36,7 @@ DefineStatusCodes
 CheckStatusCode
 Request
 ReturnRequestBody
+ConstructObject
 ProcessResponse
 ValidateJSON
 ModifyJSON

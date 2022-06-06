@@ -1,0 +1,95 @@
+ConstructObject() {
+  Log debug "Got args '$*'"
+
+  local object_to_construct="$1"
+  Log debug "Constructing object for '$object_to_construct'"
+  local -n __ConstructObject_object="$2"
+  local -n api="${object_to_construct}_api"
+  Log debug "Using parameters for API '${!api}'"
+  local -n parameters
+  parameters="${api[body_params]}"
+
+  local constructed_object
+
+  case "$object_to_construct" in
+    m_login )
+      parameters[password]="${parameters[password]//\"/\\\"}" # Escape double-quotes
+      local -a filters=(
+        ".type = \"${parameters[type]}\""
+        ".identifier.type = \"${parameters[identifier]}\""
+        ".identifier.user = \"${parameters[user]}\""
+        ".password = \"${parameters[password]}\""
+        ".device_id = \"${parameters[device_id]}\""
+      )
+      ModifyJSON "$m_login_object" filters constructed_object || return 1
+    ;;
+
+    s_server_notice )
+      parameters[body]="${parameters[body]//\"/\\\"}" # Escape double-quotes
+      local -a filters=(
+        ".user_id = \"${parameters[user_id]}\""
+        ".content.msgtype = \"${parameters[msg_type]}\""
+        ".content.body = \"${parameters[body]}\""
+      )
+      ModifyJSON "$s_server_notice_object" filters constructed_object || return 1
+    ;;
+
+    s_purge_history )
+      local -a filters=(
+        ".delete_local_events = ${parameters[delete_local_events]}"
+        ".purge_up_to_ts = ${parameters[purge_up_to_ts]}"
+      )
+      ModifyJSON "$s_purge_history_object" filters constructed_object || return 1
+    ;;
+
+    s_delete_room )
+      local -a filters=(
+        ".block = ${parameters[block]}"
+        ".purge = ${parameters[purge]}"
+      )
+      if [[ -z "${parameters[new_room_user_id]}" ]]; then
+        filters+=(
+          'del( .new_room_user_id )'
+          'del( .room_name )'
+          'del( .message )'
+        )
+      else
+        filters+=(
+          ".new_room_user_id = \"${parameters[new_room_user_id]}\""
+          ".room_name = \"${parameters[room_name]}\""
+          ".message = \"${parameters[message]}\""
+        )
+      fi
+      ModifyJSON "$s_delete_room_object" filters constructed_object || return 1
+    ;;
+
+    s_user_create )
+      parameters[password]="${parameters[password]//\"/\\\"}" # Escape double-quotes
+      local -a filters=(
+        ".password = \"${parameters[password]}\""
+        ".displayname = \"${parameters[displayname]}\""
+        ".admin = ${parameters[admin]}"
+      )
+      ModifyJSON "$s_user_create_object" filters constructed_object || return 1
+    ;;
+
+    s_user_reset_password )
+      parameters[password]="${parameters[password]//\"/\\\"}" # Escape double-quotes
+      local -a filters=(
+        ".new_password = \"${parameters[password]}\""
+        ".logout_devices = ${parameters[logout]}"
+      )
+      ModifyJSON "$s_user_reset_password_object" filters constructed_object || return 1
+    ;;
+
+    s_user_deactivate )
+      local -a filters=(
+        ".erase = ${parameters[erase]}"
+      )
+      ModifyJSON "$s_user_deactivate_object" filters constructed_object || return 1
+    ;;
+  esac
+
+  Log debug "Constructed object '$constructed_object'"
+  __ConstructObject_object="$constructed_object"
+}

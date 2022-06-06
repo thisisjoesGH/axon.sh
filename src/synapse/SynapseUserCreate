@@ -2,13 +2,13 @@ SynapseUserCreate() {
   Log debug "Got args '$*'"
 
   DoUserCreate() {
-    local request_body
-    ReturnRequestBody s_user_create request_body
+    local object
+    ConstructObject s_user_create object || return 1
 
     local -A params=(
       [method]="${s_user_create_api[method]}"
       [path]="${s_user_create_api[path]}"
-      [data]="$request_body"
+      [data]="$object"
     )
     Request params || return 1
   }
