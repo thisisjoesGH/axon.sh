@@ -77,7 +77,7 @@ Request() {
                                    "$uri"
 
   local return_code="$?"
-  if [[ "$return_code" > 0 ]]; then
+  if (( "$return_code" > 0 )); then
     Log error "Curl failed with message '$std_err'"
     return 1
   fi
