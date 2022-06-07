@@ -15,7 +15,7 @@ SynapseVersion() {
 
   CheckLoginStatus || return 1
 
-  if [ ! -z "${config[homeserver]}" ]; then
+  if [[ ! -z "${config[homeserver]}" ]]; then
     DefineSynapseEndpoints
     GetVersion
   else

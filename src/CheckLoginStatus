@@ -1,11 +1,11 @@
 CheckLoginStatus() {
-  if [ -z "${config[homeserver]}" ]; then
+  if [[ -z "${config[homeserver]}" ]]; then
     Log error "No homeserver configured!"
     return 1
-  elif [ -z "${config[admin_user]}" ]; then
+  elif [[ -z "${config[admin_user]}" ]]; then
     Log error "No user account configured!"
     return 1
-  elif [ -z "${config[admin_token]}" ]; then
+  elif [[ -z "${config[admin_token]}" ]]; then
     Log error "No access token found!"
     return 1
   else

@@ -26,7 +26,7 @@ SynapseServerNotice() {
     s_server_notice_body_params[user_id]="$user_id"
     Log debug "URL 'user_id' param set to '${s_server_notice_body_params[user_id]}'"
   read -r -p "Message type (m.room.message):" input_msg_type
-    if [ ! -z "$input_msg_type" ]; then
+    if [[ ! -z "$input_msg_type" ]]; then
       s_server_notice_body_params[msg_type]="$input_msg_type"
     fi
   read -r -p "Message body:" input_msg_body

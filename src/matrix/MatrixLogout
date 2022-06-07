@@ -14,15 +14,15 @@ MatrixLogout() {
     WriteConfiguration
  }
 
-  if [ -z "${config[homeserver]}" ]; then
+  if [[ -z "${config[homeserver]}" ]]; then
     Log error "Failed to logout. No homeserver is configured."
     Prompt
   fi
-  if [ -z "${config[admin_user]}" ]; then
+  if [[ -z "${config[admin_user]}" ]]; then
     Log error "Failed to logout. No user is configured."
     Prompt
   fi
-  if [ -z "${config[admin_token]}" ]; then
+  if [[ -z "${config[admin_token]}" ]]; then
     Log error "Failed to logout. No access token is present."
     Prompt
   fi
