@@ -57,7 +57,7 @@ Help() {
                   echo '    help           Prints usage information. Takes another command as an option.'
                   echo '    exit           Exits axon.sh.'
                 ;;
-    *           ) Log error "Unknown subcommand '$@'. Type 'help' with no options for a list of commands."
+    *           ) Log error "Unknown subcommand '$1'. Type 'help' with no options for a list of commands."
                 ;;
   esac
 }
