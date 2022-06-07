@@ -16,7 +16,7 @@ SynapseDestinationDetails() {
       echo -e "Failed on: ${key_values[failure_ts]}"
       ConvertUnixTimestampMs "key_values[retry_last_ts]"
       echo -e "Last retried on: ${key_values[retry_last_ts]}"
-      echo -e "Retry interval: $(ConvertIntervalMs ${key_values[retry_interval]})"
+      echo -e "Retry interval: $(ConvertIntervalMs "${key_values[retry_interval]}")"
     else
       echo -e "Failed: false"
     fi

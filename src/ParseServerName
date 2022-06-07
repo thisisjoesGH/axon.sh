@@ -21,7 +21,7 @@ ParseServerName() {
   fi
 
   [[ "$server_name" =~ (.*):([0-9]{1,5}) ]] && local port="${BASH_REMATCH[2]}"
-  server_name="${server_name%%:$port}"
+  server_name="${server_name%%:"$port"}"
 
   __ParseServerName_domain="$server_name"
   Log debug "Domain is '$__ParseServerName_domain'"

@@ -22,7 +22,7 @@ SynapseUserCreate() {
   read -r -p "New user name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
-    local user_id="$(EncodeUrl $user_id)"
+    local user_id="$(EncodeUrl "$user_id")"
     Log debug "User ID encoded as '$user_id'"
     s_user_create_url_params[user_id]="$user_id"
     Log debug "URL 'user_id' param set to '${s_user_create_url_params[user_id]}'"
