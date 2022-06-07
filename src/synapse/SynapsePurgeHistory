@@ -2,7 +2,7 @@ SynapsePurgeHistory() {
   Log debug "Got args '$*'"
 
   if [[ "$1" = "status" ]]; then
-    SynapsePurgeHistoryStatus || return 1
+    SynapsePurgeHistoryStatus "$2" || return 1
     return 0
   fi
 
