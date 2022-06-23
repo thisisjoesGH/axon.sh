@@ -6,7 +6,7 @@ Request() {
   local data="${__Request_parameters[data]}"
   local host="${__Request_parameters[host]}"
   local auth="${__Request_parameters[auth]}"
-  local redirect="${__Request__parameters[redirect]}"
+  local redirect="${__Request_parameters[redirect]}"
   local -A headers="${__Request_parameters[headers]}"
   local scheme="${config[scheme]}"
   local port="${config[port]}"
