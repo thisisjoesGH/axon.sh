@@ -87,6 +87,7 @@ DefineSynapseEndpoints() {
     [path]='/_synapse/admin/v1/rooms/'"${s_forward_extremities_url_params[room_id_or_alias]}"'/forward_extremities'
     [url_params]="s_forward_extremities_url_params"
     [body_params]=""
+    [minimum_version]="1.27.0rc1"
   )
 
   s_delete_forward_extremities_api=(
@@ -94,6 +95,7 @@ DefineSynapseEndpoints() {
     [path]='/_synapse/admin/v1/rooms/'"${s_delete_forward_extremities_url_params[room_id_or_alias]}"'/forward_extremities'
     [url_params]="s_delete_forward_extremities_url_params"
     [body_params]=""
+    [minimum_version]="1.27.0rc1"
   )
 
   s_user_query_api=(
