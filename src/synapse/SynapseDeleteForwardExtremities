@@ -1,0 +1,33 @@
+SynapseDeleteForwardExtremities() {
+  Log debug "Got args '$*'"
+  local room="$1"
+
+  DoDeleteForwardExtremities() {
+    local -A params=(
+      [method]="${s_delete_forward_extremities_api[method]}"
+      [path]="${s_delete_forward_extremities_api[path]}"
+      [keys]="deleted"
+    )
+    Request params || return 1
+
+    echo "Deleted: ${key_values[deleted]}"
+  }
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_delete_forward_extremities_api[minimum_version]}" || return 1
+  DefineSynapseParams
+
+  Log info "Deleting forward extremities on ${config[homeserver]}"
+
+
+  [[ ! -z "$room" ]] || {
+    read -r -p "Room ID or alias:" input_room
+      local room="$(EncodeUrl "$input_room")"
+      Log debug "Room is '$room'"
+  }
+  s_delete_forward_extremities_url_params[room_id_or_alias]="$room"
+  Log debug "URL 'room_id_or_alias' param set to '${s_delete_forward_extremities_url_params[room_id_or_alias]}'"
+
+  DefineSynapseEndpoints
+  DoDeleteForwardExtremities
+}

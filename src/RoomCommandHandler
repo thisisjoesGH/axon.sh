@@ -5,10 +5,11 @@ RoomCommandHandler() {
   Log debug "Have subcommands '${subcommands[*]}'"
   Log debug "Testing '${subcommands[0]}'"
   case "${subcommands[0]}" in
-    purge  ) SynapsePurgeHistory "${subcommands[@]:1}";;
-    delete ) SynapseDeleteRoom "${subcommands[@]:1}";;
-    alias  ) MatrixResolveAlias "${subcommands[@]:1}";;
-    ''     ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
-    *      ) Log error "Unrecognized subcommand '$1'. Type 'help room' for a list of subcommands.";;
+    purge       ) SynapsePurgeHistory "${subcommands[@]:1}";;
+    delete      ) SynapseDeleteRoom "${subcommands[@]:1}";;
+    extremities ) SynapseForwardExtremities "${subcommands[@]:1}";;
+    alias       ) MatrixResolveAlias "${subcommands[@]:1}";;
+    ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
+    *           ) Log error "Unrecognized subcommand '$1'. Type 'help room' for a list of subcommands.";;
   esac
 }

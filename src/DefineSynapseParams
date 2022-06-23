@@ -9,6 +9,8 @@ DefineSynapseParams() {
   declare -Ag s_delete_room_url_params
   declare -Ag s_delete_room_body_params
   declare -Ag s_delete_room_status_url_params
+  declare -Ag s_forward_extremities_url_params
+  declare -Ag s_delete_forward_extremities_url_params
   declare -Ag s_user_query_url_params
   declare -Ag s_user_joined_rooms_url_params
   declare -Ag s_user_modify_body_params
@@ -69,6 +71,14 @@ DefineSynapseParams() {
 
   s_delete_room_status_url_params=(
     [job_id]=""
+  )
+
+  s_forward_extremities_url_params=(
+    [room_id_or_alias]=""
+  )
+
+  s_delete_forward_extremities_url_params=(
+    [room_id_or_alias]=""
   )
 
   s_user_query_url_params=(

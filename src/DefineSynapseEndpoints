@@ -8,6 +8,8 @@ DefineSynapseEndpoints() {
   declare -Ag s_purge_history_status_api
   declare -Ag s_delete_room_api
   declare -Ag s_delete_room_status_api
+  declare -Ag s_forward_extremities_api
+  declare -Ag s_delete_forward_extremities_api
   declare -Ag s_user_query_api
   declare -Ag s_user_joined_rooms_api
   declare -Ag s_user_create_api
@@ -77,6 +79,20 @@ DefineSynapseEndpoints() {
     [method]="GET"
     [path]="/_synapse/admin/v2/rooms/delete_status/${s_delete_room_status_url_params[job_id]}"
     [url_params]="s_delete_room_status_url_params"
+    [body_params]=""
+  )
+
+  s_forward_extremities_api=(
+    [method]="GET"
+    [path]='/_synapse/admin/v1/rooms/'"${s_forward_extremities_url_params[room_id_or_alias]}"'/forward_extremities'
+    [url_params]="s_forward_extremities_url_params"
+    [body_params]=""
+  )
+
+  s_delete_forward_extremities_api=(
+    [method]="DELETE"
+    [path]='/_synapse/admin/v1/rooms/'"${s_delete_forward_extremities_url_params[room_id_or_alias]}"'/forward_extremities'
+    [url_params]="s_delete_forward_extremities_url_params"
     [body_params]=""
   )
 
