@@ -23,6 +23,8 @@ A Matrix Synapse administration tool written in bash. In early development.
   - resolving room aliases
   - purging room history
   - deleting and blocking rooms
+  - getting details about forward extremities
+  - deleting forward extremities
 
   #### User operations
   - getting list of joined rooms for user
