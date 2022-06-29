@@ -24,6 +24,13 @@ ConstructObject() {
       ModifyJSON "$m_login_object" filters constructed_object || return 1
     ;;
 
+    m_create_alias )
+      local -a filters=(
+        ".room_id = \"${parameters[room_id]}\""
+      )
+      ModifyJSON "$m_create_alias_object" filters constructed_object || return 1
+    ;;
+
     s_server_notice )
       parameters[body]="${parameters[body]//\"/\\\"}" # Escape double-quotes
       local -a filters=(

@@ -1,0 +1,38 @@
+MatrixCreateAlias() {
+  Log debug "Got args '$*'"
+  local alias="$1"
+  local room_id="$2"
+
+  DoCreateAlias() {
+    local object
+    ConstructObject m_create_alias object || return 1
+  
+    local -A params=(
+      [method]="${m_create_alias_api[method]}"
+      [path]="${m_create_alias_api[path]}"
+      [data]="$object"
+    )
+    Request params || return 1
+  }
+
+  CheckLoginStatus || return 1
+  DefineMatrixParams
+
+  [[ ! -z "$alias" ]] || {
+    local input_alias
+    read -r -p "$(echo -e -n '\nAlias to create:')" input_alias
+    alias="$input_alias"
+  }
+
+  [[ ! -z "$room_id" ]] || {
+    local input_room_id
+    read -r -p "$(echo -e -n '\nRoom ID to link:')" input_room_id
+    room_id="$input_room_id"
+  }
+  m_create_alias_url_params[alias]="$(EncodeUrl "$alias")"
+  m_create_alias_body_params[room_id]="$room_id"
+
+  ReadConfiguration
+  DefineMatrixEndpoints
+  DoCreateAlias
+}

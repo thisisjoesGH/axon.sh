@@ -11,6 +11,12 @@ DefineObjects() {
     }
   '
 
+  m_create_alias_object='
+    {
+      "room_id": ""
+    }
+  '
+
   s_server_notice_object='
     {
       "user_id": "",

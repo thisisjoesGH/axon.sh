@@ -3,6 +3,7 @@ DefineMatrixEndpoints() {
   declare -Ag m_logout_api
   declare -Ag m_whoami_api
   declare -Ag m_resolve_alias_api
+  declare -Ag m_create_alias_api
 
   m_login_api=(
     [method]="POST"
@@ -30,5 +31,12 @@ DefineMatrixEndpoints() {
     [path]="/_matrix/client/r0/directory/room/${m_resolve_alias_url_params[alias]}"
     [url_params]="m_resolve_alias_url_params"
     [body_params]=""
+  )
+
+  m_create_alias_api=(
+    [method]="PUT"
+    [path]="/_matrix/client/r0/directory/room/${m_create_alias_url_params[alias]}"
+    [url_params]="m_create_alias_url_params"
+    [body_params]="m_create_alias_body_params"
   )
 }

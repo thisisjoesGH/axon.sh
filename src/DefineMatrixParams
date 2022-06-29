@@ -1,6 +1,8 @@
 DefineMatrixParams() {
   declare -Ag m_login_params
   declare -Ag m_resolve_alias_url_params
+  declare -Ag m_create_alias_url_params
+  declare -Ag m_create_alias_body_params
 
   m_login_params=(
     [type]="m.login.password"
@@ -13,5 +15,13 @@ DefineMatrixParams() {
 
   m_resolve_alias_url_params=(
     [alias]=""
+  )
+
+  m_create_alias_url_params=(
+    [alias]=""
+  )
+
+  m_create_alias_body_params=(
+    [room_id]=""
   )
 }
