@@ -39,7 +39,7 @@ Help() {
                   echo '      Resolves the given room alias to a room ID and lists all participating homeservers.'
                   echo '      Optional arguments:'
                   echo '        [create]  Creates an alias if passed.'
-                  echo '        [delete]  Deletes an alias if passed.
+                  echo '        [delete]  Deletes an alias if passed.'
                   echo '        [alias]  The room alias to resolve, create, or delete. Skips user prompt if passed.'
                   echo '        [room ID]  The room ID to bind the new alias to. Only applies if [create] and [alias] are also passed.'
                 ;;
