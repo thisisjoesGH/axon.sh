@@ -4,6 +4,9 @@ MatrixResolveAlias() {
   if [[ "$1" == "create" ]]; then
     MatrixCreateAlias "$2" "$3" || return 1
     return 0
+  elif [[ "$1" == "delete" ]]; then
+    MatrixDeleteAlias "$2" || return 1
+    return 0
   fi
 
   local alias="$1"
