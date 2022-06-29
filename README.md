@@ -21,6 +21,8 @@ A Matrix Synapse administration tool written in bash. In early development.
 
   #### Room operations
   - resolving room aliases
+  - creating room aliases
+  - deleting room aliases
   - purging room history
   - deleting and blocking rooms
   - getting details about forward extremities
