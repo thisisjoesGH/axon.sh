@@ -14,6 +14,9 @@ DefineSynapseEndpoints() {
   declare -Ag s_user_joined_rooms_api
   declare -Ag s_user_create_api
   declare -Ag s_user_reset_password_api
+  declare -Ag s_user_ratelimit_api
+  declare -Ag s_set_user_ratelimit_api
+  declare -Ag s_delete_user_ratelimit_api
   declare -Ag s_user_shadowban_api
   declare -Ag s_room_membership_api
   declare -Ag s_user_deactivate_api
@@ -124,6 +127,30 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/reset_password/${s_user_reset_password_url_params[user_id]}"
     [url_params]="s_user_reset_password_url_params"
     [body_params]="s_user_reset_password_body_params"
+  )
+
+  s_user_ratelimit_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/users/${s_user_ratelimit_url_params[user_id]}/override_ratelimit"
+    [url_params]="s_user_ratelimit_url_params"
+    [body_params]=""
+    [minimum_version]="1.32.0rc1"
+  )
+
+  s_set_user_ratelimit_api=(
+    [method]="POST"
+    [path]="/_synapse/admin/v1/users/${s_set_user_ratelimit_url_params[user_id]}/override_ratelimit"
+    [url_params]="s_set_user_ratelimit_url_params"
+    [body_params]="s_set_user_ratelimit_body_params"
+    [minimum_version]="1.32.0rc1"
+  )
+
+  s_delete_user_ratelimit_api=(
+    [method]="DELETE"
+    [path]="/_synapse/admin/v1/users/${s_delete_user_ratelimit_url_params[user_id]}/override_ratelimit"
+    [url_params]="s_delete_user_ratelimit_url_params"
+    [body_params]=""
+    [minimum_version]="1.32.0rc1"
   )
 
   s_user_deactivate_api=(

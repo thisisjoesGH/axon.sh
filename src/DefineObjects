@@ -58,6 +58,13 @@ DefineObjects() {
     }
   '
 
+  s_set_user_ratelimit_object='
+    {
+      "messages_per_second": 0,
+      "burst_count": 0
+    }
+  '
+
   s_user_deactivate_object='
     {
       "erase": false

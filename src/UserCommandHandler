@@ -8,6 +8,7 @@ UserCommandHandler() {
     rooms      ) SynapseUserJoinedRooms "${subcommands[@]:1}";;
     create     ) SynapseUserCreate "${subcommands[@]:1}";;
     password   ) SynapseUserResetPassword "${subcommands[@]:1}";;
+    ratelimit  ) SynapseUserRatelimit "${subcommands[@]:1}";;
     deactivate ) SynapseUserDeactivate "${subcommands[@]:1}";;
     shadowban  ) SynapseUserShadowban "${subcommands[@]:1}";;
     ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;

@@ -1,0 +1,43 @@
+SynapseUserRatelimit() {
+  Log debug "Got args '$*'"
+
+  case "$1" in
+    'set'    ) SynapseSetUserRatelimit "$2" "$3" "$4" || return 1; return 0;;
+    'delete' ) SynapseDeleteUserRatelimit "$2" || return 1; return 0;;
+  esac
+
+  local user="$1"
+
+  DoGetUserRatelimit() {
+    local -A params=(
+      [method]="${s_user_ratelimit_api[method]}"
+      [path]="${s_user_ratelimit_api[path]}"
+      [keys]="messages_per_second burst_count"
+    )
+    Request params || return 1
+
+    echo -e "\nRatelimit for '$mxid'"
+    echo "Max messages per second: ${key_values[messages_per_second]}"
+    echo "Burst count: ${key_values[burst_count]}"
+  }
+
+  DefineSynapseEndpoints
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_user_ratelimit_api[minimum_version]}" || return 1
+  DefineSynapseParams
+
+  Log info "Getting ratelimit for user on ${config[homeserver]}"
+
+  [[ ! -z "$user" ]] || {
+    read -r -p "Username:" input_user
+      user="$input_user"
+      Log debug "User is '$user'"
+  }
+  local mxid="@${user}:${config[homeserver]}"
+  s_user_ratelimit_url_params[user_id]="$(EncodeUrl "$mxid")"
+  Log debug "URL 'user_id' param set to '${s_user_ratelimit_url_params[user_id]}'"
+
+  DefineSynapseEndpoints
+  DoGetUserRatelimit
+}

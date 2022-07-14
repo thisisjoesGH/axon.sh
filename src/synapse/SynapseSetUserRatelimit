@@ -1,0 +1,57 @@
+SynapseSetUserRatelimit() {
+  Log debug "Got args '$*'"
+
+  local user="$1"
+  local messages_per_second="$2"
+  local burst_count="$3"
+
+  DoSetUserRatelimit() {
+    local object
+    ConstructObject s_set_user_ratelimit object || return 1
+    local -A params=(
+      [method]="${s_set_user_ratelimit_api[method]}"
+      [path]="${s_set_user_ratelimit_api[path]}"
+      [data]="$object"
+      [keys]="messages_per_second burst_count"
+    )
+    Request params || return 1
+
+    echo -e "\nNew ratelimit for '$mxid'"
+    echo "Max messages per second: ${key_values[messages_per_second]}"
+    echo "Burst count: ${key_values[burst_count]}"
+  }
+
+  DefineSynapseEndpoints
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_set_user_ratelimit_api[minimum_version]}" || return 1
+  DefineSynapseParams
+
+  Log info "Setting ratelimit for user on ${config[homeserver]}"
+
+  [[ ! -z "$user" ]] || {
+    read -r -p "Username:" input_user
+      user="$input_user"
+      Log debug "User is '$user'"
+  }
+  local mxid="@${user}:${config[homeserver]}"
+  s_set_user_ratelimit_url_params[user_id]="$(EncodeUrl "$mxid")"
+  Log debug "URL 'user_id' param set to '${s_set_user_ratelimit_url_params[user_id]}'"
+
+  [[ ! -z "$messages_per_second" ]] || {
+    read -r -p "Max messages per second:" input_messages_per_second
+      messages_per_second="$input_messages_per_second"
+  }
+  s_set_user_ratelimit_body_params[messages_per_second]="$messages_per_second"
+  Log debug "Body 'messages_per_second' param set to '${s_set_user_ratelimit_body_params[messages_per_second]}'"
+
+  [[ ! -z "$burst_count" ]] || {
+    read -r -p "Burst count:" input_burst_count
+      burst_count="$input_burst_count"
+  }
+  s_set_user_ratelimit_body_params[burst_count]="$burst_count"
+  Log debug "Body 'burst_count' param set to '${s_set_user_ratelimit_body_params[burst_count]}'"
+
+  DefineSynapseEndpoints
+  DoSetUserRatelimit
+}

@@ -89,6 +89,14 @@ ConstructObject() {
       ModifyJSON "$s_user_reset_password_object" filters constructed_object || return 1
     ;;
 
+    s_set_user_ratelimit )
+      local -a filters=(
+        ".messages_per_second = ${parameters[messages_per_second]}"
+        ".burst_count = ${parameters[burst_count]}"
+      )
+      ModifyJSON "$s_set_user_ratelimit_object" filters constructed_object || return 1
+    ;;
+
     s_user_deactivate )
       local -a filters=(
         ".erase = ${parameters[erase]}"

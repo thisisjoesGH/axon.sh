@@ -1,0 +1,32 @@
+SynapseDeleteUserRatelimit() {
+  Log debug "Got args '$*'"
+  local user="$1"
+
+  DoDeleteUserRatelimit() {
+    local -A params=(
+      [method]="${s_delete_user_ratelimit_api[method]}"
+      [path]="${s_delete_user_ratelimit_api[path]}"
+    )
+    Request params || return 1
+  }
+
+  DefineSynapseEndpoints
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_delete_user_ratelimit_api[minimum_version]}" || return 1
+  DefineSynapseParams
+
+  Log info "Deleting user ratelimit override on ${config[homeserver]}"
+
+  [[ ! -z "$user" ]] || {
+    read -r -p "Username:" input_user
+      user="$input_user"
+      Log debug "User is '$user'"
+  }
+  local mxid="@${user}:${config[homeserver]}"
+  s_delete_user_ratelimit_url_params[user_id]="$(EncodeUrl "$mxid")"
+  Log debug "URL 'user_id' param set to '${s_delete_user_ratelimit_url_params[user_id]}'"
+
+  DefineSynapseEndpoints
+  DoDeleteUserRatelimit
+}
