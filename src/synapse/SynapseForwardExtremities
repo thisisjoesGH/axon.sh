@@ -22,7 +22,6 @@ SynapseForwardExtremities() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_forward_extremities_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Checking forward extremities on ${config[homeserver]}"
 

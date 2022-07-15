@@ -8,6 +8,8 @@ Main() {
   WriteConfiguration
   DefineStatusCodes
   DefineObjects
+  DefineSynapseParams
+  DefineSynapseEndpoints
   CheckDependencies
   Motd
   if (( "$#" < 1 )); then

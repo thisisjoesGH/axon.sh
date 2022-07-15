@@ -15,7 +15,6 @@ SynapseUserCreate() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_create_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Creating new user on homeserver ${config[homeserver]}"
 

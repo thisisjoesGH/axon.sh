@@ -21,11 +21,8 @@ SynapseSetUserRatelimit() {
     echo "Burst count: ${key_values[burst_count]}"
   }
 
-  DefineSynapseEndpoints
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_set_user_ratelimit_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Setting ratelimit for user on ${config[homeserver]}"
 

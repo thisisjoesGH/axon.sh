@@ -24,9 +24,7 @@ SynapseDestinationDetails() {
   }
 
   CheckLoginStatus || return 1
-  DefineSynapseEndpoints
   CheckServerSupport "${s_destination_details_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Getting destination details from ${config[homeserver]}"
 

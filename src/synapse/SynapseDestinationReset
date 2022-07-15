@@ -12,9 +12,7 @@ SynapseDestinationReset() {
   }
 
   CheckLoginStatus || return 1
-  DefineSynapseEndpoints
   CheckServerSupport "${s_destination_reset_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Getting destination reset from ${config[homeserver]}"
 

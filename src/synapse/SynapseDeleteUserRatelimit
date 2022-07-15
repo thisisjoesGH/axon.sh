@@ -14,7 +14,6 @@ SynapseDeleteUserRatelimit() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_delete_user_ratelimit_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Deleting user ratelimit override on ${config[homeserver]}"
 

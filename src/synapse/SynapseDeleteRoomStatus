@@ -23,7 +23,6 @@ SynapseDeleteRoomStatus() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_delete_room_status_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Getting room deletion job status from '${config[homeserver]}'"
 

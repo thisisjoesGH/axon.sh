@@ -15,7 +15,6 @@ SynapseUserDeactivate() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_deactivate_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Deactivating user on homeserver ${config[homeserver]}"
 

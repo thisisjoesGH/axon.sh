@@ -15,7 +15,6 @@ SynapseDeleteForwardExtremities() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_delete_forward_extremities_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Deleting forward extremities on ${config[homeserver]}"
 

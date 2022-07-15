@@ -25,7 +25,6 @@ SynapseUserRatelimit() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_ratelimit_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Getting ratelimit for user on ${config[homeserver]}"
 

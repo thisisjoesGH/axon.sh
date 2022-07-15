@@ -23,7 +23,6 @@ SynapsePurgeHistory() {
 
   CheckLoginStatus || return 1
   CheckServerSupport "${s_purge_history_api[minimum_version]}" || return 1
-  DefineSynapseParams
 
   Log info "Purging history from ${config[homeserver]}"
 
