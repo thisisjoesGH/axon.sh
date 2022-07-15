@@ -21,7 +21,7 @@ Request() {
   done
 
   if [[ -z "$host" ]]; then
-    host="${config[homeserver]}"
+    host="${config[base_url]}"
   fi
 
   local uri="$scheme://$host:$port$path"

@@ -25,9 +25,10 @@ MatrixLogin() {
     if [[ ! -z "$input_mxid" ]]; then
       ParseMXID "$input_mxid" localpart domainpart || continue
       config[admin_user]="$localpart"
+      config[homeserver]="$domainpart"
       GetWellKnown "$domainpart" homeserver || continue
       ParseServerName "$homeserver" host port
-      config[homeserver]="$host"
+      config[base_url]="$host"
       [[ "$port" ]] && config[port]="$port"
       break
     fi

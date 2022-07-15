@@ -10,6 +10,7 @@ DefineConfiguration() {
     [verbosity]="WARN"
     [homeserver]=""
     [scheme]="https"
+    [base_url]=""
     [port]="443"
     [admin_user]=""
     [admin_token]=""
