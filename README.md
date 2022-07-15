@@ -34,6 +34,7 @@ A Matrix Synapse administration tool written in bash. In early development.
   - creating new users
   - deactivating users
   - shadowbanning users
+  - managing ratelimits for users
 
 
  ## How to use
