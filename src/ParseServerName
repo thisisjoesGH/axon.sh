@@ -4,14 +4,14 @@ ParseServerName() {
   local -n __ParseServerName_port="$3"
 
   (( $# == 3 )) || {
-    echo Log error "Invalid number of arguments passed. Must pass 2."
+    Log error "Invalid number of arguments passed. Must pass 3."
     return 1
   }
 
   [[ "$server_name" ]] || {
     Log error "No server name passed."
     return 1
-	}
+  }
 
   local pattern='^[a-zA-Z0-9.-]+(:?[0-9]{0,5})$'
 
