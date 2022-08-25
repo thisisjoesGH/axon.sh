@@ -20,6 +20,7 @@ GetWellKnown
 DefineSynapseEndpoints
 DefineSynapseParams
 synapse/
+HandleSynapseError
 DefineObjects
 Motd
 Prompt
