@@ -98,8 +98,7 @@ Request() {
   else
     Log error "Request failed while using method '$method' in request to '$uri'."
     Log debug "Got body '$body'".
-    ProcessResponse "$body" "errcode error"
-    Log error "Server returned error message '${key_values[errcode]}: ${key_values[error]}'"
+    __Request_response_body="$body"
     return 1
   fi
 }
