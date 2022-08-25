@@ -1,0 +1,10 @@
+HandleSynapseError() {
+    local body="$1"
+    local -a keys=(errcode error)
+    local -A values
+    ProcessResponse body keys values || {
+      Log error "Did not receive a Synapse error message. Am I pointed at a valid Synapse API?"
+      return 1
+    }
+    Log error "Server returned error message '${values[errcode]}: ${values[error]}'"
+}

@@ -9,8 +9,11 @@ SynapseVersion() {
     local response
     local -a keys=(server_version python_version)
     local -A values
-    Request params response || return 1
-    ProcessResponse "$response" keys values
+    Request params response || {
+      HandleSynapseError "$response"
+      return 1
+    }
+    ProcessResponse response keys values || return 1
 
     echo "Server version: ${values[server_version]}"
     echo "Python version: ${values[python_version]}"
