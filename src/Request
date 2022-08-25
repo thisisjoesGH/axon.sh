@@ -8,6 +8,7 @@ Request() {
   local auth="${__Request_parameters[auth]}"
   local redirect="${__Request_parameters[redirect]}"
   local -A headers="${__Request_parameters[headers]}"
+  local -n __Request_response_body="$2"
   local scheme="${config[scheme]}"
   local port="${config[port]}"
 
@@ -93,12 +94,10 @@ Request() {
   unset IFS
 
   if CheckStatusCode "$status_code"; then
-    ValidateJSON "$body" || return 1
-    ProcessResponse "$body" "$keys"
+    __Request_response_body="$body"
   else
     Log error "Request failed while using method '$method' in request to '$uri'."
     Log debug "Got body '$body'".
-    ValidateJSON "$body" || return 1
     ProcessResponse "$body" "errcode error"
     Log error "Server returned error message '${key_values[errcode]}: ${key_values[error]}'"
     return 1
