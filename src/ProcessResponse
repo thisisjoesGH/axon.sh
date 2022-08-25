@@ -1,10 +1,10 @@
 ProcessResponse() {
   Log debug "Got args $*"
-  local response_body="$1"
+  local -n __ProcessResponse_body="$1"
   local -n __ProcessResponse_keys="$2"
   local -n __ProcessResponse_values="$3"
 
-  ValidateJSON "$response_body" || return 1
+  ValidateJSON "$__ProcessResponse_body" || return 1
 
   for key in "${__ProcessResponse_keys[@]}"; do
     Log debug "Trying key '$key'"
@@ -27,7 +27,7 @@ ProcessResponse() {
       local arg="\"$key\""
     fi
 
-    __ProcessResponse_values+=(["$key"]="$(jq -r -e ".$arg" <<< "$response_body")")
+    __ProcessResponse_values+=(["$key"]="$(jq -r -e ".$arg" <<< "$__ProcessResponse_body")")
     Log debug "Got value '${__ProcessResponse_values[$key]}'"
   done
 }
