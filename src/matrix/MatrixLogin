@@ -8,13 +8,20 @@ MatrixLogin() {
     local -A params=(
       [method]="${m_login_api[method]}"
       [path]="${m_login_api[path]}"
-      [keys]="access_token"
       [data]="$object"
     )
-    Request params || return 1
-    config[admin_token]="${key_values[access_token]}"
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
+
+    local -a keys=(access_token)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    config[admin_token]="${values[access_token]}"
     WriteConfiguration
-#    curl --request "${m_login_api[method]}" --data "$(ReturnMatrixBody m_login)" --write-out ' %{response_code}' --silent "https://${config[homeserver]}${m_login_api[path]}"
  }
 
   local input_mxid

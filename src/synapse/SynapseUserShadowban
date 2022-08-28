@@ -6,7 +6,11 @@ SynapseUserShadowban() {
       [method]="${s_user_shadowban_api[method]}"
       [path]="${s_user_shadowban_api[path]}"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
   }
 
   CheckLoginStatus || return 1

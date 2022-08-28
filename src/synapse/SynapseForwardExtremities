@@ -12,12 +12,19 @@ SynapseForwardExtremities() {
     local -A params=(
       [method]="${s_forward_extremities_api[method]}"
       [path]="${s_forward_extremities_api[path]}"
-      [keys]="results count"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo -e "Forward extremities:\n${key_values[results]}"
-    echo "Count: ${key_values[count]}"
+    local -a keys=(results count)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Forward extremities:\n${values[results]}"
+    echo "Count: ${values[count]}"
   }
 
   CheckLoginStatus || return 1

@@ -5,12 +5,19 @@ SynapseUserJoinedRooms() {
     local -A params=(
       [method]="${s_user_joined_rooms_api[method]}"
       [path]="${s_user_joined_rooms_api[path]}"
-      [keys]="joined_rooms total"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo -e "Joined rooms:\n${key_values[joined_rooms]}"
-    echo "Total: ${key_values[total]}"
+    local -a keys=(joined_rooms total)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Joined rooms:\n${values[joined_rooms]}"
+    echo "Total: ${values[total]}"
   }
 
   CheckLoginStatus || return 1
