@@ -2,7 +2,6 @@ Request() {
   local -n __Request_parameters="$1"
   local method="${__Request_parameters[method]}"
   local path="${__Request_parameters[path]}"
-  local keys="${__Request_parameters[keys]}"
   local data="${__Request_parameters[data]}"
   local host="${__Request_parameters[host]}"
   local auth="${__Request_parameters[auth]}"
