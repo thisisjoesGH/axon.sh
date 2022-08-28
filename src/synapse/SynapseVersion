@@ -7,12 +7,13 @@ SynapseVersion() {
       [path]="${s_version_api[path]}"
     )
     local response
-    local -a keys=(server_version python_version)
-    local -A values
     Request params response || {
-      HandleSynapseError "$response"
+      HandleMatrixError response
       return 1
     }
+
+    local -a keys=(server_version python_version)
+    local -A values
     ProcessResponse response keys values || return 1
 
     echo "Server version: ${values[server_version]}"

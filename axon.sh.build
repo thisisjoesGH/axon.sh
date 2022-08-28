@@ -14,13 +14,13 @@ LogTerm
 DefineMatrixEndpoints
 DefineMatrixParams
 matrix/
+HandleMatrixError
 ParseMXID
 ParseServerName
 GetWellKnown
 DefineSynapseEndpoints
 DefineSynapseParams
 synapse/
-HandleSynapseError
 DefineObjects
 Motd
 Prompt
