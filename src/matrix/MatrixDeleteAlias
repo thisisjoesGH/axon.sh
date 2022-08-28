@@ -7,7 +7,11 @@ MatrixDeleteAlias() {
       [method]="${m_delete_alias_api[method]}"
       [path]="${m_delete_alias_api[path]}"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
   }
 
   CheckLoginStatus || return 1

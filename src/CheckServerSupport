@@ -10,11 +10,18 @@ CheckServerSupport() {
   local -A params=(
     [method]="${s_version_api[method]}"
     [path]="${s_version_api[path]}"
-    [keys]="${server_version}"
   )
-  Request params || return 1
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
 
-  local test_version="${key_values[server_version]}"
+  local -a keys=(server_version)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  local test_version="${values[server_version]}"
 
   if [[ "$minimum_version" =~ "rc" ]] && [[ ! "$test_version" =~ "rc" ]]; then
     test_version+="rc99"
@@ -24,7 +31,7 @@ CheckServerSupport() {
     Log info "Server meets minimum version requirement for the requested API, continuing..."
     return 0
   else
-    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${key_values[server_version]}', minimum version '$minimum_version'"
+    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${values[server_version]}', minimum version '$minimum_version'"
     ConfirmContinue || return 1
   fi
 }

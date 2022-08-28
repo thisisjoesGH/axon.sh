@@ -12,13 +12,20 @@ SynapseSetUserRatelimit() {
       [method]="${s_set_user_ratelimit_api[method]}"
       [path]="${s_set_user_ratelimit_api[path]}"
       [data]="$object"
-      [keys]="messages_per_second burst_count"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
+
+    local -a keys=(messages_per_second burst_count)
+    local -A values
+    ProcessResponse response keys values || return 1
 
     echo -e "\nNew ratelimit for '$mxid'"
-    echo "Max messages per second: ${key_values[messages_per_second]}"
-    echo "Burst count: ${key_values[burst_count]}"
+    echo "Max messages per second: ${values[messages_per_second]}"
+    echo "Burst count: ${values[burst_count]}"
   }
 
   CheckLoginStatus || return 1

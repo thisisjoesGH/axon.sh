@@ -13,12 +13,19 @@ SynapseDeleteRoom() {
     local -A params=(
       [method]="${s_delete_room_api[method]}"
       [path]="${s_delete_room_api[path]}"
-      [keys]="delete_id"
       [data]="$object"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo -e "Deletion Job ID: ${key_values[delete_id]}\n"
+    local -a keys=(delete_id)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Deletion Job ID: ${values[delete_id]}\n"
   }
 
   CheckLoginStatus || return 1

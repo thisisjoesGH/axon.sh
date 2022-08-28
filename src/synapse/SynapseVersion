@@ -5,12 +5,19 @@ SynapseVersion() {
     local -A params=(
       [method]="${s_version_api[method]}"
       [path]="${s_version_api[path]}"
-      [keys]="server_version python_version"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo "Server version: ${key_values[server_version]}"
-    echo "Python version: ${key_values[python_version]}"
+    local -a keys=(server_version python_version)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo "Server version: ${values[server_version]}"
+    echo "Python version: ${values[python_version]}"
  }
 
   CheckLoginStatus || return 1

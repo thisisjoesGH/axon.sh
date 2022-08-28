@@ -10,7 +10,11 @@ SynapseUserDeactivate() {
       [path]="${s_user_deactivate_api[path]}"
       [data]="$object"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
   }
 
   CheckLoginStatus || return 1

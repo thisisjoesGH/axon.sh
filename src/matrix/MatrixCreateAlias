@@ -12,7 +12,11 @@ MatrixCreateAlias() {
       [path]="${m_create_alias_api[path]}"
       [data]="$object"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError reponse
+      return 1
+    }
   }
 
   CheckLoginStatus || return 1
