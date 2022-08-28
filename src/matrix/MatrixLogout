@@ -6,7 +6,11 @@ MatrixLogout() {
       [method]="${m_logout_api[method]}"
       [path]="${m_logout_api[path]}"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
     config[admin_user]=""
     config[admin_token]=""

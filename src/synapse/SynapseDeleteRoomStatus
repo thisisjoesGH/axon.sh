@@ -7,18 +7,25 @@ SynapseDeleteRoomStatus() {
     local -A params=(
       [method]="${s_delete_room_status_api[method]}"
       [path]="${s_delete_room_status_api[path]}"
-      [keys]="status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo -e "\nDeletion job status: ${key_values[status]}"
-    if [[ "${key_values[status]}" = "failed" ]]; then
-      echo -e "Error: ${key_values[error]}"
+    local -a keys=(status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "\nDeletion job status: ${values[status]}"
+    if [[ "${values[status]}" = "failed" ]]; then
+      echo -e "Error: ${values[error]}"
     fi
-    echo -e "Kicked users: ${key_values[shutdown_room.kicked_users]}"
-    echo -e "Failed to kick users: ${key_values[shutdown_room.failed_to_kick_users]}"
-    echo -e "Local aliases found: ${key_values[shutdown_room.local_aliases]}"
-    echo -e "New room ID: ${key_values[shutdown_room.new_room_id]}\n"
+    echo -e "Kicked users: ${values[shutdown_room.kicked_users]}"
+    echo -e "Failed to kick users: ${values[shutdown_room.failed_to_kick_users]}"
+    echo -e "Local aliases found: ${values[shutdown_room.local_aliases]}"
+    echo -e "New room ID: ${values[shutdown_room.new_room_id]}\n"
   }
 
   CheckLoginStatus || return 1

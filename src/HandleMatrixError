@@ -1,0 +1,10 @@
+HandleMatrixError() {
+    local -n __HandleMatrixError_response="$1"
+    local -a keys=(errcode error)
+    local -A values
+    ProcessResponse __HandleMatrixError_response keys values || {
+      Log error "Did not receive a standard error response. Am I pointed at a valid Synapse API?"
+      return 1
+    }
+    Log error "Server returned error message '${values[errcode]}: ${values[error]}'"
+}

@@ -7,13 +7,20 @@ SynapsePurgeHistoryStatus() {
     local -A params=(
       [method]="${s_purge_history_status_api[method]}"
       [path]="${s_purge_history_status_api[path]}"
-      [keys]="status error"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo -e "Purge job status: ${key_values[status]}"
-    if [[ "${key_values[status]}" = "failed" ]]; then
-      echo -e "Error: '${key_values[error]}'"
+    local -a keys=(status error)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Purge job status: ${values[status]}"
+    if [[ "${values[status]}" = "failed" ]]; then
+      echo -e "Error: '${values[error]}'"
     fi
     echo
   }

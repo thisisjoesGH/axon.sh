@@ -13,12 +13,19 @@ SynapsePurgeHistory() {
     local -A params=(
       [method]="${s_purge_history_api[method]}"
       [path]="${s_purge_history_api[path]}"
-      [keys]="purge_id"
       [data]="$object"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo -e "Purge Job ID: ${key_values[purge_id]}\n"
+    local -a keys=(purge_id)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Purge Job ID: ${values[purge_id]}\n"
   }
 
   CheckLoginStatus || return 1

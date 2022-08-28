@@ -6,11 +6,18 @@ SynapseDeleteForwardExtremities() {
     local -A params=(
       [method]="${s_delete_forward_extremities_api[method]}"
       [path]="${s_delete_forward_extremities_api[path]}"
-      [keys]="deleted"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
-    echo "Deleted: ${key_values[deleted]}"
+    local -a keys=(deleted)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo "Deleted: ${values[deleted]}"
   }
 
   CheckLoginStatus || return 1

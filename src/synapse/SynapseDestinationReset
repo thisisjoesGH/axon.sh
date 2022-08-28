@@ -6,7 +6,11 @@ SynapseDestinationReset() {
       [method]="${s_destination_reset_api[method]}"
       [path]="${s_destination_reset_api[path]}"
     )
-    Request params || return 1
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 
     echo -e "\nDestination timeout reset"
   }
