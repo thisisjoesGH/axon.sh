@@ -10,6 +10,5 @@ matrix/
 synapse/
 cmd/
 Help
-Motd
 Prompt
 Main
