@@ -55,7 +55,7 @@ MatrixLogin() {
     echo "Access token already present"
     return 0;
   fi
-  read -r -p "$(echo -e -n '\nSave access token? (Potentially unsafe!) (y/n)')" input_save_token_pref
+  read -r -p "$(echo -e -n '\nSave access token to local config file? (y/n)')" input_save_token_pref
     case "$input_save_token_pref" in
       [yY]|[Yy][Ee][Ss] ) config[save_token]="true";;
       [Nn]|[Nn][Oo]     ) config[save_token]="false";;
