@@ -6,7 +6,7 @@ WriteConfiguration() {
     if [[ -z "${config[admin_token]}" ]]; then
       [[ "$AXON_FIRST_RUN" ]] || Log debug "User preference set to save access token, but no access token found."
     else
-      Log warn "Saving access token to config file '${config[config_path]}/${config[config_file]}'"
+      Log info "Saving access token to config file '${config[config_path]}/${config[config_file]}'"
     fi
   fi
   if [[ "${config[save_id]}" != true ]]; then
