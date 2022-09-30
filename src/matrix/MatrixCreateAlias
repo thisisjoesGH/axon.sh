@@ -14,7 +14,7 @@ MatrixCreateAlias() {
     )
     local response
     Request params response || {
-      HandleMatrixError reponse
+      HandleMatrixError response
       return 1
     }
   }
