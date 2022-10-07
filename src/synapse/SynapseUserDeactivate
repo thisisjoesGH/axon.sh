@@ -23,6 +23,11 @@ SynapseUserDeactivate() {
   Log info "Deactivating user on homeserver ${config[homeserver]}"
 
   read -r -p "Username to deactivate:" input_user_name
+    if [[ "$input_user_name" == "${config[admin_user]}" ]]; then
+      LogTerm warn "You are about to deactivate the account you are currently using! Deactivation is intended to be permanent and will likely have irreversible consequences."
+      ConfirmContinue || return 1
+    fi
+
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
     local user_id="$(EncodeUrl "$user_id")"
