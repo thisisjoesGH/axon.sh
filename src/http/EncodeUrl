@@ -1,4 +1,4 @@
 EncodeUrl() {
   local string="$1"
-  echo -n "$string" | jq -Rj @uri
+  jq -Rj @uri <<< "$string"
 }
