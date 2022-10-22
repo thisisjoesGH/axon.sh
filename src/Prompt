@@ -1,3 +1,6 @@
+# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
 Prompt() {
   HISTCONTROL=ignoreboth
   HISTFILE=${config[config_path]}/${config[history_file]}

@@ -1,3 +1,6 @@
+# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
 ReadEnvironment() {
   if [[ -n "$AXON_CONFIG" ]]; then
     Log config "Found configuration in environment."

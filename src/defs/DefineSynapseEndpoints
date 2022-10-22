@@ -1,3 +1,6 @@
+# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
 DefineSynapseEndpoints() {
   declare -Ag s_version_api
   declare -Ag s_destination_details_api
