@@ -4,12 +4,14 @@ ReadEnvironment() {
     local IFS=:
     read -r -a env_config <<< "$AXON_CONFIG"
     unset IFS
-    for pair in "${env_config[@]}"
-    do
-      if echo "$pair" | grep -F = &>/dev/null
-      then
-        varname=$(echo "$pair" | cut -d '=' -f 1)
-        config[$varname]=$(echo "$pair" | cut -d '=' -f 2-)
+    for pair in "${env_config[@]}"; do
+      if [[ "$pair" =~ '=' ]]; then
+        Log debug "pair is '$pair'"
+        key="${pair%%=*}"
+        Log debug "key is '$key'"
+        value="${pair##*=}"
+        Log debug "value is '$value'"
+        config[$key]="$value"
       fi
     done
   fi
