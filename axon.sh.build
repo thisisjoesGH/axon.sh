@@ -10,5 +10,6 @@ matrix/
 synapse/
 cmd/
 Help
+PrintInfo
 Prompt
 Main
