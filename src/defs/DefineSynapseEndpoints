@@ -55,7 +55,7 @@ DefineSynapseEndpoints() {
 
   s_event_reports_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v1/event_reports"
+    [path]="/_synapse/admin/v1/event_reports?from=${s_event_reports_url_params[from]}&limit=${s_event_reports_url_params[limit]}&dir=${s_event_reports_url_params[dir]}"
     [url_params]="s_event_reports_url_params"
     [body_params]=""
   )

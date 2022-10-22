@@ -9,6 +9,7 @@ ServerCommandHandler() {
   Log debug "Testing '${subcommands[0]}'"
   case "${subcommands[0]}" in
     version ) SynapseVersion "${subcommands[@]:1}";;
+    reports ) SynapseEventReports "${subcommands[@]:1}";;
     notice  ) SynapseServerNotice "${subcommands[@]:1}";;
     address ) if [ -z "${config[homeserver]}" ]; then Log error "No homeserver configured!"; else echo "${config[homeserver]}"; fi;;
     ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands.";;

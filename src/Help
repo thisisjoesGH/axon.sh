@@ -14,6 +14,11 @@ Help() {
                   echo '    version    Prints version information returned by the locally configured homeserver.'
                   echo '    address    Prints the address of the locally configured homeserver.'
                   echo '    notice     Sends a server notice to a user. Requires proper homeserver configuration.'
+                  echo '    reports [limit]'
+                  echo '      Gets event reports.'
+                  echo '      Optional arguments:'
+                  echo '        [limit] The maximum number of event reports to retrieve at once. Skips user prompt if passed.'
+                  echo '                If there are more total events than the limit set the results will be paginated.'
                 ;;
     destination ) echo 'Usage: destination <subcommand>'
                   echo '  Subcommands:'

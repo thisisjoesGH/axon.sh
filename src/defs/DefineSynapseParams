@@ -45,7 +45,7 @@ DefineSynapseParams() {
 
   s_event_reports_url_params=(
     [from]="0"
-    [limit]="10"
+    [limit]="3"
     [dir]="b"
     [user_id]=""
     [room_id]=""

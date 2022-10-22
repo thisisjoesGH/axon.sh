@@ -1,0 +1,60 @@
+# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseEventReports() {
+  Log debug "Got args '$*'"
+
+  if [[ "$1" == 'detail' ]]; then
+    SynapseEventReportsDetail "${@:1}" || return 1
+    return 0
+  fi
+
+  local limit="$1"
+  local from="$2"
+
+  DoGetEventReports() {
+    local -A params=(
+      [method]="${s_event_reports_api[method]}"
+      [path]="${s_event_reports_api[path]}"
+    )
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
+
+    local -a keys=(event_reports next_token total)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Event reports:\n${values[event_reports]}"
+    echo "Total: ${values[total]}"
+    if (( "${values[next_token]}" > 0 )); then
+      local input_paginate
+      read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+        case "$input_paginate" in
+          [Nn] ) SynapseEventReports "$limit" "${values[next_token]}";;
+          [Rr] ) return 0;;
+          *    ) return 0;;
+        esac
+    fi
+  }
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_event_reports_api[minimum_version]}" || return 1
+
+  Log info "Getting event reports from ${config[homeserver]}"
+
+  [[ ! -z "$limit" ]] || {
+    local input_limit
+    read -r -p "Maximum reports to return at once:" input_limit
+      limit="$input_limit"
+  }
+
+  [[ ! -z "$from" ]] && s_event_reports_url_params[from]="$from"
+  s_event_reports_url_params[limit]="$limit"
+  Log debug "Limit is '${s_event_reports_url_params[limit]}'"
+
+  DefineSynapseEndpoints
+  DoGetEventReports
+}
