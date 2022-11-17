@@ -9,6 +9,7 @@ UserCommandHandler() {
   Log debug "Testing '${subcommands[0]}'"
   case "${subcommands[0]}" in
     rooms      ) SynapseUserJoinedRooms "${subcommands[@]:1}";;
+    threepid   ) SynapseUserThreePIDLookup "${subcommands[@]:1}";;
     create     ) SynapseUserCreate "${subcommands[@]:1}";;
     password   ) SynapseUserResetPassword "${subcommands[@]:1}";;
     ratelimit  ) SynapseUserRatelimit "${subcommands[@]:1}";;

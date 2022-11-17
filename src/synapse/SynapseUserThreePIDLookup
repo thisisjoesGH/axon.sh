@@ -1,0 +1,52 @@
+# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseUserThreePIDLookup() {
+  Log debug "Got args '$*'"
+
+  local medium="$1"
+  local address="$2"
+
+  DoThreePIDLookup() {
+    local -A params=(
+      [method]="${s_user_threepid_lookup_api[method]}"
+      [path]="${s_user_threepid_lookup_api[path]}"
+    )
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
+
+    local -a keys=(user_id)
+    local -A values
+    ProcessResponse response keys values || return 1
+
+    echo -e "Associated user:\n${values[user_id]}"
+  }
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${s_user_threepid_lookup_api[minimum_version]}" || return 1
+
+  Log info "Looking up user by 3PID on ${config[homeserver]}"
+
+
+  [[ ! -z "$medium" ]] || {
+  local input_medium
+  read -r -p "Medium:" input_medium
+    medium="$input_medium"
+  }
+
+  [[ ! -z "$address" ]] || {
+  local input_address
+  read -r -p "Address:" input_address
+    address="$input_address"
+  }
+  s_user_threepid_lookup_url_params[medium]="$medium"
+  Log debug "URL 'medium' param set to '${s_user_threepid_lookup_url_params[medium]}'"
+  s_user_threepid_lookup_url_params[address]="$address"
+  Log debug "URL 'address' param set to '${s_user_threepid_lookup_url_params[address]}'"
+
+  DefineSynapseEndpoints
+  DoThreePIDLookup
+}

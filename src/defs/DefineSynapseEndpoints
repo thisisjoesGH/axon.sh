@@ -15,6 +15,7 @@ DefineSynapseEndpoints() {
   declare -Ag s_delete_forward_extremities_api
   declare -Ag s_user_query_api
   declare -Ag s_user_joined_rooms_api
+  declare -Ag s_user_threepid_lookup_api
   declare -Ag s_user_create_api
   declare -Ag s_user_reset_password_api
   declare -Ag s_user_ratelimit_api
@@ -116,6 +117,14 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/users/${s_user_joined_rooms_url_params[user_id]}/joined_rooms"
     [url_params]="s_user_joined_rooms_url_params"
     [body_params]=""
+  )
+
+  s_user_threepid_lookup_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/threepid/${s_user_threepid_lookup_url_params[medium]}/users/${s_user_threepid_lookup_url_params[address]}"
+    [url_params]="s_user_threepid_lookup_url_params"
+    [body_params]=""
+    [minimum_version]="1.72.0rc1"
   )
 
   s_user_create_api=(
