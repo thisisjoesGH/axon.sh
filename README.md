@@ -3,7 +3,7 @@
 [![License](https://shields.thisisjoes.site/badge/dynamic/json.svg?label=license&color=red&url=https://git.thisisjoes.site/api/v1/repos/joe/axon.sh/labels/@license&query=$.description)](https://git.thisisjoes.site/joe/axon.sh/src/branch/dev/LICENSE)
 [![Latest Release](https://shields.thisisjoes.site/badge/dynamic/json.svg?label=latest%20release&color=green&url=https://git.thisisjoes.site/api/v1/repos/joe/axon.sh/releases&query=$[0].tag_name)](https://git.thisisjoes.site/joe/axon.sh/releases)
 
-A Matrix Synapse administration tool written in bash. In early development.
+A Matrix Synapse administration tool written in bash. In early development, but works pretty well!
 
 ## Supported operations
   #### Session management
@@ -13,6 +13,7 @@ A Matrix Synapse administration tool written in bash. In early development.
 
   #### Homeserver operations
   - getting server version information
+  - getting event reports
   - sending server notices
 
   #### Federation operations
@@ -30,6 +31,7 @@ A Matrix Synapse administration tool written in bash. In early development.
 
   #### User operations
   - getting list of joined rooms for user
+  - looking up user by third-party ID (3PID)
   - resetting password for user
   - creating new users
   - deactivating users
