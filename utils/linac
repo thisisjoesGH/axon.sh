@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090,SC2004
 projectName='LINAC'
 projectDescription='LINAC is not a compiler'
-projectVersion=0.9.2
+projectVersion=0.9.4
 projectAuthor='Joe <joe@thisisjoes.site>'
 projectLicense='GPLv3'
 Configure() {
@@ -113,7 +113,7 @@ LogFile() {
 }
 ProcessBuildFile() {
   local files
-  mapfile -t files < <(grep -Ev '^\s*\#' "$1";)
+  mapfile -t files < <(grep -Ev '^\s*#' "$1";)
   for ((i=0;i<"${#files[*]}";i++));do
     echo "${config[src_path]}${files[i]}"
   done
@@ -184,7 +184,7 @@ BuildProject() {
 
   if [[ "$strip_comments" == true ]]; then
     local args='-Ehrv'
-    local pattern='^\s*\#'
+    local pattern='^\s*#'
   else
     local args='-Ehr'
     local pattern='.*'
@@ -229,15 +229,15 @@ InitProject() {
     local escaped_description
     escaped_description="${init_description//\'/\'\\\'\'}"
 
-    echo -e "projectName=$project_name" > "$project_name.info"
+    echo -e "projectName='$project_name'" > "${project_name,,}.info"
     {
        echo -e "projectDescription='$escaped_description'"
        echo -e "projectVersion=0.1.0"
        echo -e "projectAuthor='$init_author'"
        echo -e "projectLicense=$init_license"
-    } >> "$project_name.info"
+    } >> "${project_name,,}.info"
 
-    echo -e "# Add build files to this file. One per line." > "$project_name.build"
+    echo -e "# Add relative paths to source files to this file. One per line." > "${project_name,,}.build"
   }
 
   local count
@@ -272,7 +272,7 @@ MakeStub() {
   if [ -n "${config[shellcheck_ignore]}" ]; then
     echo "# shellcheck disable=${config[shellcheck_ignore]}" >> "${config[build_path]}$name"
   fi
-  cat "${projectName,,}"'.info' >> "${config[build_path]}$name"
+  cat "$name"'.info' >> "${config[build_path]}$name"
 }
 PrintInfo() {
   echo -e "${projectName} ${projectVersion}"' - '"${projectDescription}"
@@ -292,12 +292,13 @@ SubBuild() {
 SubHelp() {
     case "$@" in
       "build" )
-        echo "  Builds a project from the given file. The file must contain a list of source files from your configured"
-        echo "  source directory. (Source directory may be configured by defining 'src_path' in 'linac.conf')"
+        echo "  Builds a project from sources listed in the given build file. The file must contain a list of"
+        echo "  paths to source files relative to your source directory. (Source directory may be configured"
+        echo "  by defining 'src_path' in 'linac.conf')"
       ;;
      "bump" )
         echo "  Bumps the project version in the project info file. Takes a version number name as an option:"
-        echo "  One of either 'major','minor', or 'patch'. (Version must follow SemVer to be bumped, e.g. '2.3.1'.)"
+        echo "  One of either 'major','minor', or 'patch'. (Version must follow SemVer format to be bumped, e.g. '2.3.1'.)"
       ;;
       "init" )
         echo "  Initializes a new project in the current directory. Starts a wizard which asks for basic information"
@@ -328,7 +329,7 @@ SubCommand() {
          echo 'Usage: linac <command> [options]'
          echo "  Commands:"
          echo "        help [command]           Shows this help. Takes another command as an option."
-         echo "        build [build file]       Builds project from the given file."
+         echo "        build [build file]       Builds project using the given build file."
          echo "        bump [version]           Bumps the project version. Accepts 'major','minor','patch'."
          echo "        init                     Initializes a new project in the current directory."
        fi
