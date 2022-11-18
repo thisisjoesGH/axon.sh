@@ -31,7 +31,7 @@ MatrixLogin() {
   local localpart
   local domainpart
   local homeserver
-  while read -r -p "MXID (@user:example.com):" input_mxid; do
+  while Read -r -p "MXID (@user:example.com):" input_mxid; do
     if [[ ! -z "$input_mxid" ]]; then
       ParseMXID "$input_mxid" localpart domainpart || continue
       config[admin_user]="$localpart"
@@ -45,7 +45,7 @@ MatrixLogin() {
   done
   if [[ -z "${config[admin_token]}" ]]; then
     local input_password
-    while read -s -r -p "password:" input_password; do
+    while Read -s -r -p "password:" input_password; do
       if [[ ! -z "$input_password" ]]; then
         admin_password="$input_password"
         break
@@ -55,10 +55,10 @@ MatrixLogin() {
       fi
     done
   else
-    echo "Access token already present"
+    echo "Access token alReady present"
     return 0;
   fi
-  read -r -p "$(echo -e -n '\nSave access token to local config file? (y/n)')" input_save_token_pref
+  Read -r -p "$(echo -e -n '\nSave access token to local config file? (y/n)')" input_save_token_pref
     case "$input_save_token_pref" in
       [yY]|[Yy][Ee][Ss] ) config[save_token]="true";;
       [Nn]|[Nn][Oo]     ) config[save_token]="false";;

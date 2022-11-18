@@ -30,7 +30,7 @@ SynapseDeleteForwardExtremities() {
 
 
   [[ ! -z "$room" ]] || {
-    read -r -p "Room ID or alias:" input_room
+    Read -r -p "Room ID or alias:" input_room
       local room="$(EncodeUrl "$input_room")"
       Log debug "Room is '$room'"
   }

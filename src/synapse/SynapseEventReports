@@ -31,7 +31,7 @@ SynapseEventReports() {
     echo "Total: ${values[total]}"
     if (( "${values[next_token]}" > 0 )); then
       local input_paginate
-      read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+      Read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
         case "$input_paginate" in
           [Nn] ) SynapseEventReports "$limit" "${values[next_token]}";;
           [Rr] ) return 0;;
@@ -47,7 +47,7 @@ SynapseEventReports() {
 
   [[ ! -z "$limit" ]] || {
     local input_limit
-    read -r -p "Maximum reports to return at once:" input_limit
+    Read -r -p "Maximum reports to return at once:" input_limit
       limit="$input_limit"
   }
 

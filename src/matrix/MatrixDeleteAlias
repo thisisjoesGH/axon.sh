@@ -22,7 +22,7 @@ MatrixDeleteAlias() {
 
   [[ ! -z "$alias" ]] || {
     local input_alias
-    read -r -p "$(echo -e -n '\nAlias to delete:')" input_alias
+    Read -r -p "$(echo -e -n '\nAlias to delete:')" input_alias
     alias="$input_alias"
   }
   m_delete_alias_url_params[alias]="$(EncodeUrl "$alias")"

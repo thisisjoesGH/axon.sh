@@ -21,7 +21,7 @@ SynapseUserShadowban() {
 
   Log info "Shadowbanning user on homeserver ${config[homeserver]}"
 
-  read -r -p "Username to shadowban:" input_user_name
+  Read -r -p "Username to shadowban:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
     local user_id="$(EncodeUrl "$user_id")"

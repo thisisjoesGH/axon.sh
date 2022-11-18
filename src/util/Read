@@ -1,0 +1,3 @@
+Read() {
+  read "$@" 2>/dev/tty
+}

@@ -34,7 +34,7 @@ SynapsePurgeHistoryStatus() {
   Log info "Getting purge history job status from '${config[homeserver]}'"
 
   [[ ! -z "$job_id" ]] || {
-    read -r -p "Job ID:" input_job_id
+    Read -r -p "Job ID:" input_job_id
     job_id="$input_job_id"
   }
   s_purge_history_status_url_params[job_id]="$job_id"

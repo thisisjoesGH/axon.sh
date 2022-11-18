@@ -25,7 +25,7 @@ SynapseUserDeactivate() {
 
   Log info "Deactivating user on homeserver ${config[homeserver]}"
 
-  read -r -p "Username to deactivate:" input_user_name
+  Read -r -p "Username to deactivate:" input_user_name
     if [[ "$input_user_name" == "${config[admin_user]}" ]]; then
       LogTerm warn "You are about to deactivate the account you are currently using! Deactivation is intended to be permanent and will likely have irreversible consequences."
       ConfirmContinue || return 1
@@ -37,7 +37,7 @@ SynapseUserDeactivate() {
     Log debug "User ID encoded as '$user_id'"
     s_user_deactivate_url_params[user_id]="$user_id"
     Log debug "URL 'user_id' param set to '${s_user_deactivate_url_params[user_id]}'"
-  read -r -p "Erase user profile? (Y/n):" input_user_is_erased
+  Read -r -p "Erase user profile? (Y/n):" input_user_is_erased
     case "$input_user_is_erased" in
       [yY]|[Yy][Ee][Ss] ) s_user_deactivate_body_params[erase]="true";;
       [Nn]|[Nn][Oo]     ) s_user_deactivate_body_params[erase]="false";;

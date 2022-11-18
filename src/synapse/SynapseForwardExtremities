@@ -36,7 +36,7 @@ SynapseForwardExtremities() {
   Log info "Checking forward extremities on ${config[homeserver]}"
 
   [[ ! -z "$room" ]] || {
-    read -r -p "Room ID or alias:" input_room
+    Read -r -p "Room ID or alias:" input_room
       room="$(EncodeUrl "$input_room")"
       Log debug "Room is '$room'"
   }

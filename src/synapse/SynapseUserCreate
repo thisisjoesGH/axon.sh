@@ -25,16 +25,16 @@ SynapseUserCreate() {
 
   Log info "Creating new user on homeserver ${config[homeserver]}"
 
-  read -r -p "New user name:" input_user_name
+  Read -r -p "New user name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
     local user_id="$(EncodeUrl "$user_id")"
     Log debug "User ID encoded as '$user_id'"
     s_user_create_url_params[user_id]="$user_id"
     Log debug "URL 'user_id' param set to '${s_user_create_url_params[user_id]}'"
-  read -r -p "New user password:" input_user_password
+  Read -r -p "New user password:" input_user_password
     s_user_create_body_params[password]="$input_user_password"
-  read -r -p "Make new user admin? (Y/n):" input_user_is_admin
+  Read -r -p "Make new user admin? (Y/n):" input_user_is_admin
   case "$input_user_is_admin" in
     [yY]|[Yy][Ee][Ss] ) s_user_create_body_params[admin]="true";;
     [Nn]|[Nn][Oo]     ) s_user_create_body_params[admin]="false";;

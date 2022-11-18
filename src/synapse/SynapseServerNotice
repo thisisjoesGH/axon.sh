@@ -25,16 +25,16 @@ SynapseServerNotice() {
 
   Log info "Sending server notice on homeserver ${config[homeserver]}"
 
-  read -r -p "Target user name:" input_user_name
+  Read -r -p "Target user name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
     s_server_notice_body_params[user_id]="$user_id"
     Log debug "URL 'user_id' param set to '${s_server_notice_body_params[user_id]}'"
-  read -r -p "Message type (m.room.message):" input_msg_type
+  Read -r -p "Message type (m.room.message):" input_msg_type
     if [[ ! -z "$input_msg_type" ]]; then
       s_server_notice_body_params[msg_type]="$input_msg_type"
     fi
-  read -r -p "Message body:" input_msg_body
+  Read -r -p "Message body:" input_msg_body
     s_server_notice_body_params[body]="$input_msg_body"
 
   DoSendNotice

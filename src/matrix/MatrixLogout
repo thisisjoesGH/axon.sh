@@ -34,7 +34,7 @@ MatrixLogout() {
     Prompt
   fi
 
-  read -r -p "$(echo -e -n '\nYour local session will be erased and your access token will be invalidated. Logout anyway? (Y/n)')" input_logout_confirm
+  Read -r -p "$(echo -e -n '\nYour local session will be erased and your access token will be invalidated. Logout anyway? (Y/n)')" input_logout_confirm
   case "$input_logout_confirm" in
     [yY]|[Yy][Ee][Ss] ) echo "Logging out...";;
     [Nn]|[Nn][Oo]     ) Prompt;;

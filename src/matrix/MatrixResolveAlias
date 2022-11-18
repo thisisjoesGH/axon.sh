@@ -38,7 +38,7 @@ MatrixResolveAlias() {
 
   [[ ! -z "$alias" ]] || {
     local input_alias
-    read -r -p "$(echo -e -n '\nAlias to resolve:')" input_alias
+    Read -r -p "$(echo -e -n '\nAlias to resolve:')" input_alias
     alias="$input_alias"
   }
   m_resolve_alias_url_params[alias]="$(EncodeUrl "$alias")"

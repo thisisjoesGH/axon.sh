@@ -25,7 +25,7 @@ SynapseDeleteUserRatelimit() {
   Log info "Deleting user ratelimit override on ${config[homeserver]}"
 
   [[ ! -z "$user" ]] || {
-    read -r -p "Username:" input_user
+    Read -r -p "Username:" input_user
       user="$input_user"
       Log debug "User is '$user'"
   }

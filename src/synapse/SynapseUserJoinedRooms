@@ -28,7 +28,7 @@ SynapseUserJoinedRooms() {
 
   Log info "Getting joined rooms for user on ${config[homeserver]}"
 
-  read -r -p "User name:" input_user_name
+  Read -r -p "User name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
     s_user_joined_rooms_url_params[user_id]="$user_id"

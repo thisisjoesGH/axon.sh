@@ -37,7 +37,7 @@ SynapseDeleteRoomStatus() {
   Log info "Getting room deletion job status from '${config[homeserver]}'"
 
   [[ ! -z "$job_id" ]] || {
-    read -r -p "Job ID:" input_job_id
+    Read -r -p "Job ID:" input_job_id
     job_id="$input_job_id"
   }
   s_delete_room_status_url_params[job_id]="$job_id"

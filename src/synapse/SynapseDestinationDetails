@@ -38,7 +38,7 @@ SynapseDestinationDetails() {
 
   Log info "Getting destination details from ${config[homeserver]}"
 
-  read -r -p "Destination:" input_destination
+  Read -r -p "Destination:" input_destination
     local destination="$input_destination"
     Log debug "Destination is '$destination'"
     s_destination_details_url_params[destination]="$destination"

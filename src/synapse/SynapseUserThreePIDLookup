@@ -33,13 +33,13 @@ SynapseUserThreePIDLookup() {
 
   [[ ! -z "$medium" ]] || {
   local input_medium
-  read -r -p "Medium:" input_medium
+  Read -r -p "Medium:" input_medium
     medium="$input_medium"
   }
 
   [[ ! -z "$address" ]] || {
   local input_address
-  read -r -p "Address:" input_address
+  Read -r -p "Address:" input_address
     address="$input_address"
   }
   s_user_threepid_lookup_url_params[medium]="$medium"

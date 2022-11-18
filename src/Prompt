@@ -7,7 +7,7 @@ Prompt() {
   history -n || Log warn "Failed to load history from '$HISTFILE'"
   while true; do
     local prompt="[axon]>"
-    read -e -r -p "$prompt" -a prompt_input
+    Read -e -r -p "$prompt" -a prompt_input
     history -s "${prompt_input[@]}" || Log warn "Failed to append entry to history"
     history -w || Log warn "Failed to write history to '$HISTFILE'"
     HandleCommand "${prompt_input[@]}"
