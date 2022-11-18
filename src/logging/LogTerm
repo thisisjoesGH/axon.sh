@@ -8,7 +8,7 @@ LogTerm() {
   local verbosity="${config[verbosity]^^}"
 
   DoLogTerm() {
-    echo "$term_log_type - $term_log_message"
+    echo "$term_log_type - $term_log_message" >&2
   }
 
   case $term_log_type in
