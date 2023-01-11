@@ -1,0 +1,25 @@
+# Copyright (C) 2023 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SetQueryString() {
+  local -n __SetQueryString_parameters="$1"
+  Log debug "Parameters are '${__SetQueryString_parameters[*]}'"
+  local -n __SetQueryString_url="$2"
+  Log debug "URL is '$__SetQueryString_url'"
+
+  local counter='0'
+  local delimiter='?'
+  local query_string
+  local encoded_param
+  for param in "${!__SetQueryString_parameters[@]}"; do
+    # use correct delimiter if there is more than 1 parameter
+    (( $counter >= 1 )) && delimiter="&"
+    encoded_param="$( EncodeUrl ${__SetQueryString_parameters[$param]} )"
+    Log debug "Encoded parameter is '$encoded_param'"
+    query_string+="${delimiter}${param}=${encoded_param}"
+    (( counter++ ))
+  done
+  Log debug "Query string is '$query_string'"
+
+  __SetQueryString_url+="$query_string"
+}
