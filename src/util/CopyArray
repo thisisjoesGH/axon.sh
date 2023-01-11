@@ -1,0 +1,14 @@
+# Copyright (C) 2023 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+CopyArray() {
+  local -n __CopyArray_source_array="$1"
+  local -n __CopyArray_new_array="$2"
+
+  Log debug "Copying source array '${__CopyArray_source_array[*]}'"
+  for i in "${!__CopyArray_source_array[@]}"; do
+    __CopyArray_new_array[$i]="${__CopyArray_source_array[$i]}"
+  done
+
+  Log debug "New array is '${__CopyArray_new_array[*]}'"
+}
