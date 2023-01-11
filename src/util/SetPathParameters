@@ -7,11 +7,14 @@ SetPathParameters() {
 
   local parameter_name
   local parameter_value
+  local encoded_parameter
   for i in "${!__SetPath_parameters[@]}"; do
     parameter_name="${i^^}"
     Log debug "Parameter name to match is '$parameter_name'"
     parameter_value="${__SetPath_parameters[$i]}"
     Log debug "Parameter value is '$parameter_value'"
-    __SetPath_path="${__SetPath_path/"$parameter_name"/"$parameter_value"}"
+    encoded_parameter="$( EncodeUrl "$parameter_value" )"
+    Log debug "Encoded parameter is '$encoded_parameter'"
+    __SetPath_path="${__SetPath_path/"$parameter_name"/"$encoded_parameter"}"
   done
 }
