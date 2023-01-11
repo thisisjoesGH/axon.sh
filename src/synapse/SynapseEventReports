@@ -1,60 +1,74 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseEventReports() {
   Log debug "Got args '$*'"
 
   if [[ "$1" == 'detail' ]]; then
+    # TODO implement this function
     SynapseEventReportsDetail "${@:1}" || return 1
     return 0
   fi
 
-  local limit="$1"
-  local from="$2"
-
-  DoGetEventReports() {
-    local -A params=(
-      [method]="${s_event_reports_api[method]}"
-      [path]="${s_event_reports_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(event_reports next_token total)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "Event reports:\n${values[event_reports]}"
-    echo "Total: ${values[total]}"
-    if (( "${values[next_token]}" > 0 )); then
-      local input_paginate
-      Read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
-        case "$input_paginate" in
-          [Nn] ) SynapseEventReports "$limit" "${values[next_token]}";;
-          [Rr] ) return 0;;
-          *    ) return 0;;
-        esac
-    fi
-  }
+  # copy endpoint map to local map
+  local -A endpoint
+  CopyArray s_event_reports_api endpoint
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_event_reports_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_event_reports_api[minimum_version]}" || return 1
+  CheckServerSupport "${endpoint[minimum_version]}" || return 1
 
   Log info "Getting event reports from ${config[homeserver]}"
 
+  # ask for limit if not passed
+  local limit="$1"
   [[ ! -z "$limit" ]] || {
     local input_limit
     Read -r -p "Maximum reports to return at once:" input_limit
       limit="$input_limit"
   }
+  url_params[limit]="$limit"
+  Log debug "Limit is '${url_params[limit]}'"
 
-  [[ ! -z "$from" ]] && s_event_reports_url_params[from]="$from"
-  s_event_reports_url_params[limit]="$limit"
-  Log debug "Limit is '${s_event_reports_url_params[limit]}'"
+  # use default `from` value if not passed
+  local from="$2"
+  [[ ! -z "$from" ]] && url_params[from]="$from"
+  Log debug "From is '${url_params[from]}'"
 
-  DefineSynapseEndpoints
-  DoGetEventReports
+  SetQueryString url_params endpoint[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="${endpoint[method]}"
+    [path]="${endpoint[path]}"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  # get the values for the keys we are interested in
+  local -a keys=(event_reports next_token total)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  # output
+  echo -e "Event reports:\n${values[event_reports]}"
+  echo "Total: ${values[total]}"
+  Log debug "Next token is '${values[next_token]}'"
+  # paginate if necessary
+  if (( "${values[next_token]}" > 0 )); then
+    echo "Remaining: $(( ${values[total]} - ${values[next_token]} ))"
+    local input_paginate
+    Read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+      case "$input_paginate" in
+        [Nn] ) SynapseEventReports "$limit" "${values[next_token]}";;
+        [Rr] ) return 0;;
+        *    ) return 0;;
+      esac
+  fi
 }
