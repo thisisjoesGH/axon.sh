@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseSetUserRatelimit() {
@@ -8,21 +8,31 @@ SynapseSetUserRatelimit() {
   local messages_per_second="$2"
   local burst_count="$3"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_set_user_ratelimit_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_set_user_ratelimit_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_set_user_ratelimit_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Setting ratelimit for user on ${config[homeserver]}"
 
+  # input
   [[ ! -z "$user" ]] || {
+    local input_user
     Read -r -p "Username:" input_user
       user="$input_user"
       Log debug "User is '$user'"
   }
   local mxid="@${user}:${config[homeserver]}"
-  s_set_user_ratelimit_url_params[user_id]="$(EncodeUrl "$mxid")"
-  Log debug "URL 'user_id' param set to '${s_set_user_ratelimit_url_params[user_id]}'"
+  url_params[user_id]="$mxid"
+  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   [[ ! -z "$messages_per_second" ]] || {
+    local input_messages_per_second
     Read -r -p "Max messages per second:" input_messages_per_second
       messages_per_second="$input_messages_per_second"
   }
@@ -30,31 +40,38 @@ SynapseSetUserRatelimit() {
   Log debug "Body 'messages_per_second' param set to '${s_set_user_ratelimit_body_params[messages_per_second]}'"
 
   [[ ! -z "$burst_count" ]] || {
+    local input_burst_count
     Read -r -p "Burst count:" input_burst_count
       burst_count="$input_burst_count"
   }
   s_set_user_ratelimit_body_params[burst_count]="$burst_count"
   Log debug "Body 'burst_count' param set to '${s_set_user_ratelimit_body_params[burst_count]}'"
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # construct request body
   local object
   ConstructObject s_set_user_ratelimit object || return 1
+
+  # set request parameters
   local -A params=(
-    [method]="${s_set_user_ratelimit_api[method]}"
-    [path]="${s_set_user_ratelimit_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(messages_per_second burst_count)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "\nNew ratelimit for '$mxid'"
   echo "Max messages per second: ${values[messages_per_second]}"
   echo "Burst count: ${values[burst_count]}"

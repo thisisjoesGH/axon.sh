@@ -1,26 +1,35 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseVersion() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_version_api api
+
   CheckLoginStatus || return 1
 
+  # only proceed if we have a configured homeserver
   if [[ ! -z "${config[homeserver]}" ]]; then
+    # set request parameters
     local -A params=(
-      [method]="${s_version_api[method]}"
-      [path]="${s_version_api[path]}"
+      [method]="${api[method]}"
+      [path]="${api[path]}"
     )
+    # make request
     local response
     Request params response || {
       HandleMatrixError response
       return 1
     }
 
+    # get key values
     local -a keys=(server_version python_version)
     local -A values
     ProcessResponse response keys values || return 1
 
+    # output
     echo "Server version: ${values[server_version]}"
     echo "Python version: ${values[python_version]}"
   else

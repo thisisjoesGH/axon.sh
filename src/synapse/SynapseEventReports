@@ -10,15 +10,15 @@ SynapseEventReports() {
     return 0
   fi
 
-  # copy endpoint map to local map
-  local -A endpoint
-  CopyArray s_event_reports_api endpoint
+  # copy api map to local map
+  local -A api
+  CopyArray s_event_reports_api api
   # copy url parameters to local map
   local -A url_params
   CopyArray s_event_reports_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${endpoint[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Getting event reports from ${config[homeserver]}"
 
@@ -37,12 +37,12 @@ SynapseEventReports() {
   [[ ! -z "$from" ]] && url_params[from]="$from"
   Log debug "From is '${url_params[from]}'"
 
-  SetQueryString url_params endpoint[path]
+  SetQueryString url_params api[path]
 
   # set request parameters
   local -A params=(
-    [method]="${endpoint[method]}"
-    [path]="${endpoint[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
   # make request
   local response

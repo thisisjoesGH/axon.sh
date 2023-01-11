@@ -1,37 +1,50 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDestinationDetails() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_destination_details_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_destination_details_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_destination_details_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Getting destination details from ${config[homeserver]}"
 
+  # input
+  local input_destination
   Read -r -p "Destination:" input_destination
     ValidateInput host "$input_destination" || return 1
     local destination="$input_destination"
     Log debug "Destination is '$destination'"
-    s_destination_details_url_params[destination]="$destination"
-    Log debug "URL 'destination' param set to '${s_destination_details_url_params[destination]}'"
+    url_params[destination]="$destination"
+    Log debug "URL 'destination' param set to '${url_params[destination]}'"
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # set request parameters
   local -A params=(
-    [method]="${s_destination_details_api[method]}"
-    [path]="${s_destination_details_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "\nDestination: ${values[destination]}"
   if [[ "${values[failure_ts]}" != "null" ]]; then
     echo -e "Failed: true"

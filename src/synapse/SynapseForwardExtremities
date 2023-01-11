@@ -11,8 +11,16 @@ SynapseForwardExtremities() {
 
   local room="$1"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_forward_extremities_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_forward_extremities_url_params url_params
+
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_forward_extremities_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Checking forward extremities on ${config[homeserver]}"
 
@@ -21,13 +29,12 @@ SynapseForwardExtremities() {
       room="$(EncodeUrl "$input_room")"
       Log debug "Room is '$room'"
   }
-  s_forward_extremities_url_params[room_id_or_alias]="$room"
-  Log debug "URL 'room_id_or_alias' param set to '${s_forward_extremities_url_params[room_id_or_alias]}'"
+  url_params[room_id_or_alias]="$room"
+  Log debug "URL 'room_id_or_alias' param set to '${url_params[room_id_or_alias]}'"
 
-  DefineSynapseEndpoints
   local -A params=(
-    [method]="${s_forward_extremities_api[method]}"
-    [path]="${s_forward_extremities_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
   local response
   Request params response || {

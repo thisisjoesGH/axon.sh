@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapsePurgeHistory() {
@@ -9,45 +9,62 @@ SynapsePurgeHistory() {
     return 0
   fi
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_purge_history_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_purge_history_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_purge_history_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Purging history from ${config[homeserver]}"
 
+  # input
+  local input_room_id
   Read -r -p "Room ID:" input_room_id
-    local room_id="$(EncodeUrl "$input_room_id")"
+    local room_id="$input_room_id"
     Log debug "Room ID is '$room_id'"
-    s_purge_history_url_params[room_id]="$room_id"
-    Log debug "URL 'room_id' param set to '${s_purge_history_url_params[room_id]}'"
+    url_params[room_id]="$room_id"
+    Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
+  local input_timestamp
   Read -r -p "Relative date or timestamp:" input_timestamp
     local timestamp="$input_timestamp"
     GetUnixTimestampMs "timestamp" || return 1
     Log debug "Unix timestamp is '$timestamp'"
-    s_purge_history_body_params[purge_up_to_ts]="$timestamp"
+    url_params[purge_up_to_ts]="$timestamp"
+  local input_delete_local_events
   Read -r -p "Delete local events? (y/N):" input_delete_local_events
     case "$input_delete_local_events" in
       [yY]|[Yy][Ee][Ss] ) s_purge_history_body_params[delete_local_events]="true";;
       [Nn]|[Nn][Oo]     ) s_purge_history_body_params[delete_local_events]="false";;
     esac
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
+
+  # construct request body
   local object
   ConstructObject s_purge_history object || return 1
 
+  # set request parameters
   local -A params=(
-    [method]="${s_purge_history_api[method]}"
-    [path]="${s_purge_history_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(purge_id)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "Purge Job ID: ${values[purge_id]}\n"
 }

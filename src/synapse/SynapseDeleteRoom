@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDeleteRoom() {
@@ -9,16 +9,23 @@ SynapseDeleteRoom() {
     return 0
   fi
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_delete_room_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_delete_room_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_delete_room_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Deleting room from ${config[homeserver]}"
 
+  # input
   Read -r -p "Room ID:" input_room_id
-    local room_id="$(EncodeUrl "$input_room_id")"
-    Log debug "Room ID is '$room_id'"
-    s_delete_room_url_params[room_id]="$room_id"
-    Log debug "URL 'room_id' param set to '${s_delete_room_url_params[room_id]}'"
+    Log debug "Room ID is '$input_room_id'"
+    url_params[room_id]="$input_room_id"
+    Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
   Read -r -p "Block users from rejoining the room? (y/N):" input_block_user_joins
     case "$input_block_user_joins" in
       [yY]|[Yy][Ee][Ss] ) s_delete_room_body_params[block]="true";;
@@ -42,25 +49,30 @@ SynapseDeleteRoom() {
       [Nn]|[Nn][Oo]|*   ) ;;
     esac
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # construct request body
   local object
   ConstructObject s_delete_room object || return 1
 
+  # set request parameters
   local -A params=(
-    [method]="${s_delete_room_api[method]}"
-    [path]="${s_delete_room_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(delete_id)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "Deletion Job ID: ${values[delete_id]}\n"
 }

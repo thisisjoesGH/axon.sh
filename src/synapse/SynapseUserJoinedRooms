@@ -1,36 +1,49 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserJoinedRooms() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_joined_rooms_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_joined_rooms_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_user_joined_rooms_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Getting joined rooms for user on ${config[homeserver]}"
 
+  # input
+  local input_user_name
   Read -r -p "User name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
-    s_user_joined_rooms_url_params[user_id]="$user_id"
-    Log debug "URL 'user_id' param set to '${s_user_joined_rooms_url_params[user_id]}'"
+    url_params[user_id]="$user_id"
+    Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # set request parameters
   local -A params=(
-    [method]="${s_user_joined_rooms_api[method]}"
-    [path]="${s_user_joined_rooms_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(joined_rooms total)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "Joined rooms:\n${values[joined_rooms]}"
   echo "Total: ${values[total]}"
 }

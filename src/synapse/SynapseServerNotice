@@ -1,34 +1,45 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseServerNotice() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_server_notice_api api
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_server_notice_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Sending server notice on homeserver ${config[homeserver]}"
 
+  # input
+  local input_user_name
   Read -r -p "Target user name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
     s_server_notice_body_params[user_id]="$user_id"
-    Log debug "URL 'user_id' param set to '${s_server_notice_body_params[user_id]}'"
+    Log debug "Body 'user_id' param set to '${s_server_notice_body_params[user_id]}'"
+  local input_msg_type
   Read -r -p "Message type (m.room.message):" input_msg_type
     if [[ ! -z "$input_msg_type" ]]; then
       s_server_notice_body_params[msg_type]="$input_msg_type"
     fi
+  local input_msg_body
   Read -r -p "Message body:" input_msg_body
     s_server_notice_body_params[body]="$input_msg_body"
 
+  # construct request body
   local object
   ConstructObject s_server_notice object || return 1
 
+  # set request parameters
   local -A params=(
-    [method]="${s_server_notice_api[method]}"
-    [path]="${s_server_notice_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response

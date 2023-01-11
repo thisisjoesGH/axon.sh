@@ -1,27 +1,34 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserShadowban() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_shadowban_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_shadowban_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_user_shadowban_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Shadowbanning user on homeserver ${config[homeserver]}"
 
+  # input
+  local input_user_name
   Read -r -p "Username to shadowban:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
-    local user_id="$(EncodeUrl "$user_id")"
-    Log debug "User ID encoded as '$user_id'"
-    s_user_shadowban_url_params[user_id]="$user_id"
-    Log debug "URL 'user_id' param set to '${s_user_shadowban_url_params[user_id]}'"
+    url_params[user_id]="$user_id"
+    Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
     local -A params=(
-      [method]="${s_user_shadowban_api[method]}"
-      [path]="${s_user_shadowban_api[path]}"
+      [method]="${api[method]}"
+      [path]="${api[path]}"
     )
     local response
     Request params response || {

@@ -1,39 +1,51 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserCreate() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_create_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_create_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_user_create_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Creating new user on homeserver ${config[homeserver]}"
 
+  # input
+  local input_user_name
   Read -r -p "New user name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
-    local user_id="$(EncodeUrl "$user_id")"
-    Log debug "User ID encoded as '$user_id'"
-    s_user_create_url_params[user_id]="$user_id"
-    Log debug "URL 'user_id' param set to '${s_user_create_url_params[user_id]}'"
+    url_params[user_id]="$user_id"
+    Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  local input_user_password
   Read -r -p "New user password:" input_user_password
     s_user_create_body_params[password]="$input_user_password"
+  local input_user_is_admin
   Read -r -p "Make new user admin? (Y/n):" input_user_is_admin
   case "$input_user_is_admin" in
     [yY]|[Yy][Ee][Ss] ) s_user_create_body_params[admin]="true";;
     [Nn]|[Nn][Oo]     ) s_user_create_body_params[admin]="false";;
   esac
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # construct request body
   local object
   ConstructObject s_user_create object || return 1
 
+  # set request parameters
   local -A params=(
-    [method]="${s_user_create_api[method]}"
-    [path]="${s_user_create_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response

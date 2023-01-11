@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserRatelimit() {
@@ -11,36 +11,49 @@ SynapseUserRatelimit() {
 
   local user="$1"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_ratelimit_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_ratelimit_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_user_ratelimit_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Getting ratelimit for user on ${config[homeserver]}"
 
+  # ask for user if not passed
   [[ ! -z "$user" ]] || {
+    local input_user
     Read -r -p "Username:" input_user
       user="$input_user"
       Log debug "User is '$user'"
   }
   local mxid="@${user}:${config[homeserver]}"
-  s_user_ratelimit_url_params[user_id]="$(EncodeUrl "$mxid")"
-  Log debug "URL 'user_id' param set to '${s_user_ratelimit_url_params[user_id]}'"
+  url_params[user_id]="$mxid"
+  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # set request parameters
   local -A params=(
-    [method]="${s_user_ratelimit_api[method]}"
-    [path]="${s_user_ratelimit_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(messages_per_second burst_count)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "\nRatelimit for '$mxid'"
   echo "Max messages per second: ${values[messages_per_second]}"
   echo "Burst count: ${values[burst_count]}"

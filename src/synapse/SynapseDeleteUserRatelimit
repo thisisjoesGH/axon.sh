@@ -1,30 +1,40 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDeleteUserRatelimit() {
   Log debug "Got args '$*'"
   local user="$1"
 
+  # copy api map to local map
+  local -A api
+  CopyArray s_delete_user_ratelimit_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_delete_user_ratelimit_url_params url_params
+
   CheckLoginStatus || return 1
-  CheckServerSupport "${s_delete_user_ratelimit_api[minimum_version]}" || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
 
   Log info "Deleting user ratelimit override on ${config[homeserver]}"
 
+  # ask for user if not passed
   [[ ! -z "$user" ]] || {
     Read -r -p "Username:" input_user
       user="$input_user"
       Log debug "User is '$user'"
   }
   local mxid="@${user}:${config[homeserver]}"
-  s_delete_user_ratelimit_url_params[user_id]="$(EncodeUrl "$mxid")"
-  Log debug "URL 'user_id' param set to '${s_delete_user_ratelimit_url_params[user_id]}'"
+  url_params[user_id]="$mxid"
+  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
-  DefineSynapseEndpoints
+  SetPathParameters url_params api[path]
 
+  # set request parameters
   local -A params=(
-    [method]="${s_delete_user_ratelimit_api[method]}"
-    [path]="${s_delete_user_ratelimit_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response

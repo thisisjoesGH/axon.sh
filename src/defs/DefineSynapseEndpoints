@@ -34,14 +34,14 @@ DefineSynapseEndpoints() {
 
   s_destination_details_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v1/federation/destinations/${s_destination_details_url_params[destination]}"
+    [path]="/_synapse/admin/v1/federation/destinations/DESTINATION"
     [url_params]="s_destination_details_url_params"
     [body_params]=""
   )
 
   s_destination_reset_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/federation/destinations/${s_destination_reset_url_params[destination]}/reset_connection"
+    [path]="/_synapse/admin/v1/federation/destinations/DESTINATION/reset_connection"
     [url_params]="s_destination_reset_url_params"
     [body_params]=""
     [minimum_version]="1.52.0rc1"
@@ -63,35 +63,35 @@ DefineSynapseEndpoints() {
 
   s_purge_history_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/purge_history/${s_purge_history_url_params[room_id]}"
+    [path]="/_synapse/admin/v1/purge_history/ROOM_ID"
     [url_params]="s_purge_history_url_params"
     [body_params]="s_purge_history_body_params"
   )
 
   s_purge_history_status_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v1/purge_history_status/${s_purge_history_status_url_params[job_id]}"
+    [path]="/_synapse/admin/v1/purge_history_status/JOB_ID"
     [url_params]="s_purge_history_status_url_params"
     [body_params]=""
   )
 
   s_delete_room_api=(
     [method]="DELETE"
-    [path]="/_synapse/admin/v2/rooms/${s_delete_room_url_params[room_id]}"
+    [path]="/_synapse/admin/v2/rooms/ROOM_ID"
     [url_params]="s_delete_room_url_params"
     [body_params]="s_delete_room_body_params"
   )
 
   s_delete_room_status_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v2/rooms/delete_status/${s_delete_room_status_url_params[job_id]}"
+    [path]="/_synapse/admin/v2/rooms/delete_status/JOB_ID"
     [url_params]="s_delete_room_status_url_params"
     [body_params]=""
   )
 
   s_forward_extremities_api=(
     [method]="GET"
-    [path]='/_synapse/admin/v1/rooms/'"${s_forward_extremities_url_params[room_id_or_alias]}"'/forward_extremities'
+    [path]='/_synapse/admin/v1/rooms/ROOM_ID_OR_ALIAS/forward_extremities'
     [url_params]="s_forward_extremities_url_params"
     [body_params]=""
     [minimum_version]="1.27.0rc1"
@@ -99,7 +99,7 @@ DefineSynapseEndpoints() {
 
   s_delete_forward_extremities_api=(
     [method]="DELETE"
-    [path]='/_synapse/admin/v1/rooms/'"${s_delete_forward_extremities_url_params[room_id_or_alias]}"'/forward_extremities'
+    [path]='/_synapse/admin/v1/rooms/ROOM_ID_OR_ALIAS/forward_extremities'
     [url_params]="s_delete_forward_extremities_url_params"
     [body_params]=""
     [minimum_version]="1.27.0rc1"
@@ -107,21 +107,21 @@ DefineSynapseEndpoints() {
 
   s_user_query_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v2/users/${s_user_query_url_params[user_id]}"
+    [path]="/_synapse/admin/v2/users/USER_ID"
     [url_params]="s_user_query_url_params"
     [body_params]=""
   )
 
   s_user_joined_rooms_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v1/users/${s_user_joined_rooms_url_params[user_id]}/joined_rooms"
+    [path]="/_synapse/admin/v1/users/USER_ID/joined_rooms"
     [url_params]="s_user_joined_rooms_url_params"
     [body_params]=""
   )
 
   s_user_threepid_lookup_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v1/threepid/${s_user_threepid_lookup_url_params[medium]}/users/${s_user_threepid_lookup_url_params[address]}"
+    [path]="/_synapse/admin/v1/threepid/MEDIUM/users/ADDRESS"
     [url_params]="s_user_threepid_lookup_url_params"
     [body_params]=""
     [minimum_version]="1.72.0rc1"
@@ -129,21 +129,21 @@ DefineSynapseEndpoints() {
 
   s_user_create_api=(
     [method]="PUT"
-    [path]="/_synapse/admin/v2/users/${s_user_create_url_params[user_id]}"
+    [path]="/_synapse/admin/v2/users/USER_ID"
     [url_params]="s_user_create_url_params"
     [body_params]="s_user_create_body_params"
   )
 
   s_user_reset_password_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/reset_password/${s_user_reset_password_url_params[user_id]}"
+    [path]="/_synapse/admin/v1/reset_password/USER_ID"
     [url_params]="s_user_reset_password_url_params"
     [body_params]="s_user_reset_password_body_params"
   )
 
   s_user_ratelimit_api=(
     [method]="GET"
-    [path]="/_synapse/admin/v1/users/${s_user_ratelimit_url_params[user_id]}/override_ratelimit"
+    [path]="/_synapse/admin/v1/users/USER_ID/override_ratelimit"
     [url_params]="s_user_ratelimit_url_params"
     [body_params]=""
     [minimum_version]="1.32.0rc1"
@@ -151,7 +151,7 @@ DefineSynapseEndpoints() {
 
   s_set_user_ratelimit_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/users/${s_set_user_ratelimit_url_params[user_id]}/override_ratelimit"
+    [path]="/_synapse/admin/v1/users/USER_ID/override_ratelimit"
     [url_params]="s_set_user_ratelimit_url_params"
     [body_params]="s_set_user_ratelimit_body_params"
     [minimum_version]="1.32.0rc1"
@@ -159,7 +159,7 @@ DefineSynapseEndpoints() {
 
   s_delete_user_ratelimit_api=(
     [method]="DELETE"
-    [path]="/_synapse/admin/v1/users/${s_delete_user_ratelimit_url_params[user_id]}/override_ratelimit"
+    [path]="/_synapse/admin/v1/users/USER_ID/override_ratelimit"
     [url_params]="s_delete_user_ratelimit_url_params"
     [body_params]=""
     [minimum_version]="1.32.0rc1"
@@ -167,21 +167,21 @@ DefineSynapseEndpoints() {
 
   s_user_deactivate_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/deactivate/${s_user_deactivate_url_params[user_id]}"
+    [path]="/_synapse/admin/v1/deactivate/USER_ID"
     [url_params]="s_user_deactivate_url_params"
     [body_params]="s_user_deactivate_body_params"
   )
- 
+
   s_user_shadowban_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/users/${s_user_shadowban_url_params[user_id]}/shadow_ban"
+    [path]="/_synapse/admin/v1/users/USER_ID/shadow_ban"
     [url_params]="s_user_shadowban_url_params"
     [body_params]=""
   )
 
   s_room_membership_api=(
     [method]="POST"
-    [path]="/_synapse/admin/v1/join/${s_room_membership_url_params[room_id_or_alias]}"
+    [path]="/_synapse/admin/v1/join/ROOM_ID_OR_ALIAS"
     [url_params]="s_room_membership_url_params"
     [body_params]=""
   )
