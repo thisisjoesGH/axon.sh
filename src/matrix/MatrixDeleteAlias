@@ -5,18 +5,6 @@ MatrixDeleteAlias() {
   Log debug "Got args '$*'"
   local alias="$1"
 
-  DoDeleteAlias() {
-    local -A params=(
-      [method]="${m_delete_alias_api[method]}"
-      [path]="${m_delete_alias_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-  }
-
   CheckLoginStatus || return 1
   DefineMatrixParams
 
@@ -29,5 +17,14 @@ MatrixDeleteAlias() {
 
   ReadConfiguration
   DefineMatrixEndpoints
-  DoDeleteAlias
+
+  local -A params=(
+    [method]="${m_delete_alias_api[method]}"
+    [path]="${m_delete_alias_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
 }

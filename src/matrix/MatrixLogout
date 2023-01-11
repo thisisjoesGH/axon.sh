@@ -4,23 +4,6 @@
 MatrixLogout() {
   Log debug "Got args '$*'"
 
-  DoLogout() {
-    local -A params=(
-      [method]="${m_logout_api[method]}"
-      [path]="${m_logout_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    config[admin_user]=""
-    config[admin_token]=""
-    config[device_id]=""
-    WriteConfiguration
- }
-
   if [[ -z "${config[homeserver]}" ]]; then
     Log error "Failed to logout. No homeserver is configured."
     Prompt
@@ -42,5 +25,19 @@ MatrixLogout() {
 
   ReadConfiguration
   DefineMatrixEndpoints
-  DoLogout
+
+  local -A params=(
+    [method]="${m_logout_api[method]}"
+    [path]="${m_logout_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  config[admin_user]=""
+  config[admin_token]=""
+  config[device_id]=""
+  WriteConfiguration
 }

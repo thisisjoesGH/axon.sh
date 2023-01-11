@@ -6,22 +6,6 @@ MatrixCreateAlias() {
   local alias="$1"
   local room_id="$2"
 
-  DoCreateAlias() {
-    local object
-    ConstructObject m_create_alias object || return 1
-  
-    local -A params=(
-      [method]="${m_create_alias_api[method]}"
-      [path]="${m_create_alias_api[path]}"
-      [data]="$object"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-  }
-
   CheckLoginStatus || return 1
   DefineMatrixParams
 
@@ -41,5 +25,18 @@ MatrixCreateAlias() {
 
   ReadConfiguration
   DefineMatrixEndpoints
-  DoCreateAlias
+
+  local object
+  ConstructObject m_create_alias object || return 1
+
+  local -A params=(
+    [method]="${m_create_alias_api[method]}"
+    [path]="${m_create_alias_api[path]}"
+    [data]="$object"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
 }

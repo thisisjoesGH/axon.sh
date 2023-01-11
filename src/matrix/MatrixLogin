@@ -4,29 +4,6 @@
 MatrixLogin() {
   Log debug "Got args '$*'"
 
-  DoLogin() {
-    local object
-    ConstructObject m_login object || return 1
-
-    local -A params=(
-      [method]="${m_login_api[method]}"
-      [path]="${m_login_api[path]}"
-      [data]="$object"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(access_token)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    config[admin_token]="${values[access_token]}"
-    WriteConfiguration
- }
-
   local input_mxid
   local localpart
   local domainpart
@@ -55,7 +32,7 @@ MatrixLogin() {
       fi
     done
   else
-    echo "Access token alReady present"
+    echo "Access token already present"
     return 0;
   fi
   Read -r -p "$(echo -e -n '\nSave access token to local config file? (y/n)')" input_save_token_pref
@@ -72,5 +49,25 @@ MatrixLogin() {
   WriteConfiguration
   DefineMatrixEndpoints
   DefineMatrixParams
-  DoLogin
+
+  local object
+  ConstructObject m_login object || return 1
+
+  local -A params=(
+    [method]="${m_login_api[method]}"
+    [path]="${m_login_api[path]}"
+    [data]="$object"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(access_token)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  config[admin_token]="${values[access_token]}"
+  WriteConfiguration
 }

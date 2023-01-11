@@ -14,25 +14,6 @@ MatrixResolveAlias() {
 
   local alias="$1"
 
-  DoResolveAlias() {
-    local -A params=(
-      [method]="${m_resolve_alias_api[method]}"
-      [path]="${m_resolve_alias_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(room_id servers)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "\nRoom ID: ${values[room_id]}"
-    echo -e "Servers: ${values[servers]}\n"
-  }
-
   CheckLoginStatus || return 1
   DefineMatrixParams
 
@@ -45,5 +26,21 @@ MatrixResolveAlias() {
 
   ReadConfiguration
   DefineMatrixEndpoints
-  DoResolveAlias
+
+  local -A params=(
+    [method]="${m_resolve_alias_api[method]}"
+    [path]="${m_resolve_alias_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(room_id servers)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "\nRoom ID: ${values[room_id]}"
+  echo -e "Servers: ${values[servers]}\n"
 }

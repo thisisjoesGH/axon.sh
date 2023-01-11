@@ -4,25 +4,6 @@
 MatrixWhoAmI() {
   Log debug "Got args '$*'"
 
-  DoWhoAmI() {
-    local -A params=(
-      [method]="${m_whoami_api[method]}"
-      [path]="${m_whoami_api[path]}"
-      [keys]="user_id"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(user_id)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo "Authenticated as: ${values[user_id]}"
- }
-
   if [[ -z "${config[homeserver]}" ]]; then
     Log error "Failed to determine identity. No homeserver is configured."
     Prompt
@@ -37,5 +18,20 @@ MatrixWhoAmI() {
   fi
 
   DefineMatrixEndpoints
-  DoWhoAmI
+
+  local -A params=(
+    [method]="${m_whoami_api[method]}"
+    [path]="${m_whoami_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(user_id)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo "Authenticated as: ${values[user_id]}"
 }
