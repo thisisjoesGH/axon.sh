@@ -4,18 +4,6 @@
 SynapseUserShadowban() {
   Log debug "Got args '$*'"
 
-  DoUserShadowban() {
-    local -A params=(
-      [method]="${s_user_shadowban_api[method]}"
-      [path]="${s_user_shadowban_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_shadowban_api[minimum_version]}" || return 1
 
@@ -30,5 +18,14 @@ SynapseUserShadowban() {
     Log debug "URL 'user_id' param set to '${s_user_shadowban_url_params[user_id]}'"
 
   DefineSynapseEndpoints
-  DoUserShadowban
+
+    local -A params=(
+      [method]="${s_user_shadowban_api[method]}"
+      [path]="${s_user_shadowban_api[path]}"
+    )
+    local response
+    Request params response || {
+      HandleMatrixError response
+      return 1
+    }
 }

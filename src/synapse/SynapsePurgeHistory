@@ -9,28 +9,6 @@ SynapsePurgeHistory() {
     return 0
   fi
 
-  DoPurgeHistory() {
-    local object
-    ConstructObject s_purge_history object || return 1
-
-    local -A params=(
-      [method]="${s_purge_history_api[method]}"
-      [path]="${s_purge_history_api[path]}"
-      [data]="$object"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(purge_id)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "Purge Job ID: ${values[purge_id]}\n"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_purge_history_api[minimum_version]}" || return 1
 
@@ -53,5 +31,23 @@ SynapsePurgeHistory() {
     esac
 
   DefineSynapseEndpoints
-  DoPurgeHistory
+  local object
+  ConstructObject s_purge_history object || return 1
+
+  local -A params=(
+    [method]="${s_purge_history_api[method]}"
+    [path]="${s_purge_history_api[path]}"
+    [data]="$object"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(purge_id)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "Purge Job ID: ${values[purge_id]}\n"
 }

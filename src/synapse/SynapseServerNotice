@@ -4,22 +4,6 @@
 SynapseServerNotice() {
   Log debug "Got args '$*'"
 
-  DoSendNotice() {
-    local object
-    ConstructObject s_server_notice object || return 1
-
-    local -A params=(
-      [method]="${s_server_notice_api[method]}"
-      [path]="${s_server_notice_api[path]}"
-      [data]="$object"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_server_notice_api[minimum_version]}" || return 1
 
@@ -37,5 +21,17 @@ SynapseServerNotice() {
   Read -r -p "Message body:" input_msg_body
     s_server_notice_body_params[body]="$input_msg_body"
 
-  DoSendNotice
+  local object
+  ConstructObject s_server_notice object || return 1
+
+  local -A params=(
+    [method]="${s_server_notice_api[method]}"
+    [path]="${s_server_notice_api[path]}"
+    [data]="$object"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
 }

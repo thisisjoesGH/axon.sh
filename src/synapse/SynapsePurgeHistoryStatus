@@ -6,28 +6,6 @@ SynapsePurgeHistoryStatus() {
 
   local job_id="$1"
 
-  DoGetPurgeHistoryStatus() {
-    local -A params=(
-      [method]="${s_purge_history_status_api[method]}"
-      [path]="${s_purge_history_status_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(status error)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "Purge job status: ${values[status]}"
-    if [[ "${values[status]}" = "failed" ]]; then
-      echo -e "Error: '${values[error]}'"
-    fi
-    echo
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_purge_history_status_api[minimum_version]}" || return 1
 
@@ -41,5 +19,24 @@ SynapsePurgeHistoryStatus() {
   Log debug "URL 'job_id' param set to '${s_purge_history_status_url_params[job_id]}'"
 
   DefineSynapseEndpoints
-  DoGetPurgeHistoryStatus
+
+  local -A params=(
+    [method]="${s_purge_history_status_api[method]}"
+    [path]="${s_purge_history_status_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(status error)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "Purge job status: ${values[status]}"
+  if [[ "${values[status]}" = "failed" ]]; then
+    echo -e "Error: '${values[error]}'"
+  fi
+  echo
 }

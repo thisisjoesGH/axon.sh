@@ -7,24 +7,6 @@ SynapseUserThreePIDLookup() {
   local medium="$1"
   local address="$2"
 
-  DoThreePIDLookup() {
-    local -A params=(
-      [method]="${s_user_threepid_lookup_api[method]}"
-      [path]="${s_user_threepid_lookup_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(user_id)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "Associated user:\n${values[user_id]}"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_threepid_lookup_api[minimum_version]}" || return 1
 
@@ -48,5 +30,20 @@ SynapseUserThreePIDLookup() {
   Log debug "URL 'address' param set to '${s_user_threepid_lookup_url_params[address]}'"
 
   DefineSynapseEndpoints
-  DoThreePIDLookup
+
+  local -A params=(
+    [method]="${s_user_threepid_lookup_api[method]}"
+    [path]="${s_user_threepid_lookup_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(user_id)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "Associated user:\n${values[user_id]}"
 }

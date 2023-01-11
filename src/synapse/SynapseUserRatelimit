@@ -11,28 +11,6 @@ SynapseUserRatelimit() {
 
   local user="$1"
 
-  DoGetUserRatelimit() {
-    local -A params=(
-      [method]="${s_user_ratelimit_api[method]}"
-      [path]="${s_user_ratelimit_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(messages_per_second burst_count)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "\nRatelimit for '$mxid'"
-    echo "Max messages per second: ${values[messages_per_second]}"
-    echo "Burst count: ${values[burst_count]}"
-  }
-
-  DefineSynapseEndpoints
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_ratelimit_api[minimum_version]}" || return 1
 
@@ -48,5 +26,22 @@ SynapseUserRatelimit() {
   Log debug "URL 'user_id' param set to '${s_user_ratelimit_url_params[user_id]}'"
 
   DefineSynapseEndpoints
-  DoGetUserRatelimit
+
+  local -A params=(
+    [method]="${s_user_ratelimit_api[method]}"
+    [path]="${s_user_ratelimit_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(messages_per_second burst_count)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "\nRatelimit for '$mxid'"
+  echo "Max messages per second: ${values[messages_per_second]}"
+  echo "Burst count: ${values[burst_count]}"
 }

@@ -4,25 +4,6 @@
 SynapseUserJoinedRooms() {
   Log debug "Got args '$*'"
 
-  DoGetJoinedRooms() {
-    local -A params=(
-      [method]="${s_user_joined_rooms_api[method]}"
-      [path]="${s_user_joined_rooms_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(joined_rooms total)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "Joined rooms:\n${values[joined_rooms]}"
-    echo "Total: ${values[total]}"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_joined_rooms_api[minimum_version]}" || return 1
 
@@ -35,5 +16,21 @@ SynapseUserJoinedRooms() {
     Log debug "URL 'user_id' param set to '${s_user_joined_rooms_url_params[user_id]}'"
 
   DefineSynapseEndpoints
-  DoGetJoinedRooms
+
+  local -A params=(
+    [method]="${s_user_joined_rooms_api[method]}"
+    [path]="${s_user_joined_rooms_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(joined_rooms total)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "Joined rooms:\n${values[joined_rooms]}"
+  echo "Total: ${values[total]}"
 }

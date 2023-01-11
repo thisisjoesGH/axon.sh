@@ -6,31 +6,6 @@ SynapseDeleteRoomStatus() {
 
   local job_id="$1"
 
-  DoGetDeleteRoomStatus() {
-    local -A params=(
-      [method]="${s_delete_room_status_api[method]}"
-      [path]="${s_delete_room_status_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "\nDeletion job status: ${values[status]}"
-    if [[ "${values[status]}" = "failed" ]]; then
-      echo -e "Error: ${values[error]}"
-    fi
-    echo -e "Kicked users: ${values[shutdown_room.kicked_users]}"
-    echo -e "Failed to kick users: ${values[shutdown_room.failed_to_kick_users]}"
-    echo -e "Local aliases found: ${values[shutdown_room.local_aliases]}"
-    echo -e "New room ID: ${values[shutdown_room.new_room_id]}\n"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_delete_room_status_api[minimum_version]}" || return 1
 
@@ -44,5 +19,27 @@ SynapseDeleteRoomStatus() {
   Log debug "URL 'job_id' param set to '${s_delete_room_status_url_params[job_id]}'"
 
   DefineSynapseEndpoints
-  DoGetDeleteRoomStatus
+
+  local -A params=(
+    [method]="${s_delete_room_status_api[method]}"
+    [path]="${s_delete_room_status_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "\nDeletion job status: ${values[status]}"
+  if [[ "${values[status]}" = "failed" ]]; then
+    echo -e "Error: ${values[error]}"
+  fi
+  echo -e "Kicked users: ${values[shutdown_room.kicked_users]}"
+  echo -e "Failed to kick users: ${values[shutdown_room.failed_to_kick_users]}"
+  echo -e "Local aliases found: ${values[shutdown_room.local_aliases]}"
+  echo -e "New room ID: ${values[shutdown_room.new_room_id]}\n"
 }

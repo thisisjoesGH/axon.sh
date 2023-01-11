@@ -11,25 +11,6 @@ SynapseForwardExtremities() {
 
   local room="$1"
 
-  DoCheckForwardExtremities() {
-    local -A params=(
-      [method]="${s_forward_extremities_api[method]}"
-      [path]="${s_forward_extremities_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(results count)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "Forward extremities:\n${values[results]}"
-    echo "Count: ${values[count]}"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_forward_extremities_api[minimum_version]}" || return 1
 
@@ -44,5 +25,20 @@ SynapseForwardExtremities() {
   Log debug "URL 'room_id_or_alias' param set to '${s_forward_extremities_url_params[room_id_or_alias]}'"
 
   DefineSynapseEndpoints
-  DoCheckForwardExtremities
+  local -A params=(
+    [method]="${s_forward_extremities_api[method]}"
+    [path]="${s_forward_extremities_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(results count)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "Forward extremities:\n${values[results]}"
+  echo "Count: ${values[count]}"
 }

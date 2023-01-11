@@ -4,7 +4,9 @@
 SynapseVersion() {
   Log debug "Got args '$*'"
 
-  GetVersion() {
+  CheckLoginStatus || return 1
+
+  if [[ ! -z "${config[homeserver]}" ]]; then
     local -A params=(
       [method]="${s_version_api[method]}"
       [path]="${s_version_api[path]}"
@@ -21,13 +23,6 @@ SynapseVersion() {
 
     echo "Server version: ${values[server_version]}"
     echo "Python version: ${values[python_version]}"
- }
-
-  CheckLoginStatus || return 1
-
-  if [[ ! -z "${config[homeserver]}" ]]; then
-    DefineSynapseEndpoints
-    GetVersion
   else
     Log error "Failed to get server version. No homeserver is configured."
   fi

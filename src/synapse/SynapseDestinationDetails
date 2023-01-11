@@ -4,35 +4,6 @@
 SynapseDestinationDetails() {
   Log debug "Got args '$*'"
 
-  DoGetDestinationDetails() {
-    local -A params=(
-      [method]="${s_destination_details_api[method]}"
-      [path]="${s_destination_details_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo -e "\nDestination: ${values[destination]}"
-    if [[ "${values[failure_ts]}" != "null" ]]; then
-      echo -e "Failed: true"
-      ConvertUnixTimestampMs "values[failure_ts]"
-      echo -e "Failed on: ${values[failure_ts]}"
-      ConvertUnixTimestampMs "values[retry_last_ts]"
-      echo -e "Last retried on: ${values[retry_last_ts]}"
-      echo -e "Retry interval: $(ConvertIntervalMs "${values[retry_interval]}")"
-    else
-      echo -e "Failed: false"
-    fi
-    echo -e "Last stream ordering: ${values[last_successful_stream_ordering]}"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_destination_details_api[minimum_version]}" || return 1
 
@@ -46,5 +17,31 @@ SynapseDestinationDetails() {
     Log debug "URL 'destination' param set to '${s_destination_details_url_params[destination]}'"
 
   DefineSynapseEndpoints
-  DoGetDestinationDetails
+
+  local -A params=(
+    [method]="${s_destination_details_api[method]}"
+    [path]="${s_destination_details_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo -e "\nDestination: ${values[destination]}"
+  if [[ "${values[failure_ts]}" != "null" ]]; then
+    echo -e "Failed: true"
+    ConvertUnixTimestampMs "values[failure_ts]"
+    echo -e "Failed on: ${values[failure_ts]}"
+    ConvertUnixTimestampMs "values[retry_last_ts]"
+    echo -e "Last retried on: ${values[retry_last_ts]}"
+    echo -e "Retry interval: $(ConvertIntervalMs "${values[retry_interval]}")"
+  else
+    echo -e "Failed: false"
+  fi
+  echo -e "Last stream ordering: ${values[last_successful_stream_ordering]}"
 }

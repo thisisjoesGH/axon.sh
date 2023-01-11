@@ -5,24 +5,6 @@ SynapseDeleteForwardExtremities() {
   Log debug "Got args '$*'"
   local room="$1"
 
-  DoDeleteForwardExtremities() {
-    local -A params=(
-      [method]="${s_delete_forward_extremities_api[method]}"
-      [path]="${s_delete_forward_extremities_api[path]}"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-
-    local -a keys=(deleted)
-    local -A values
-    ProcessResponse response keys values || return 1
-
-    echo "Deleted: ${values[deleted]}"
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_delete_forward_extremities_api[minimum_version]}" || return 1
 
@@ -38,5 +20,20 @@ SynapseDeleteForwardExtremities() {
   Log debug "URL 'room_id_or_alias' param set to '${s_delete_forward_extremities_url_params[room_id_or_alias]}'"
 
   DefineSynapseEndpoints
-  DoDeleteForwardExtremities
+
+  local -A params=(
+    [method]="${s_delete_forward_extremities_api[method]}"
+    [path]="${s_delete_forward_extremities_api[path]}"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  local -a keys=(deleted)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  echo "Deleted: ${values[deleted]}"
 }

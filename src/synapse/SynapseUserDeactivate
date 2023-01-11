@@ -4,22 +4,6 @@
 SynapseUserDeactivate() {
   Log debug "Got args '$*'"
 
-  DoUserDeactivate() {
-    local object
-    ConstructObject s_user_deactivate object || return 1
-
-    local -A params=(
-      [method]="${s_user_deactivate_api[method]}"
-      [path]="${s_user_deactivate_api[path]}"
-      [data]="$object"
-    )
-    local response
-    Request params response || {
-      HandleMatrixError response
-      return 1
-    }
-  }
-
   CheckLoginStatus || return 1
   CheckServerSupport "${s_user_deactivate_api[minimum_version]}" || return 1
 
@@ -44,5 +28,18 @@ SynapseUserDeactivate() {
     esac
 
   DefineSynapseEndpoints
-  DoUserDeactivate
+
+  local object
+  ConstructObject s_user_deactivate object || return 1
+
+  local -A params=(
+    [method]="${s_user_deactivate_api[method]}"
+    [path]="${s_user_deactivate_api[path]}"
+    [data]="$object"
+  )
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
 }
