@@ -40,7 +40,7 @@ ValidateInput() {
     ;;
 
     host     )
-      $( [[ "$input" =~ $hostname_pattern ]] || [[ "$input" =~ $ip_pattern ]]) || {
+      [[ "$input" =~ $hostname_pattern || "$input" =~ $ip_pattern ]] || {
         Log error "Expected hostname or IP literal but got '$input'."
         return 1
       }
