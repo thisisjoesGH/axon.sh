@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseForwardExtremities() {
@@ -24,28 +24,35 @@ SynapseForwardExtremities() {
 
   Log info "Checking forward extremities on ${config[homeserver]}"
 
+  # ask for room ID or alias if not passed
   [[ ! -z "$room" ]] || {
     Read -r -p "Room ID or alias:" input_room
-      room="$(EncodeUrl "$input_room")"
+      room="$input_room"
       Log debug "Room is '$room'"
   }
   url_params[room_id_or_alias]="$room"
   Log debug "URL 'room_id_or_alias' param set to '${url_params[room_id_or_alias]}'"
 
+  SetPathParameters url_params api[path]
+
+  # set request parameters
   local -A params=(
     [method]="${api[method]}"
     [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(results count)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo -e "Forward extremities:\n${values[results]}"
   echo "Count: ${values[count]}"
 }
