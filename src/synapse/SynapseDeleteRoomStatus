@@ -20,6 +20,7 @@ SynapseDeleteRoomStatus() {
 
   # ask for job ID if not passed
   [[ ! -z "$job_id" ]] || {
+    local input_job_id
     Read -r -p "Job ID:" input_job_id
     job_id="$input_job_id"
   }
