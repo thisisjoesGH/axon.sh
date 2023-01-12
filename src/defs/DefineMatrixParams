@@ -1,20 +1,20 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 DefineMatrixParams() {
-  declare -Ag m_login_params
+  declare -Ag m_login_body_params
   declare -Ag m_resolve_alias_url_params
   declare -Ag m_create_alias_url_params
   declare -Ag m_create_alias_body_params
   declare -Ag m_delete_alias_url_params
 
-  m_login_params=(
+  m_login_body_params=(
     [type]="m.login.password"
     [identifier]="m.id.user"
-    [user]="${config[admin_user]}"
-    [password]="$admin_password"
-    [token]="${config[admin_token]}"
-    [device_id]="${config[device_id]}"
+    [user]=""
+    [password]=""
+    [token]=""
+    [device_id]=""
   )
 
   m_resolve_alias_url_params=(
