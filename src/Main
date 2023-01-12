@@ -12,6 +12,8 @@ Main() {
   WriteConfiguration
   DefineStatusCodes
   DefineObjects
+  DefineMatrixParams
+  DefineMatrixEndpoints
   DefineSynapseParams
   DefineSynapseEndpoints
   CheckDependencies
