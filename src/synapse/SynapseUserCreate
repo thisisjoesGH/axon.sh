@@ -10,6 +10,9 @@ SynapseUserCreate() {
   # copy url parameters to local map
   local -A url_params
   CopyArray s_user_create_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_user_create_body_params body_params
 
   CheckLoginStatus || return 1
   CheckServerSupport "${api[minimum_version]}" || return 1
@@ -25,19 +28,19 @@ SynapseUserCreate() {
     Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
   local input_user_password
   Read -r -p "New user password:" input_user_password
-    s_user_create_body_params[password]="$input_user_password"
+    body_params[password]="$input_user_password"
   local input_user_is_admin
   Read -r -p "Make new user admin? (Y/n):" input_user_is_admin
   case "$input_user_is_admin" in
-    [yY]|[Yy][Ee][Ss] ) s_user_create_body_params[admin]="true";;
-    [Nn]|[Nn][Oo]     ) s_user_create_body_params[admin]="false";;
+    [yY]|[Yy][Ee][Ss] ) body_params[admin]="true";;
+    [Nn]|[Nn][Oo]     ) body_params[admin]="false";;
   esac
 
   SetPathParameters url_params api[path]
 
   # construct request body
   local object
-  ConstructObject s_user_create object || return 1
+  ConstructObject s_user_create body_params object || return 1
 
   # set request parameters
   local -A params=(

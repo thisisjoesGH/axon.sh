@@ -7,6 +7,9 @@ SynapseServerNotice() {
   # copy api map to local map
   local -A api
   CopyArray s_server_notice_api api
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_server_notice_body_params body_params
 
   CheckLoginStatus || return 1
   CheckServerSupport "${api[minimum_version]}" || return 1
@@ -18,20 +21,20 @@ SynapseServerNotice() {
   Read -r -p "Target user name:" input_user_name
     local user_id="@$input_user_name:${config[homeserver]}"
     Log debug "User ID is '$user_id'"
-    s_server_notice_body_params[user_id]="$user_id"
-    Log debug "Body 'user_id' param set to '${s_server_notice_body_params[user_id]}'"
+    body_params[user_id]="$user_id"
+    Log debug "Body 'user_id' param set to '${body_params[user_id]}'"
   local input_msg_type
   Read -r -p "Message type (m.room.message):" input_msg_type
     if [[ ! -z "$input_msg_type" ]]; then
-      s_server_notice_body_params[msg_type]="$input_msg_type"
+      body_params[msg_type]="$input_msg_type"
     fi
   local input_msg_body
   Read -r -p "Message body:" input_msg_body
-    s_server_notice_body_params[body]="$input_msg_body"
+    body_params[body]="$input_msg_body"
 
   # construct request body
   local object
-  ConstructObject s_server_notice object || return 1
+  ConstructObject s_server_notice body_params object || return 1
 
   # set request parameters
   local -A params=(

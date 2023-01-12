@@ -15,6 +15,9 @@ SynapsePurgeHistory() {
   # copy url parameters to local map
   local -A url_params
   CopyArray s_purge_history_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_purge_history_body_params body_params
 
   CheckLoginStatus || return 1
   CheckServerSupport "${api[minimum_version]}" || return 1
@@ -37,15 +40,15 @@ SynapsePurgeHistory() {
   local input_delete_local_events
   Read -r -p "Delete local events? (y/N):" input_delete_local_events
     case "$input_delete_local_events" in
-      [yY]|[Yy][Ee][Ss] ) s_purge_history_body_params[delete_local_events]="true";;
-      [Nn]|[Nn][Oo]     ) s_purge_history_body_params[delete_local_events]="false";;
+      [yY]|[Yy][Ee][Ss] ) body_params[delete_local_events]="true";;
+      [Nn]|[Nn][Oo]     ) body_params[delete_local_events]="false";;
     esac
 
   SetPathParameters url_params api[path]
 
   # construct request body
   local object
-  ConstructObject s_purge_history object || return 1
+  ConstructObject s_purge_history body_params object || return 1
 
   # set request parameters
   local -A params=(

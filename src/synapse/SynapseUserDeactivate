@@ -10,6 +10,9 @@ SynapseUserDeactivate() {
   # copy url parameters to local map
   local -A url_params
   CopyArray s_user_deactivate_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_user_deactivate_body_params body_params
 
   CheckLoginStatus || return 1
   CheckServerSupport "${api[minimum_version]}" || return 1
@@ -31,15 +34,15 @@ SynapseUserDeactivate() {
   local input_user_is_erased
   Read -r -p "Erase user profile? (Y/n):" input_user_is_erased
     case "$input_user_is_erased" in
-      [yY]|[Yy][Ee][Ss] ) s_user_deactivate_body_params[erase]="true";;
-      [Nn]|[Nn][Oo]     ) s_user_deactivate_body_params[erase]="false";;
+      [yY]|[Yy][Ee][Ss] ) body_params[erase]="true";;
+      [Nn]|[Nn][Oo]     ) body_params[erase]="false";;
     esac
 
   SetPathParameters url_params api[path]
 
   # construct request body
   local object
-  ConstructObject s_user_deactivate object || return 1
+  ConstructObject s_user_deactivate body_params object || return 1
 
   # set request parameters
   local -A params=(

@@ -14,6 +14,9 @@ SynapseSetUserRatelimit() {
   # copy url parameters to local map
   local -A url_params
   CopyArray s_set_user_ratelimit_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_set_user_ratelimit_body_params body_params
 
   CheckLoginStatus || return 1
   CheckServerSupport "${api[minimum_version]}" || return 1
@@ -36,22 +39,22 @@ SynapseSetUserRatelimit() {
     Read -r -p "Max messages per second:" input_messages_per_second
       messages_per_second="$input_messages_per_second"
   }
-  s_set_user_ratelimit_body_params[messages_per_second]="$messages_per_second"
-  Log debug "Body 'messages_per_second' param set to '${s_set_user_ratelimit_body_params[messages_per_second]}'"
+  body_params[messages_per_second]="$messages_per_second"
+  Log debug "Body 'messages_per_second' param set to '${body_params[messages_per_second]}'"
 
   [[ ! -z "$burst_count" ]] || {
     local input_burst_count
     Read -r -p "Burst count:" input_burst_count
       burst_count="$input_burst_count"
   }
-  s_set_user_ratelimit_body_params[burst_count]="$burst_count"
-  Log debug "Body 'burst_count' param set to '${s_set_user_ratelimit_body_params[burst_count]}'"
+  body_params[burst_count]="$burst_count"
+  Log debug "Body 'burst_count' param set to '${body_params[burst_count]}'"
 
   SetPathParameters url_params api[path]
 
   # construct request body
   local object
-  ConstructObject s_set_user_ratelimit object || return 1
+  ConstructObject s_set_user_ratelimit body_params object || return 1
 
   # set request parameters
   local -A params=(

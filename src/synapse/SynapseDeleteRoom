@@ -15,6 +15,9 @@ SynapseDeleteRoom() {
   # copy url parameters to local map
   local -A url_params
   CopyArray s_delete_room_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_delete_room_body_params body_params
 
   CheckLoginStatus || return 1
   CheckServerSupport "${api[minimum_version]}" || return 1
@@ -28,23 +31,23 @@ SynapseDeleteRoom() {
     Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
   Read -r -p "Block users from rejoining the room? (y/N):" input_block_user_joins
     case "$input_block_user_joins" in
-      [yY]|[Yy][Ee][Ss] ) s_delete_room_body_params[block]="true";;
-      [Nn]|[Nn][Oo]     ) s_delete_room_body_params[block]="false";;
+      [yY]|[Yy][Ee][Ss] ) body_params[block]="true";;
+      [Nn]|[Nn][Oo]     ) body_params[block]="false";;
     esac
   Read -r -p "Purge all events? (y/N):" input_purge_events
     case "$input_purge_events" in
-      [yY]|[Yy][Ee][Ss] ) s_delete_room_body_params[purge]="true";;
-      [Nn]|[Nn][Oo]     ) s_delete_room_body_params[purge]="false";;
+      [yY]|[Yy][Ee][Ss] ) body_params[purge]="true";;
+      [Nn]|[Nn][Oo]     ) body_params[purge]="false";;
     esac
   Read -r -p "Move removed users to new room? (y/N):" input_move_users
     case "$input_move_users" in
       [yY]|[Yy][Ee][Ss] )
         Read -r -p "New room user name:" input_new_room_user
-          s_delete_room_body_params[new_room_user_id]="$input_new_room_user"
+          body_params[new_room_user_id]="$input_new_room_user"
         Read -r -p "New room name:" input_room_name
-          s_delete_room_body_params[room_name]="$input_room_name"
+          body_params[room_name]="$input_room_name"
         Read -r -p "New room message:" input_message
-          s_delete_room_body_params[message]="$input_message"
+          body_params[message]="$input_message"
       ;;
       [Nn]|[Nn][Oo]|*   ) ;;
     esac
@@ -53,7 +56,7 @@ SynapseDeleteRoom() {
 
   # construct request body
   local object
-  ConstructObject s_delete_room object || return 1
+  ConstructObject s_delete_room body_params object || return 1
 
   # set request parameters
   local -A params=(
