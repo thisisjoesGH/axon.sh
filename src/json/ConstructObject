@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConstructObject() {
@@ -6,11 +6,9 @@ ConstructObject() {
 
   local object_to_construct="$1"
   Log debug "Constructing object for '$object_to_construct'"
-  local -n __ConstructObject_object="$2"
-  local -n api="${object_to_construct}_api"
-  Log debug "Using parameters for API '${!api}'"
-  local -n parameters
-  parameters="${api[body_params]}"
+  local -n __ConstructObject_params="$2"
+  local -n __ConstructObject_object="$3"
+  local -n parameters="__ConstructObject_params"
 
   local constructed_object
 
