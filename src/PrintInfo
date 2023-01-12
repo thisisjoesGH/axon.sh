@@ -1,7 +1,7 @@
 PrintInfo() {
   local info="$1"
   case "$info" in
-    short      ) echo "${projectName} Copyright (C) 2021-2022 ${projectAuthor}"
+    short      ) echo "${projectName} Copyright (C) 2021-2023 ${projectAuthor}"
                  echo -e "\nThis program comes with ABSOLUTELY NO WARRANTY; for details type 'warranty'."
                  echo -e "\nThis is free software, and you are welcome to redistribute it under certain conditions;"
                  echo    "type 'conditions' for details."
