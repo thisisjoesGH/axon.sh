@@ -1,47 +1,35 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckStatusCode() {
-#  local response_body="$1"
   local status_code="$1"
 
   Log info "Got HTTP status code '$status_code','${http_status_codes[$status_code]}' from '${config[homeserver]}'"
 
-  Informational() {
-    Log error "Server returned unsupported status code '$status_code'"
-  }
-
-  Successful() {
-    Log info "Server returned success, continuing..."
-    return 0
-  }
-
-  Redirect() {
-    Log error "Server returned unsupported status code '$status_code'"
-    return 1
-  }
-
-  ClientError() {
-    Log error "Server returned client error '$status_code','${http_status_codes[$status_code]}'"
-    return 1
-  }
-
-  ServerError() {
-    Log error "Server returned server error. '$status_code','${http_status_codes[$status_code]}'"
-    return 1
-  }
-
-  UnknownCode() {
-    Log error "Received malformed or unknown status code '$status_code'"
-    return 1
-  }
-
   case "$status_code" in
-    1?? ) Informational;;
-    2?? ) Successful;;
-    3?? ) Redirect;;
-    4?? ) ClientError;;
-    5?? ) ServerError;;
-    *   ) UnknownCode;;
+    1?? )
+      Log error "Server returned unsupported status code '$status_code'"
+      return 1
+    ;;
+    2?? )
+      Log info "Server returned success, continuing..."
+      return 0
+    ;;
+    3?? )
+      Log error "Server returned unsupported status code '$status_code'"
+      return 1
+    ;;
+    4?? )
+      Log error "Server returned client error '$status_code','${http_status_codes[$status_code]}'"
+      return 1
+    ;;
+    5?? )
+      Log error "Server returned server error. '$status_code','${http_status_codes[$status_code]}'"
+      return 1
+    ;;
+    *   )
+      Log error "Received malformed or unknown status code '$status_code'"
+      return 1
+    ;;
   esac
 }

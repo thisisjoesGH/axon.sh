@@ -7,81 +7,54 @@ ValidateInput() {
   local input="$2"
   Log debug "Input is '${input:0:63}'."
 
-  IsInteger() {
-    [[ "$input" =~ ^[[:digit:]]+$ ]] || return 1
-  }
-
-  IsBoolean() {
-    [[ "$input" =~ ^(true|false)$ ]] || return 1
-  }
-
-  IsText() {
-    [[ "$input" =~ ^[[:print:]]+$ ]] || return 1
-  }
-
-  IsJSON() {
-    ValidateJSON "$input" || return 1
-  }
-
-  IsHostName() {
   local hostname_pattern='^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$'
-    [[ "$input" =~ $hostname_pattern ]] || return 1
-  }
-
-  IsIP() {
-    local ip_pattern='^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$'
-    [[ "$input" =~ $ip_pattern ]] || return 1
-  }
-
-  IsHost() {
-    $(IsHostName || IsIP) || return 1
-  }
+  local ip_pattern='^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$'
 
   case "$type" in
     integer  )
-      IsInteger || {
+      [[ "$input" =~ ^[[:digit:]]+$ ]] || {
         Log error "Expected integer but got '$input'."
         return 1
       }
     ;;
 
     boolean  )
-      IsBoolean || {
+      [[ "$input" =~ ^(true|false)$ ]] || {
         Log error "Expected 'true' or 'false' but got '$input'."
         return 1
       }
     ;;
 
     text     )
-      IsText || {
+      [[ "$input" =~ ^[[:print:]]+$ ]] || {
         Log error "Expected text but got something else."
         return 1
       }
     ;;
 
     json     )
-      IsJSON || {
+      ValidateJSON "$input" || {
         Log error "Expected JSON but got something else. The output from jq above may help identify syntax errors."
         return 1
       }
     ;;
 
     host     )
-      IsHost || {
+      $( [[ "$input" =~ $hostname_pattern ]] || [[ "$input" =~ $ip_pattern ]]) || {
         Log error "Expected hostname or IP literal but got '$input'."
         return 1
       }
     ;;
 
     hostname )
-      IsHostName || {
+      [[ "$input" =~ $hostname_pattern ]] || {
         Log error "Expected hostname but got '$input'."
         return 1
       }
     ;;
 
     ip       )
-      IsIP || {
+      [[ "$input" =~ $ip_pattern ]] || {
         Log error "Expected IP address but got '$input'."
         return 1
       }
