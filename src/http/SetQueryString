@@ -14,7 +14,7 @@ SetQueryString() {
   for param in "${!__SetQueryString_parameters[@]}"; do
     # use correct delimiter if there is more than 1 parameter
     (( $counter >= 1 )) && delimiter="&"
-    encoded_param="$( EncodeUrl ${__SetQueryString_parameters[$param]} )"
+    encoded_param="$( EncodeUrl "${__SetQueryString_parameters[$param]}" )"
     Log debug "Encoded parameter is '$encoded_param'"
     query_string+="${delimiter}${param}=${encoded_param}"
     (( counter++ ))
