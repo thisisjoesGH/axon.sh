@@ -32,21 +32,21 @@ DefineMatrixEndpoints() {
 
   m_resolve_alias_api=(
     [method]="GET"
-    [path]="/_matrix/client/r0/directory/room/${m_resolve_alias_url_params[alias]}"
+    [path]="/_matrix/client/r0/directory/room/ALIAS"
     [url_params]="m_resolve_alias_url_params"
     [body_params]=""
   )
 
   m_create_alias_api=(
     [method]="PUT"
-    [path]="/_matrix/client/r0/directory/room/${m_create_alias_url_params[alias]}"
+    [path]="/_matrix/client/r0/directory/room/ALIAS"
     [url_params]="m_create_alias_url_params"
     [body_params]="m_create_alias_body_params"
   )
 
   m_delete_alias_api=(
     [method]="DELETE"
-    [path]="/_matrix/client/r0/directory/room/${m_delete_alias_url_params[alias]}"
+    [path]="/_matrix/client/r0/directory/room/ALIAS"
     [url_params]="m_delete_alias_url_params"
     [body_params]=""
   )
