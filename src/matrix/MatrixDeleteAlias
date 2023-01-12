@@ -1,27 +1,35 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixDeleteAlias() {
   Log debug "Got args '$*'"
   local alias="$1"
 
-  CheckLoginStatus || return 1
-  DefineMatrixParams
+  # copy api map to local map
+  local -A api
+  CopyArray m_delete_alias_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray m_delete_alias_url_params url_params
 
+  CheckLoginStatus || return 1
+
+  # ask for alias if not passed
   [[ ! -z "$alias" ]] || {
     local input_alias
     Read -r -p "$(echo -e -n '\nAlias to delete:')" input_alias
     alias="$input_alias"
   }
-  m_delete_alias_url_params[alias]="$(EncodeUrl "$alias")"
+  url_params[alias]="$alias"
 
-  ReadConfiguration
-  DefineMatrixEndpoints
+  SetPathParameters url_params api[path]
 
+  # set request parameters
   local -A params=(
-    [method]="${m_delete_alias_api[method]}"
-    [path]="${m_delete_alias_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response

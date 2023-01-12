@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixLogout() {
@@ -17,25 +17,31 @@ MatrixLogout() {
     Prompt
   fi
 
+  # copy api map to local map
+  local -A api
+  CopyArray m_logout_api api
+
+  # input
+  local input_logout_confirm
   Read -r -p "$(echo -e -n '\nYour local session will be erased and your access token will be invalidated. Logout anyway? (Y/n)')" input_logout_confirm
   case "$input_logout_confirm" in
     [yY]|[Yy][Ee][Ss] ) echo "Logging out...";;
     [Nn]|[Nn][Oo]     ) Prompt;;
   esac
 
-  ReadConfiguration
-  DefineMatrixEndpoints
-
+  # set request parameters
   local -A params=(
-    [method]="${m_logout_api[method]}"
-    [path]="${m_logout_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # remove user and session configuration
   config[admin_user]=""
   config[admin_token]=""
   config[device_id]=""

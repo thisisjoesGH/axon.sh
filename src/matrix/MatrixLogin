@@ -1,9 +1,17 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixLogin() {
   Log debug "Got args '$*'"
 
+  # copy api map to local map
+  local -A api
+  CopyArray m_login_api api
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray m_login_body_params body_params
+
+  # input
   local input_mxid
   local localpart
   local domainpart
@@ -12,6 +20,7 @@ MatrixLogin() {
     if [[ ! -z "$input_mxid" ]]; then
       ParseMXID "$input_mxid" localpart domainpart || continue
       config[admin_user]="$localpart"
+      body_params[user]="${config[admin_user]}"
       config[homeserver]="$domainpart"
       GetWellKnown "$domainpart" homeserver || continue
       ParseServerName "$homeserver" host port
@@ -24,7 +33,7 @@ MatrixLogin() {
     local input_password
     while Read -s -r -p "password:" input_password; do
       if [[ ! -z "$input_password" ]]; then
-        admin_password="$input_password"
+        body_params[password]="$input_password"
         break
       else
         echo
@@ -41,33 +50,37 @@ MatrixLogin() {
       [Nn]|[Nn][Oo]     ) config[save_token]="false";;
     esac
 
+  GenDeviceId
+  body_params[device_id]="${config[device_id]}"
+
   WriteConfiguration
   ReadConfiguration
-  GenDeviceId
   Log debug "Save ID preference is '${config[save_id]}'"
   Log debug "Device ID is '${config[device_id]}'"
-  WriteConfiguration
-  DefineMatrixEndpoints
-  DefineMatrixParams
 
+  # construct request body
   local object
-  ConstructObject m_login object || return 1
+  ConstructObject m_login body_params object || return 1
 
+  # set request parameters
   local -A params=(
-    [method]="${m_login_api[method]}"
-    [path]="${m_login_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(access_token)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # set token
   config[admin_token]="${values[access_token]}"
   WriteConfiguration
 }

@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixCreateAlias() {
@@ -6,9 +6,20 @@ MatrixCreateAlias() {
   local alias="$1"
   local room_id="$2"
 
+  # copy api map to local map
+  local -A api
+  CopyArray m_create_alias_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray m_create_alias_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray m_create_alias_body_params body_params
+
   CheckLoginStatus || return 1
   DefineMatrixParams
 
+  # input
   [[ ! -z "$alias" ]] || {
     local input_alias
     Read -r -p "$(echo -e -n '\nAlias to create:')" input_alias
@@ -20,20 +31,22 @@ MatrixCreateAlias() {
     Read -r -p "$(echo -e -n '\nRoom ID to link:')" input_room_id
     room_id="$input_room_id"
   }
-  m_create_alias_url_params[alias]="$(EncodeUrl "$alias")"
-  m_create_alias_body_params[room_id]="$room_id"
+  url_params[alias]="$alias"
+  body_params[room_id]="$room_id"
 
-  ReadConfiguration
-  DefineMatrixEndpoints
+  SetPathParameters url_params api[path]
 
+  # construct request body
   local object
-  ConstructObject m_create_alias object || return 1
+  ConstructObject m_create_alias body_params object || return 1
 
+  # set request parameters
   local -A params=(
-    [method]="${m_create_alias_api[method]}"
-    [path]="${m_create_alias_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
     [data]="$object"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response

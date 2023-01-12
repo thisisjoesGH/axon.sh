@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixWhoAmI() {
@@ -17,21 +17,27 @@ MatrixWhoAmI() {
     Prompt
   fi
 
-  DefineMatrixEndpoints
+  # copy api map to local map
+  local -A api
+  CopyArray m_whoami_api api
 
+  # set request parameters
   local -A params=(
-    [method]="${m_whoami_api[method]}"
-    [path]="${m_whoami_api[path]}"
+    [method]="${api[method]}"
+    [path]="${api[path]}"
   )
+  # make request
   local response
   Request params response || {
     HandleMatrixError response
     return 1
   }
 
+  # get key values
   local -a keys=(user_id)
   local -A values
   ProcessResponse response keys values || return 1
 
+  # output
   echo "Authenticated as: ${values[user_id]}"
 }
