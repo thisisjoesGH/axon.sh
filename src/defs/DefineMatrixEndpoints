@@ -1,50 +1,43 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 DefineMatrixEndpoints() {
-  declare -Ag m_login_api
-  declare -Ag m_logout_api
-  declare -Ag m_whoami_api
-  declare -Ag m_resolve_alias_api
-  declare -Ag m_create_alias_api
-  declare -Ag m_delete_alias_api
-
-  m_login_api=(
+  declare -Agr m_login_api=(
     [method]="POST"
     [path]="/_matrix/client/r0/login"
     [url_params]=""
     [body_params]="m_login_params"
   )
 
-  m_logout_api=(
+  declare -Agr m_logout_api=(
     [method]="POST"
     [path]="/_matrix/client/r0/logout"
     [url_params]=""
     [body_params]=""
   )
 
-  m_whoami_api=(
+  declare -Agr m_whoami_api=(
 	  [method]="GET"
     [path]="/_matrix/client/r0/account/whoami"
     [url_params]=""
     [body_params]=""
   )
 
-  m_resolve_alias_api=(
+  declare -Agr m_resolve_alias_api=(
     [method]="GET"
     [path]="/_matrix/client/r0/directory/room/ALIAS"
     [url_params]="m_resolve_alias_url_params"
     [body_params]=""
   )
 
-  m_create_alias_api=(
+  declare -Agr m_create_alias_api=(
     [method]="PUT"
     [path]="/_matrix/client/r0/directory/room/ALIAS"
     [url_params]="m_create_alias_url_params"
     [body_params]="m_create_alias_body_params"
   )
 
-  m_delete_alias_api=(
+  declare -Agr m_delete_alias_api=(
     [method]="DELETE"
     [path]="/_matrix/client/r0/directory/room/ALIAS"
     [url_params]="m_delete_alias_url_params"

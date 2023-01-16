@@ -16,7 +16,7 @@ ParseMXID() {
     return 1
 	}
 
-  local mxid_pattern='^@[a-z0-9./=_-]+:[a-zA-Z0-9.-]+$'
+  local -r mxid_pattern='^@[a-z0-9./=_-]+:[a-zA-Z0-9.-]+$'
 
   if [[ ! "$mxid" =~ $mxid_pattern ]]; then
     Log error "Invalid MXID passed."
@@ -28,6 +28,7 @@ ParseMXID() {
   local array
   local IFS=':'
   read -ra array <<< "$mxid"
+  unset IFS
 
   __ParseMXID_localpart="${array[0]}"
   Log debug "Local part is '$__ParseMXID_localpart'"

@@ -1,10 +1,10 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckPermissions() {
   local path="$1"
   local permissions="$2"
-  local pattern='[0-7]{3}'
+  local -r pattern='[0-7]{3}'
 
   Log debug "Got path '$path', permissions '$permissions'."
 

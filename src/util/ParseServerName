@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ParseServerName() {
@@ -16,7 +16,7 @@ ParseServerName() {
     return 1
   }
 
-  local pattern='^[a-zA-Z0-9.-]+(:?[0-9]{0,5})$'
+  local -r pattern='^[a-zA-Z0-9.-]+(:?[0-9]{0,5})$'
 
   if [[ ! "$server_name" =~ $pattern ]]; then
     Log error "Invalid server name passed."

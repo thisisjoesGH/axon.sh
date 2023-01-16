@@ -1,6 +1,5 @@
 DefineStatusCodes() {
-  declare -Ag http_status_codes
-  http_status_codes=(
+  declare -Agr http_status_codes=(
     [100]="Continue"
     [101]="Switching Protocol"
     [102]="Processing"
