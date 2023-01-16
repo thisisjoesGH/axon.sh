@@ -29,12 +29,16 @@ SynapseEventReports() {
     Read -r -p "Maximum reports to return at once:" input_limit
       limit="$input_limit"
   }
+  ValidateInput integer "$limit" || return 1
   url_params[limit]="$limit"
   Log debug "Limit is '${url_params[limit]}'"
 
   # use default `from` value if not passed
   local from="$2"
-  [[ ! -z "$from" ]] && url_params[from]="$from"
+  [[ ! -z "$from" ]] && {
+    ValidateInput integer "$from" || return 1
+    url_params[from]="$from"
+  }
   Log debug "From is '${url_params[from]}'"
 
   SetQueryString url_params api[path]
