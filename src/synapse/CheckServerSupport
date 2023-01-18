@@ -9,7 +9,6 @@ CheckServerSupport() {
     return 0
   fi
 
-  DefineSynapseEndpoints
   local -A params=(
     [method]="${s_version_api[method]}"
     [path]="${s_version_api[path]}"
