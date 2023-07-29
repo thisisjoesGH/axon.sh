@@ -38,6 +38,14 @@ DefineSynapseEndpoints() {
     [body_params]=""
   )
 
+  declare -Agr s_event_reports_delete_api=(
+    [method]="DELETE"
+    [path]="/_synapse/admin/v1/event_reports/REPORT_ID"
+    [url_params]="s_event_reports_delete_url_params"
+    [body_params]=""
+    [minimum_version]="1.79.0rc1"
+  )
+
   declare -Agr s_purge_history_api=(
     [method]="POST"
     [path]="/_synapse/admin/v1/purge_history/ROOM_ID"

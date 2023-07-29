@@ -25,6 +25,10 @@ DefineSynapseParams() {
     [room_id]=""
   )
 
+  declare -Agr s_event_reports_delete_url_params=(
+    [report_id]=""
+  )
+
   declare -Agr s_purge_history_url_params=(
     [room_id]=""
   )

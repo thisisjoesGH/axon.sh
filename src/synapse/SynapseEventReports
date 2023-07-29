@@ -6,7 +6,12 @@ SynapseEventReports() {
 
   if [[ "$1" == 'detail' ]]; then
     # TODO implement this function
-    SynapseEventReportsDetail "${@:1}" || return 1
+    SynapseEventReportsDetail "${@:2}" || return 1
+    return 0
+  fi
+
+  if [[ "$1" == 'delete' ]]; then
+    SynapseEventReportsDelete "${@:2}" || return 1
     return 0
   fi
 
