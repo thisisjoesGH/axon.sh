@@ -51,6 +51,7 @@ ConstructObject() {
     ;;
 
     s_delete_room )
+      parameters[message]="${parameters[message]//\"/\\\"}" # Escape double-quotes
       local -a filters=(
         ".block = ${parameters[block]}"
         ".purge = ${parameters[purge]}"
