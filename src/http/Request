@@ -105,9 +105,10 @@ Request() {
 
   if CheckStatusCode "$status_code"; then
     __Request_response_body="$body"
+    Log debug "Got body '${body:0:999}...'"
   else
     Log error "Request failed while using method '$method' in request to '$uri'."
-    Log debug "Got body '${body:0:255}'..."
+    Log debug "Got body '${body:0:255}...'"
     __Request_response_body="$body"
     return 1
   fi
