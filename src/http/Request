@@ -14,6 +14,7 @@ Request() {
   local scheme="${config[scheme]}"
   local port="${config[port]}"
 
+  # check for required parameters
   local required_parameters=('method' 'path')
   for parameter in "${required_parameters[@]}"; do
     Log debug "Checking parameter '$parameter', value '${!parameter}'"
@@ -23,13 +24,16 @@ Request() {
     }
   done
 
+  # if a host wasn't passed then use the configured default
   if [[ -z "$host" ]]; then
     host="${config[base_url]}"
   fi
 
+  # construct the URI
   local uri="$scheme://$host:$port$path"
   Log info "Using method '$method' in request to '$uri'"
 
+  # construct the header arg
   local -a header_arg=()
   if [[ ! -z "${headers[*]}" ]]; then
     for header in "${!headers[@]}"; do
@@ -39,6 +43,7 @@ Request() {
     Log debug "Constructed header arg '${header_arg[*]}'"
   fi
 
+  # don't follow redirects unless asked to
   if [[ "$redirect" == 'true' ]]; then
     Log info "Following redirects for this request"
     local redirect_arg="--location"
@@ -46,6 +51,7 @@ Request() {
     Log debug "Not following redirects for this request"
   fi
 
+  # use auth unless asked not to
   if [[ "$auth" == 'false' ]]; then
     Log info "Not sending authorization header for this request"
   else
@@ -85,10 +91,12 @@ Request() {
     return 1
   fi
 
+  # clean up response
   std_out="${std_out//[[:cntrl:]]/}"
   std_out="${std_out//|/}"
   std_out="${std_out/<+>/|}"
 
+  # separate response body from response code
   local IFS="|"
   read -r -a response <<< "$std_out"
   local body="${response[0]}"
