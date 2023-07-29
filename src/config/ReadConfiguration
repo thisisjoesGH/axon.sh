@@ -4,6 +4,7 @@
 ReadConfiguration() {
   if [[ -f "${config[config_path]}/${config[config_file]}" ]]; then
     Log config "Found configuration file."
+    local line
     while read -r line; do
       if [[ "$line" =~ '=' ]]; then
         Log debug "line is '$line'"
