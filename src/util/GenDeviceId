@@ -4,7 +4,9 @@
 GenDeviceId() {
   if [ -z "${config[device_id]}" ]; then
     local device_id="axon-"
-    device_id+="$(tr -dc 'A-Z0-9' < /dev/urandom | fold -w 6 | head -n 1)"
+    local random_string
+    GenerateRandomAlphanumericString 6 random_string
+    device_id+="$random_string"
     config[device_id]="$device_id"
     Log info "Generated new device ID '${config[device_id]}'"
   else

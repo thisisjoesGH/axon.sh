@@ -1,0 +1,12 @@
+# Copyright (C) 2023 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+GenerateRandomAlphanumericString() {
+  local length="$1"
+  local -n __GenerateRandomAlphanumericString_string="$2"
+
+  local character_set='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  for (( i=0; i<$length; ++i )); do
+    __GenerateRandomAlphanumericString_string+="${character_set:RANDOM%${#character_set}:1}"
+  done
+}
