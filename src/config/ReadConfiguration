@@ -6,12 +6,13 @@ ReadConfiguration() {
     Log config "Found configuration file."
     local line
     while read -r line; do
+      Log debug "Line is '$line'"
       if [[ "$line" =~ '=' ]]; then
-        Log debug "line is '$line'"
+        Log debug "This looks like config to me..."
         key="${line%%=*}"
-        Log debug "key is '$key'"
+        Log debug "Key is '$key'"
         value="${line##*=}"
-        Log debug "value is '$value'"
+        Log debug "Value is '$value'"
         config[$key]="$value"
       fi
     done < "${config[config_path]}/${config[config_file]}"
