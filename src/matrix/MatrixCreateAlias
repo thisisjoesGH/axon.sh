@@ -17,7 +17,6 @@ MatrixCreateAlias() {
   CopyArray m_create_alias_body_params body_params
 
   CheckLoginStatus || return 1
-  DefineMatrixParams
 
   # input
   [[ ! -z "$alias" ]] || {
