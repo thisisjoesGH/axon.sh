@@ -20,6 +20,8 @@ steps:
     settings:
       key:
         from_secret: gpg_key
+      passphrase:
+        from_secret: key_passphrase
       files:
         - axon.sh
       detach_sign: true
