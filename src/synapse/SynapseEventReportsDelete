@@ -1,0 +1,43 @@
+# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseEventReportsDelete() {
+  Log debug "Got args '$*'"
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_event_reports_delete_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_event_reports_delete_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
+
+  Log info "Deleting event report from ${config[homeserver]}"
+
+  # ask for report ID if not passed
+  local report_id="$1"
+  [[ ! -z "$report_id" ]] || {
+    local input_report_id
+    Read -r -p "Report ID to delete:" input_report_id
+      report_id="$input_report_id"
+  }
+  ValidateInput integer "$report_id" || return 1
+  url_params[report_id]="$report_id"
+  Log debug "Report ID is '${url_params[report_id]}'"
+
+  SetPathParameters url_params api[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+}
