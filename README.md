@@ -5,6 +5,10 @@
 
 A Matrix Synapse administration tool written in bash. In early development, but works pretty well!
 
+## Project status
+Due partly to a lack of interest from the wider homeserver admin community axon.sh's development has significantly slowed. The program does basically everything I personally need it to do to administrate my homeservers.
+Pull requests and issues are still welcome, but barring specific feature requests or contributions, axon.sh will likely never completely support Synapse's admin API.
+
 ## Supported operations
   #### Session management
   - logging in with username and password

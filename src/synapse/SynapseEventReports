@@ -71,7 +71,7 @@ SynapseEventReports() {
   Log debug "Next token is '${values[next_token]}'"
   # paginate if necessary
   if (( "${values[next_token]}" > 0 )); then
-    echo "Remaining: $(( ${values[total]} - ${values[next_token]} ))"
+    echo "Remaining: $(( ${values[total]@Q} - ${values[next_token]@Q} ))"
     local input_paginate
     Read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
       case "$input_paginate" in
