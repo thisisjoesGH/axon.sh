@@ -36,7 +36,7 @@ SynapsePurgeHistory() {
     local timestamp="$input_timestamp"
     GetUnixTimestampMs "timestamp" || return 1
     Log debug "Unix timestamp is '$timestamp'"
-    url_params[purge_up_to_ts]="$timestamp"
+    body_params[purge_up_to_ts]="$timestamp"
   local input_delete_local_events
   Read -r -p "Delete local events? (y/N):" input_delete_local_events
     case "$input_delete_local_events" in
