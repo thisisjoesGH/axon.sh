@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Request() {
@@ -12,7 +12,7 @@ Request() {
   local -A headers="${__Request_parameters[headers]}"
   local -n __Request_response_body="$2"
   local scheme="${config[scheme]}"
-  local port="${config[port]}"
+  local port="${__Request_parameters[port]}"
 
   # check for required parameters
   local required_parameters=('method' 'path')
@@ -27,6 +27,11 @@ Request() {
   # if a host wasn't passed then use the configured default
   if [[ -z "$host" ]]; then
     host="${config[base_url]}"
+  fi
+
+  # if a port wasn't passed then use the configured default
+  if [[ -z "$port" ]]; then
+    port="${config[port]}"
   fi
 
   # construct the URI
