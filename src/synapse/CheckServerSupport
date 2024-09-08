@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckServerSupport() {
@@ -22,18 +22,53 @@ CheckServerSupport() {
   local -a keys=(server_version)
   local -A values
   ProcessResponse response keys values || return 1
+  local server_version="${values[server_version]}"
 
-  local test_version="${values[server_version]}"
+  local -A minimum_version_parts
+  local minimum_release_candidate
+  [[ "$minimum_version" =~ ([0-9]*)\.([0-9]*)\.([0-9]*)(rc[0-9][0-9]*)? ]] && {
+    minimum_version_parts[major]="${BASH_REMATCH[1]}"
+    minimum_version_parts[minor]="${BASH_REMATCH[2]}"
+    minimum_version_parts[patch]="${BASH_REMATCH[3]}"
+    minimum_release_candidate="${BASH_REMATCH[4]##rc}"
+    minimum_release_candidate="${minimum_release_candidate:=99}"
+  }
 
-  if [[ "$minimum_version" =~ "rc" ]] && [[ ! "$test_version" =~ "rc" ]]; then
-    test_version+="rc99"
-  fi
-  
-  if [[ ! "$test_version" < "$minimum_version" ]]; then
-    Log info "Server meets minimum version requirement for the requested API, continuing..."
-    return 0
+  local -A server_version_parts
+  local server_release_candidate
+  [[ "$server_version" =~ ([0-9]*)\.([0-9]*)\.([0-9]*)(rc[0-9][0-9]*)? ]] && {
+    server_version_parts[major]="${BASH_REMATCH[1]}"
+    server_version_parts[minor]="${BASH_REMATCH[2]}"
+    server_version_parts[patch]="${BASH_REMATCH[3]}"
+    server_release_candidate="${BASH_REMATCH[4]##rc}"
+    server_release_candidate="${server_release_candidate:=99}"
+  }
+
+   Log debug "Minimum version parts are '${minimum_version_parts[*]}', release candidate '$minimum_release_candidate'"
+   Log debug "Server version parts are '${server_version_parts[*]}', release candidate '$server_release_candidate'"
+
+  local adequate
+  if (( "${server_version_parts[major]}" > "${minimum_version_parts[major]}" )); then
+     Log debug "Major part is greater"
+    adequate="true"
+  elif (( "${server_version_parts[major]}" == "${minimum_version_parts[major]}" )) && (( "${server_version_parts[minor]}" > "${minimum_version_parts[minor]}" )); then
+     Log debug "Major part is equal and minor part is equal or greater"
+    adequate="true"
+  elif (( "${server_version_parts[major]}" == "${minimum_version_parts[major]}" )) && (( "${server_version_parts[minor]}" == "${minimum_version_parts[minor]}" )) && (( "${server_version_parts[patch]}" > "${minimum_version_parts[patch]}" )); then
+     Log debug "Major part and minor part are greater and patch part is equal or greater"
+    adequate="true"
+  elif [[ "${server_version_parts[*]}" == "${minimum_version_parts[*]}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
+     Log debug "Major part, minor part, and patch part are equal and release candidate is equal or greater"
+    adequate="true"
   else
-    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${values[server_version]}', minimum version '$minimum_version'"
+    adequate="false"
+  fi
+
+  if [[ "$adequate" == true ]]; then
+     Log info "Server meets minimum version requirement for the requested API, continuing..."
+  else
+    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${server_version}', minimum version '$minimum_version'"
     ConfirmContinue || return 1
+    return 1
   fi
 }
