@@ -69,6 +69,5 @@ CheckServerSupport() {
   else
     Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${server_version}', minimum version '$minimum_version'"
     ConfirmContinue || return 1
-    return 1
   fi
 }
