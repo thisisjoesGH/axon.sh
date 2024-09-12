@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConstructObject() {
@@ -30,6 +30,13 @@ ConstructObject() {
         ".room_id = \"${parameters[room_id]}\""
       )
       ModifyJSON "$m_create_alias_object" filters constructed_object || return 1
+    ;;
+
+    m_room_visibility )
+      local -a filters=(
+        ".visibility = \"${parameters[visibility]}\""
+      )
+      ModifyJSON "$m_room_visibility_object" filters constructed_object || return 1
     ;;
 
     s_server_notice )

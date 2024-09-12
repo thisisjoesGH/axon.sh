@@ -1,4 +1,4 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 DefineObjects() {
@@ -17,6 +17,12 @@ DefineObjects() {
   declare -gr m_create_alias_object='
     {
       "room_id": ""
+    }
+  '
+
+  declare -gr m_room_visibility_object='
+    {
+      "visibility": "public"
     }
   '
 

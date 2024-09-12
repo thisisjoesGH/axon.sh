@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 RoomCommandHandler() {
@@ -12,6 +12,7 @@ RoomCommandHandler() {
     delete      ) SynapseDeleteRoom "${subcommands[@]:1}";;
     extremities ) SynapseForwardExtremities "${subcommands[@]:1}";;
     alias       ) MatrixResolveAlias "${subcommands[@]:1}";;
+    visibility  ) MatrixGetRoomVisibility "${subcommands[@]:1}";;
     ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
     *           ) Log error "Unrecognized subcommand '$1'. Type 'help room' for a list of subcommands.";;
   esac

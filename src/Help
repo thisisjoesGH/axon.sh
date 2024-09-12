@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Help() {
@@ -50,6 +50,13 @@ Help() {
                   echo '        [delete]   Deletes an alias if passed.'
                   echo '        [alias]    The room alias to resolve, create, or delete. Skips user prompt if passed.'
                   echo '        [room ID]  The room ID to bind the new alias to. Only applies if [create] and [alias] are also passed.'
+                  echo '    visibility [set] [room ID] [public or private]'
+                  echo '      Returns the room directory visibility for the given room ID.'
+                  echo '      Optional arguments:'
+                  echo '        [set]      Sets the room directory visibility for the given room ID.'
+                  echo '        [room ID]  The room ID. Does not accept an alias.'
+                  echo '        [public]   Allow the room to be shown in the public room directory.'
+                  echo '        [private]  Hide the room from the public room directory.'
                 ;;
     user        ) echo 'Usage: user <subcommand>'
                   echo '  Subcommands:'

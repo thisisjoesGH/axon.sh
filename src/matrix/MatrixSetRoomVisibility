@@ -1,0 +1,55 @@
+# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+MatrixSetRoomVisibility() {
+  Log debug "Got args '$*'"
+
+  local room_id="$1"
+  local visibility="$2"
+
+  # copy api map to local map
+  local -A api
+  CopyArray m_room_visibility_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray m_room_visibility_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray m_room_visibility_body_params body_params
+
+  CheckLoginStatus || return 1
+
+  # ask for values if not passed
+  [[ ! -z "$room_id" ]] || {
+    local input_room_id
+    Read -r -p "$(echo -e -n '\nRoom ID: ')" input_room_id
+    room_id="$input_room_id"
+  }
+  url_params[room_id]="$room_id"
+
+  [[ ! -z "$visibility" ]] || {
+    local input_visibility
+    Read -r -p "$(echo -e -n '\nRoom visibility (public/private): ')" input_visibility
+    visibility="$input_visibility"
+  }
+  body_params[visibility]="$visibility"
+
+  # construct request body
+  local object
+  ConstructObject m_room_visibility body_params object || return 1
+
+  SetPathParameters url_params api[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="PUT"
+    [path]="${api[path]}"
+    [data]="$object"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+}
