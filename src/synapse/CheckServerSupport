@@ -55,7 +55,7 @@ CheckServerSupport() {
      Log debug "Major part is equal and minor part is equal or greater"
     adequate="true"
   elif (( "${server_version_parts[major]}" == "${minimum_version_parts[major]}" )) && (( "${server_version_parts[minor]}" == "${minimum_version_parts[minor]}" )) && (( "${server_version_parts[patch]}" > "${minimum_version_parts[patch]}" )); then
-     Log debug "Major part and minor part are greater and patch part is equal or greater"
+     Log debug "Major part and minor part are equal and patch part is greater"
     adequate="true"
   elif [[ "${server_version_parts[*]}" == "${minimum_version_parts[*]}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
      Log debug "Major part, minor part, and patch part are equal and release candidate is equal or greater"
