@@ -162,6 +162,7 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/users/USER_ID/shadow_ban"
     [url_params]="s_user_shadowban_url_params"
     [body_params]=""
+    [minimum_version]="1.27.0rc1"
   )
 
   declare -Agr s_room_membership_api=(
