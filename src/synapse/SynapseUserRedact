@@ -42,7 +42,7 @@ SynapseUserRedact() {
   local input_redaction_reason
   Read -r -p "Reason for redaction? (Defaults to empty string): " input_redaction_reason
     if [[ -n "$input_redaction_reason" ]]; then
-      ValidateInput text "$input_reason" || return 1
+      ValidateInput text "$input_redaction_reason" || return 1
     fi
     redaction_reason="$input_redaction_reason"
   }
