@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConstructObject() {
@@ -111,6 +111,15 @@ ConstructObject() {
         ".erase = ${parameters[erase]}"
       )
       ModifyJSON "$s_user_deactivate_object" filters constructed_object || return 1
+    ;;
+
+    s_user_redact )
+      local -a filters=(
+        ".rooms = [${parameters[rooms]}]"
+        ".limit = ${parameters[limit]}"
+        ".reason = \"${parameters[reason]}\""
+      )
+      ModifyJSON "$s_user_redact_object" filters constructed_object || return 1
     ;;
   esac
 

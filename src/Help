@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022,2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2024-2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Help() {
@@ -65,6 +65,13 @@ Help() {
                   echo '    deactivate    Deactivates a user. Optionally erases the user'\''s profile.'
                   echo '    shadowban     Shadowbans a user.'
                   echo '    rooms         Shows all rooms a user is currently a member of.'
+                  echo '    redact [username [reason]] or [status [job ID]]'
+                  echo '      Redacts a users messages. Optionally provides a publicly visible reason.'
+                  echo '      Optional arguments:'
+                  echo '        [username] The username whose messsages should be redacted.'
+                  echo '        [reason]   The publicly visible reason for the redaction.'
+                  echo '        [status]   Gets the status of the given redaction job ID.'
+                  echo '        [job ID]   The redaction job ID, returned after sending a user redaction request.'
                   echo '    threepid [medium] [address]'
                   echo '      Returns the MXID of the user associated with the given third-party ID (3PID).'
                   echo '      Optional arguments:'

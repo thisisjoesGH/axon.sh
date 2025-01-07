@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 DefineSynapseEndpoints() {
@@ -163,6 +163,22 @@ DefineSynapseEndpoints() {
     [url_params]="s_user_shadowban_url_params"
     [body_params]=""
     [minimum_version]="1.27.0rc1"
+  )
+
+  declare -Agr s_user_redact_api=(
+    [method]="POST"
+    [path]="/_synapse/admin/v1/user/USER_ID/redact"
+    [url_params]="s_user_redact_url_params"
+    [body_params]="s_user_redact_body_params"
+    [minimum_version]="1.116.0rc1"
+  )
+
+  declare -Agr s_user_redact_status_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/user/redact_status/JOB_ID"
+    [url_params]="s_user_redact_status_url_params"
+    [body_params]=""
+    [minimum_version]="1.116.0rc1"
   )
 
   declare -Agr s_room_membership_api=(

@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 DefineObjects() {
@@ -77,6 +77,14 @@ DefineObjects() {
   declare -gr s_user_deactivate_object='
     {
       "erase": false
+    }
+  '
+
+  declare -gr s_user_redact_object='
+    {
+      "rooms": [],
+      "limit": 1000,
+      "reason": ""
     }
   '
 }

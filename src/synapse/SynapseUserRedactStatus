@@ -1,0 +1,52 @@
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseUserRedactStatus() {
+  Log debug "Got args '$*'"
+
+  local job_id="$1"
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_redact_status_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_redact_status_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
+
+  Log info "Getting user redaction job status from '${config[homeserver]}'"
+
+  # ask for job ID if not passed
+  [[ ! -z "$job_id" ]] || {
+    local input_job_id
+    Read -r -p "Job ID: " input_job_id
+    job_id="$input_job_id"
+  }
+  url_params[job_id]="$job_id"
+  Log debug "URL 'job_id' param set to '${url_params[job_id]}'"
+
+  SetPathParameters url_params api[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  # get key values
+  local -a keys=(status failed_redactions)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  # output
+  echo -e "\nRedaction job status: ${values[status]}"
+  echo -e "Failed redactions: ${values[failed_redactions]}\n"
+}

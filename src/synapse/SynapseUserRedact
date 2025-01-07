@@ -1,0 +1,78 @@
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseUserRedact() {
+  Log debug "Got args '$*'"
+
+  if [[ "$1" = "status" ]]; then
+    SynapseUserRedactStatus "$2" || return 1
+    return 0
+  fi
+
+  local user_name="$1"
+  local redaction_reason="$2"
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_redact_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_redact_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_user_redact_body_params body_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
+
+  Log info "Redacting user messages from ${config[homeserver]}"
+
+  # input
+  [[ ! -z "$user_name" ]] || {
+    local input_user_name
+    Read -r -p "User name: " input_user_name
+      local user_name="$input_user_name"
+      Log debug "User name is '$user_name'"
+  }
+  local user_id="@$user_name:${config[homeserver]}"
+  url_params[user_id]="$user_id"
+  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+
+  [[ ! -z "$redaction_reason" ]] || {
+  local input_redaction_reason
+  Read -r -p "Reason for redaction? (Defaults to empty string): " input_redaction_reason
+    if [[ -n "$input_redaction_reason" ]]; then
+      ValidateInput text "$input_reason" || return 1
+    fi
+    redaction_reason="$input_redaction_reason"
+  }
+  body_params[reason]="$redaction_reason"
+  Log debug "Body 'reason' param set to ${body_params[reason]}"
+
+  SetPathParameters url_params api[path]
+
+  # construct request body
+  local object
+  ConstructObject s_user_redact body_params object || return 1
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+    [data]="$object"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  # get key values
+  local -a keys=(redact_id)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  # output
+  echo -e "Deletion Job ID: ${values[redact_id]}\n"
+}

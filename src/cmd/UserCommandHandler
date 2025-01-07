@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 UserCommandHandler() {
@@ -13,6 +13,7 @@ UserCommandHandler() {
     create     ) SynapseUserCreate "${subcommands[@]:1}";;
     password   ) SynapseUserResetPassword "${subcommands[@]:1}";;
     ratelimit  ) SynapseUserRatelimit "${subcommands[@]:1}";;
+    redact     ) SynapseUserRedact "${subcommands[@]:1}";;
     deactivate ) SynapseUserDeactivate "${subcommands[@]:1}";;
     shadowban  ) SynapseUserShadowban "${subcommands[@]:1}";;
     ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
