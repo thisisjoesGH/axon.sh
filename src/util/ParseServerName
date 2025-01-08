@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 ParseServerName() {
+  Log debug "Got args '$*'"
+
   local server_name="$1"
   local -n __ParseServerName_domain="$2"
   local -n __ParseServerName_port="$3"
@@ -23,11 +25,11 @@ ParseServerName() {
     return 1
   fi
 
-  [[ "$server_name" =~ (.*):([0-9]{1,5}) ]] && local port="${BASH_REMATCH[2]}"
-  server_name="${server_name%%:"$port"}"
+  [[ "$server_name" =~ (.*):([0-9]{1,5}) ]] && local svc_port="${BASH_REMATCH[2]}"
+  server_name="${server_name%%:"$svc_port"}"
 
   __ParseServerName_domain="$server_name"
   Log debug "Domain is '$__ParseServerName_domain'"
-  __ParseServerName_port="$port"
+  __ParseServerName_port="$svc_port"
   Log debug "Port is '$__ParseServerName_port'"
 }
