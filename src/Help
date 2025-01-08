@@ -22,8 +22,9 @@ Help() {
                 ;;
     destination ) echo 'Usage: destination <subcommand> [destination]'
                   echo '  Subcommands:'
-                  echo '    discover    Prints the base URL found through server discovery for the given destination.'
-                  echo '    details     Prints federation details about the given destination.'
+                  echo '    discover    Prints the base URL found through server discovery for the given federation destination.'
+                  echo '    version     Prints software version information for the given federation destination.'
+                  echo '    details     Prints federation details about the given federation destination.'
                   echo '    reset       Resets the timeout for the given federation destination.'
                   echo '  Optional arguments:'
                   echo '    [destination]  A homeserver name. For user `@joe:example.org`, `example.org` is the homeserver name.'
