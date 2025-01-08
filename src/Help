@@ -20,10 +20,13 @@ Help() {
                   echo '        [limit] The maximum number of event reports to retrieve at once. Skips user prompt if passed.'
                   echo '                If there are more total events than the limit set the results will be paginated.'
                 ;;
-    destination ) echo 'Usage: destination <subcommand>'
+    destination ) echo 'Usage: destination <subcommand> [destination]'
                   echo '  Subcommands:'
-                  echo '    details    Prints federation details about the given destination. Destination is a homeserver name.'
-                  echo '    reset      Resets the timeout for the given federation destination. Destination is a homeserver name.'
+                  echo '    discover    Prints the base URL found through server discovery for the given destination.'
+                  echo '    details     Prints federation details about the given destination.'
+                  echo '    reset       Resets the timeout for the given federation destination.'
+                  echo '  Optional arguments:'
+                  echo '    [destination]  A homeserver name. For user `@joe:example.org`, `example.org` is the homeserver name.'
                 ;;
     room        ) echo 'Usage: room <subcommand>'
                   echo '  Subcommands:'
