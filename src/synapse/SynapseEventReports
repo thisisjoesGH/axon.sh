@@ -65,17 +65,22 @@ SynapseEventReports() {
   local -A values
   ProcessResponse response keys values || return 1
 
+  local next_token="${values[next_token]}"
+  local total="${values[total]}"
+  ValidateInput integer "$next_token" || return 1
+  ValidateInput integer "$total" || return 1
+
   # output
   echo -e "Event reports:\n${values[event_reports]}"
-  echo "Total: ${values[total]}"
-  Log debug "Next token is '${values[next_token]}'"
+  echo "Total: $total"
+  Log debug "Next token is '$next_token'"
   # paginate if necessary
-  if (( "${values[next_token]}" > 0 )); then
-    echo "Remaining: $(( ${values[total]} - ${values[next_token]} ))"
+  if (( $next_token > 0 )); then
+    echo "Remaining: $(( $total - $next_token ))"
     local input_paginate
     Read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
       case "$input_paginate" in
-        [Nn] ) SynapseEventReports "$limit" "${values[next_token]}";;
+        [Nn] ) SynapseEventReports "$limit" "$next_token";;
         [Rr] ) return 0;;
         *    ) return 0;;
       esac
