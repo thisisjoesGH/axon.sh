@@ -41,11 +41,11 @@ SynapseUserRedact() {
   [[ ! -z "$redaction_reason" ]] || {
   local input_redaction_reason
   Read -r -p "Reason for redaction? (Defaults to empty string): " input_redaction_reason
-    if [[ -n "$input_redaction_reason" ]]; then
-      ValidateInput text "$input_redaction_reason" || return 1
-    fi
     redaction_reason="$input_redaction_reason"
   }
+  if [[ -n "$redaction_reason" ]]; then
+    ValidateInput text "$redaction_reason" || return 1
+  fi
   body_params[reason]="$redaction_reason"
   Log debug "Body 'reason' param set to ${body_params[reason]}"
 
