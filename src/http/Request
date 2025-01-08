@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Request() {
@@ -73,7 +73,8 @@ Request() {
   Log debug "Assembled request '--write-out '<+>%{response_code}''"
   Log debug "Assembled request '--silent'"
   Log debug "Assembled request '--show-error'"
-  Log debug "Assembled request '--connect-timeout 60'"
+  Log debug "Assembled request '--connect-timeout 15'"
+  Log debug "Assembled request '--max-time 300'"
   Log debug "Assembled request '$uri'"
 
   local std_out
@@ -87,7 +88,8 @@ Request() {
                                    --write-out '<+>%{response_code}' \
                                    --silent \
                                    --show-error \
-                                   --connect-timeout 60 \
+                                   --connect-timeout 15 \
+                                   --max-time 300 \
                                    "$uri"
 
   local return_code="$?"
