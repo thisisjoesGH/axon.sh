@@ -110,6 +110,8 @@ Request() {
   local status_code="${response[1]}"
   unset IFS
 
+  Log info "Got HTTP status code '$status_code','${http_status_codes[$status_code]}' from '$host'"
+
   if CheckStatusCode "$status_code"; then
     __Request_response_body="$body"
     Log debug "Got body '${body:0:999}...'"
