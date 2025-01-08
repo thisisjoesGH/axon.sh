@@ -11,6 +11,7 @@ DestinationCommandHandler() {
     discover ) MatrixDiscover "${subcommands[@]:1}";;
     details  ) SynapseDestinationDetails "${subcommands[@]:1}";;
     reset    ) SynapseDestinationReset "${subcommands[@]:1}";;
+    version  ) MatrixServerVersion "${subcommands[@]:1}";;
     ''       ) Log error "Subcommand required. Type 'help destination' for a list of subcommands.";;
     *        ) Log error "Unrecognized subcommand '$1'. Type 'help destination' for a list of subcommands.";;
   esac

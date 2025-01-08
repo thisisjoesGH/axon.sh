@@ -50,4 +50,11 @@ DefineMatrixEndpoints() {
     [url_params]="m_room_visibility_url_params"
     [body_params]="m_room_visiblity_body_params"
   )
+
+  declare -Agr m_server_version_api=(
+    [method]="GET"
+    [path]="/_matrix/federation/v1/version"
+    [url_params]=""
+    [body_params]=""
+  )
 }
