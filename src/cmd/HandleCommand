@@ -15,7 +15,7 @@ HandleCommand() {
     user        ) UserCommandHandler "${commands[@]:1}";;
     config      ) Configure "${commands[@]:1}";;
     version     ) echo "$projectName v$projectVersion";;
-    help        ) Help "${commands[@]:1}";;
+    help        ) PrintHelp "${commands[@]:1}";;
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
     exit        ) exit 0;;

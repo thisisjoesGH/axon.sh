@@ -10,7 +10,7 @@ matrix/
 synapse/
 cmd/
 input/
+output/
 Help
-PrintInfo
 Prompt
 Main
