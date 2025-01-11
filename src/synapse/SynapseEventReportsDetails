@@ -1,0 +1,54 @@
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseEventReportsDetails() {
+  Log debug "Got args '$*'"
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_event_reports_details_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_event_reports_details_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport "${api[minimum_version]}" || return 1
+
+  Log info "Getting details for event report from ${config[homeserver]}"
+
+  # ask for report ID if not passed
+  local report_id="$1"
+  [[ ! -z "$report_id" ]] || {
+    local input_report_id
+    Read -r -p "Report ID: " input_report_id
+      report_id="$input_report_id"
+  }
+  ValidateInput integer "$report_id" || return 1
+  url_params[report_id]="$report_id"
+  Log debug "Report ID is '${url_params[report_id]}'"
+
+  SetPathParameters url_params api[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  # get the values for the keys we are interested in
+  local -a keys=(id user_id event_id event_json)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  # output
+  echo "Report ID: ${values[id]}"
+  echo "Reported by: ${values[user_id]}"
+  echo "Event ID: ${values[event_id]}"
+  echo -e "Event JSON:\n${values[event_json]}"
+}
