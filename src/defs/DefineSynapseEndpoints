@@ -36,6 +36,7 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v1/event_reports"
     [url_params]="s_event_reports_url_params"
     [body_params]=""
+    [minimum_version]="1.21.0rc1"
   )
 
   declare -Agr s_event_reports_delete_api=(
