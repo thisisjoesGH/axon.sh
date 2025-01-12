@@ -2,6 +2,7 @@
 
 [![License](https://shields.thisisjoes.site/badge/dynamic/json.svg?label=license&color=red&url=https://git.thisisjoes.site/api/v1/repos/joe/axon.sh/labels/@license&query=$.description)](https://git.thisisjoes.site/joe/axon.sh/src/branch/dev/LICENSE)
 [![Latest Release](https://shields.thisisjoes.site/badge/dynamic/json.svg?label=latest%20release&color=green&url=https://git.thisisjoes.site/api/v1/repos/joe/axon.sh/releases&query=$[0].tag_name)](https://git.thisisjoes.site/joe/axon.sh/releases)
+[![Matrix](https://shields.thisisjoes.site/matrix/axon%3Amatrix.thisisjoes.site?fetchMode=summary&logo=matrix&logoColor=%2395b1fb&color=%2395b1fb)](matrix:/r/axon:matrix.thisisjoes.site)
 
 A Matrix Synapse administration tool written in bash. In early development, but works pretty well!
 
