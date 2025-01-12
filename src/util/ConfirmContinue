@@ -1,7 +1,14 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConfirmContinue() {
+  case "${config[verbosity]^^}" in
+    (ERROR|NONE)
+      Log warn "Skipping user confirmation due to reduced verbosity configuration."
+      return 0
+    ;;
+  esac
+
   local response
   Read -r -p "$(echo -e 'Continue anyway? (y/N)')" response
   case "$response" in
