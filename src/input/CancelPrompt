@@ -1,0 +1,19 @@
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+CancelPrompt() {
+  local context="${FUNCNAME[2]}"
+  Log debug "Called in context '$context'."
+
+  case "$context" in
+    Prompt ) Log info "Exiting..."
+             echo "Goodbye!"
+             exit 0
+           ;;
+    *      ) echo
+             Log info "Cancelling current prompt."
+             echo "Press again to exit."
+             Prompt
+           ;;
+  esac
+}
