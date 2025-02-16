@@ -11,6 +11,5 @@ synapse/
 cmd/
 input/
 output/
-Help
 Prompt
 Main
