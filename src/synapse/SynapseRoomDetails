@@ -1,0 +1,70 @@
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseRoomDetails() {
+  Log debug "Got args '$*'"
+  # copy api map to local map
+  local -A api
+  CopyArray s_room_details_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_room_details_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
+
+  Log info "Getting room details from ${config[homeserver]}"
+
+  # input
+  local room_id="$1"
+  [[ ! -z "$room_id" ]] || {
+    local input_room_id
+    Read -r -p "Room ID:" input_room_id
+    room_id="$input_room_id"
+  }
+  Log debug "Room ID is '$room_id'"
+  ValidateInput text "$room_id" || return 1
+  url_params[room_id]="$room_id"
+  Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
+
+  SetPathParameters url_params api[path]
+
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local response
+  Request params response || {
+    HandleMatrixError response
+    return 1
+  }
+
+  # get key values
+  local -a keys=(room_id name avatar topic canonical_alias joined_members joined_local_members joined_local_devices version creator encryption federatable public join_rules guest_access history_visibility state_events room_type forgotten)
+  local -A values
+  ProcessResponse response keys values || return 1
+
+  # output
+  echo -e "Room ID: ${values[room_id]}"
+  echo -e "Room type: ${values[room_type]}"
+  echo -e "Name: ${values[name]}"
+  echo -e "Avatar: ${values[avatar]}"
+  echo -e "Topic: ${values[topic]}"
+  echo -e "Canonical alias: ${values[canonical_alias]}"
+  echo -e "Members: ${values[joined_members]}"
+  echo -e "Local members: ${values[joined_local_members]}"
+  echo -e "Local devices: ${values[joined_local_devices]}"
+  echo -e "Version: ${values[version]}"
+  echo -e "Creator: ${values[creator]}"
+  echo -e "Encryption: ${values[encryption]}"
+  echo -e "Federatable: ${values[federatable]}"
+  echo -e "Public: ${values[public]}"
+  echo -e "Join rules: ${values[join_rules]}"
+  echo -e "Guest access: ${values[guest_access]}"
+  echo -e "History visibility: ${values[history_visibility]}"
+  echo -e "State events: ${values[state_events]}"
+  echo -e "Forgotten: ${values[forgotten]}\n"
+}

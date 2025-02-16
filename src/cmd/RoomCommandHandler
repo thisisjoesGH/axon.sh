@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022,2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2024-2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 RoomCommandHandler() {
@@ -11,6 +11,7 @@ RoomCommandHandler() {
     purge       ) SynapsePurgeHistory "${subcommands[@]:1}";;
     delete      ) SynapseDeleteRoom "${subcommands[@]:1}";;
     extremities ) SynapseForwardExtremities "${subcommands[@]:1}";;
+    details     ) SynapseRoomDetails "${subcommands[@]:1}";;
     alias       ) MatrixResolveAlias "${subcommands[@]:1}";;
     visibility  ) MatrixGetRoomVisibility "${subcommands[@]:1}";;
     ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
