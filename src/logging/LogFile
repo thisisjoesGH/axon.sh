@@ -27,7 +27,7 @@ LogFile() {
     WARN   ) if [[ "$log_level" = @(DEBUG|INFO|WARN) ]]; then DoLogFile; fi;;
     ERROR  ) if [[ "$log_level" = @(DEBUG|INFO|WARN|ERROR) ]]; then DoLogFile; fi;;
     CONFIG ) if [[ "$log_level" != @(NONE) ]]; then DoLogFile; fi;;
-    *      ) if [[ "$log_level" = @(DEBUG) ]]; then DoLogFile; Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}'"; fi;;
+    *      ) if [[ "$log_level" = @(DEBUG) ]]; then DoLogFile; Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}', line number '${BASH_LINENO[1]}'"; fi;;
   esac
 }
 
