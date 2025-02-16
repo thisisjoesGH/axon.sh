@@ -1,14 +1,23 @@
-# Copyright (C) 2022-2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckServerSupport() {
-  local minimum_version="$1"
+  Log debug "Got args '$*'"
+  local -n minimum_version="$1" || {
+    Log fatal "Empty or invalid reference."
+    exit 1
+  }
 
-  if [[ "$minimum_version" == "" ]]; then
-    Log info "Requested API has no defined minimum version, skipping check"
+  Assert minimum_version || {
+    Log info "No minimum server version defined for endpoint, skipping check."
     return 0
+  }
+  if [[ "$minimum_version" == "" ]]; then
+    Log fatal "Empty version string passed."
+    exit 1
   fi
 
+  Log info "Checking if server supports the requested API..."
   local -A params=(
     [method]="${s_version_api[method]}"
     [path]="${s_version_api[path]}"

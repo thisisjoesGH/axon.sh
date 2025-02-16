@@ -1,0 +1,57 @@
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+Assert() {
+  Log debug "Got args '$*'"
+  case $# in
+    0 ) Log fatal "No parameters passed."; exit 1;;
+    1 ) local -n variable="$1"
+        local variable_name="${!variable}"
+        Log debug "Variable name is '$variable_name'"
+        local value="$variable"
+        Log debug "Value is '$value'"
+        local varbase="${variable_name%%\[*]}"
+        Log debug "varbase is '$varbase'"
+        local type
+        CheckType "$varbase" type
+        if [[ "$type" =~ (ARRAY|HASH) ]]; then
+          Log debug "Type is '$type'."
+          Log debug "Variable name is '$variable_name'."
+          if [[ -v "$variable_name" ]]; then
+            Log debug "Variable '$variable_name' is defined."
+            return 0
+          else
+            Log debug "Variable '$variable_name' is not defined."
+            return 1
+          fi
+        else
+          if declare -p "${varbase}" &>/dev/null; then
+            Log debug "Variable '$variable_name' is defined."
+            return 0
+          else
+            Log debug "Variable '$variable_name' is not defined."
+            return 1
+          fi
+        fi
+      ;;
+    2 ) local variable_name="$1"
+        Log debug "Variable_name is '$variable_name'"
+        local value="${!variable_name}"
+        Log debug "Value is '$value'"
+        local varbase="${variable_name%%\[*]}"
+        local type
+        CheckType "$varbase" type
+        Log debug "Type is '$type'"
+        local desired_type="$2"
+        Log debug "Desired type is '$desired_type'"
+        if [[ "$type" == "$desired_type" ]]; then
+          Log debug "Types match."
+          return 0
+        else
+          Log fatal "Assertion failed, variable '$variable_name' is of type '$type', expected '$desired_type'."
+          exit 1
+        fi
+      ;;
+    * ) Log fatal "Received too many parameters."; exit 1;;
+  esac
+}

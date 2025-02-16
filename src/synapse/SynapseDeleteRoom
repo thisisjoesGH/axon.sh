@@ -20,7 +20,7 @@ SynapseDeleteRoom() {
   CopyArray s_delete_room_body_params body_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Deleting room from ${config[homeserver]}"
 

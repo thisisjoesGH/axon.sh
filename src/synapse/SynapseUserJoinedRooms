@@ -12,7 +12,7 @@ SynapseUserJoinedRooms() {
   CopyArray s_user_joined_rooms_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Getting joined rooms for user on ${config[homeserver]}"
 

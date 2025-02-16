@@ -14,7 +14,7 @@ SynapseDestinationDetails() {
   CopyArray s_destination_details_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Getting destination details from ${config[homeserver]}"
 

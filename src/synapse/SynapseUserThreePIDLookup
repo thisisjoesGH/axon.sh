@@ -15,7 +15,7 @@ SynapseUserThreePIDLookup() {
   CopyArray s_user_threepid_lookup_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Looking up user by 3PID on ${config[homeserver]}"
 

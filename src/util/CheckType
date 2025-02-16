@@ -1,0 +1,26 @@
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+CheckType() {
+  Log debug "Got args '$*'"
+
+  local variable_to_check
+  variable_to_check="$(declare -p "$1" 2>/dev/null)"
+  local -n __CheckType_type="$2"
+
+  local pattern
+  pattern='^declare -n[^=]+=\"([^\"]+)\"$'
+  while [[ $variable_to_check =~ $pattern ]]; do
+    variable_to_check="$(declare -p "${BASH_REMATCH[1]}")"
+  done
+
+  case "${variable_to_check#declare -}" in
+    a* ) __CheckType_type='ARRAY';;
+    A* ) __CheckType_type='HASH';;
+    i* ) __CheckType_type='INT';;
+    x* ) __CheckType_type='EXPORT';;
+    *  ) __CheckType_type='OTHER';;
+  esac
+
+  Log debug "Variable type is '$__CheckType_type'."
+}

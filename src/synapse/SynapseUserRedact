@@ -23,7 +23,7 @@ SynapseUserRedact() {
   CopyArray s_user_redact_body_params body_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Redacting user messages from ${config[homeserver]}"
 

@@ -14,7 +14,7 @@ SynapseUserRedactStatus() {
   CopyArray s_user_redact_status_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Getting user redaction job status from '${config[homeserver]}'"
 

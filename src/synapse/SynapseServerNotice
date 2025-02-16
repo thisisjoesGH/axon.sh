@@ -12,7 +12,7 @@ SynapseServerNotice() {
   CopyArray s_server_notice_body_params body_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Sending server notice on homeserver ${config[homeserver]}"
 

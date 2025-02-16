@@ -12,7 +12,7 @@ SynapseUserShadowban() {
   CopyArray s_user_shadowban_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport "${api[minimum_version]}" || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
 
   Log info "Shadowbanning user on homeserver ${config[homeserver]}"
 
