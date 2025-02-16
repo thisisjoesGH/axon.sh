@@ -1,7 +1,8 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 HandleCommand() {
+  Log debug "Got args '$*'"
   local commands
   read -r -a commands <<<"$*"
 
