@@ -1,11 +1,13 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Configure() {
   Log debug "Got args '$*'"
-
   local key="$1"
   local value="$2"
+  if [[ "$value" == \'\' || "$value" == \"\" ]]; then
+    value=""
+  fi
 
   case "$#" in
     0 ) for config_key in "${!config[@]}"; do
