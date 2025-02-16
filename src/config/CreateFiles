@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CreateFiles() {
@@ -20,7 +20,7 @@ CreateFiles() {
       Log info "Creating directory at '$path'..."
       mkdir "$path" ||
         {
-          Log error "Failed to create directory at '$path'"
+          Log fatal "Failed to create directory at '$path'"
           exit 1
         }
     else
@@ -34,7 +34,7 @@ CreateFiles() {
       Log info "Creating file at '$path'..."
       (umask 066; touch "$path") ||
         {
-          Log error "Failed to create file at '$path'"
+          Log fatal "Failed to create file at '$path'"
           exit 1
         }
     else

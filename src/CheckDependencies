@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckDependencies() {
@@ -14,7 +14,7 @@ CheckDependencies() {
     if command -v "$dependency" >/dev/null 2>&1 ; then
       Log info "Dependency satisfied: $dependency"
     else
-      Log error "Dependency not satisfied: $dependency"
+      Log fatal "Dependency not satisfied: $dependency"
       exit 1
     fi
   done
