@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 Request() {
+  Log debug "Got args '$*'"
   local -n __Request_parameters="$1"
   local method="${__Request_parameters[method]}"
   local path="${__Request_parameters[path]}"
@@ -10,7 +11,7 @@ Request() {
   local auth="${__Request_parameters[auth]}"
   local redirect="${__Request_parameters[redirect]}"
   local -A headers="${__Request_parameters[headers]}"
-  local -n __Request_response_body="$2"
+  local -n __Request_response="$2"
   local scheme="${config[scheme]}"
   local port="${__Request_parameters[port]}"
 
@@ -19,8 +20,8 @@ Request() {
   for parameter in "${required_parameters[@]}"; do
     Log debug "Checking parameter '$parameter', value '${!parameter}'"
     [[ "${!parameter}" ]] || {
-      Log error "Missing required parameter '$parameter'"
-      return 1
+      Log fatal "Missing required parameter '$parameter'"
+      exit 1
     }
   done
 
@@ -85,7 +86,7 @@ Request() {
                                    "${header_arg[@]}" \
                                    ${auth_header:+--header "$auth_header"} \
                                    --user-agent "${projectName}/${projectVersion}" \
-                                   --write-out '<+>%{response_code}' \
+                                   --write-out '<+>%{header_json}<+>%{response_code}' \
                                    --silent \
                                    --show-error \
                                    --connect-timeout 15 \
@@ -101,24 +102,22 @@ Request() {
   # clean up response
   std_out="${std_out//[[:cntrl:]]/}"
   std_out="${std_out//|/}"
-  std_out="${std_out/<+>/|}"
+  std_out="${std_out//<+>/|}"
+  Log debug "Cleaned up response data is '$std_out'"
 
   # separate response body from response code
   local IFS="|"
-  read -r -a response <<< "$std_out"
-  local body="${response[0]}"
-  local status_code="${response[1]}"
+  read -r -a response_data <<< "$std_out"
+  local body="${response_data[0]}"
+  local header_json="${response_data[1]}"
+  local status_code="${response_data[2]}"
   unset IFS
 
+  ValidateInput integer "$status_code" || {
+    Log fatal "Invalid HTTP status code."
+  }
   Log info "Got HTTP status code '$status_code','${http_status_codes[$status_code]}' from '$host'"
-
-  if CheckStatusCode "$status_code"; then
-    __Request_response_body="$body"
-    Log debug "Got body '${body:0:999}...'"
-  else
-    Log error "Request failed while using method '$method' in request to '$uri'."
-    Log debug "Got body '${body:0:255}...'"
-    __Request_response_body="$body"
-    return 1
-  fi
+  __Request_response[status]="$status_code"
+  __Request_response[body]="$body"
+  __Request_response[header_json]="$header_json"
 }
