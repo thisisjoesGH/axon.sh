@@ -56,6 +56,11 @@ PrintHelp() {
                   echo '        [delete]       Deletes forward extremities if passed.'
                   echo '        [alias or ID]  The room alias or ID.'
                   echo
+                  echo '    details [ID]'
+                  echo '      Returns details about the given room ID.'
+                  echo '      Optional arguments:'
+                  echo '        [ID]  The room ID.'
+                  echo
                   echo '    alias [create or delete] [alias] [room ID]'
                   echo '      Resolves the given room alias to a room ID and lists all participating homeservers.'
                   echo '      Optional arguments:'
@@ -63,6 +68,7 @@ PrintHelp() {
                   echo '        [delete]   Deletes an alias if passed.'
                   echo '        [alias]    The room alias to resolve, create, or delete. Skips user prompt if passed.'
                   echo '        [room ID]  The room ID to bind the new alias to. Only applies if [create] and [alias] are also passed.'
+                  echo
                   echo '    visibility [set] [room ID] [public or private]'
                   echo '      Returns the room directory visibility for the given room ID.'
                   echo '      Optional arguments:'
@@ -85,11 +91,13 @@ PrintHelp() {
                   echo '        [reason]   The publicly visible reason for the redaction.'
                   echo '        [status]   Gets the status of the given redaction job ID.'
                   echo '        [job ID]   The redaction job ID, returned after sending a user redaction request.'
+                  echo
                   echo '    threepid [medium] [address]'
                   echo '      Returns the MXID of the user associated with the given third-party ID (3PID).'
                   echo '      Optional arguments:'
                   echo '        [medium]   The medium of the 3PID, e.g. `email`.'
                   echo '        [address]  The address of the 3PID, e.g. `user@example.com`.'
+                  echo
                   echo '    ratelimit [set or delete] [username] [messages per second] [burst count]'
                   echo '      Returns the ratelimit override for the given user.'
                   echo '      Optional arguments:'
