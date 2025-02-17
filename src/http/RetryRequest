@@ -1,0 +1,26 @@
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+RetryRequest() {
+  Log debug "Got args '$*'."
+  local -n __RetryRequest_params="$1"
+  Assert __RetryRequest_params HASH
+  local -n __RetryRequest_response="$2"
+  Assert __RetryRequest_response HASH
+  local retry_count=0
+  local max_retries=3
+  local retry_delay=5
+
+  while (( retry_count < 3 )); do
+    Log warn "Ratelimited by server while using method '${__RetryRequest_params[method]}' in request to '${__RetryRequest_params[path]}'."
+    Log info "Waiting for $retry_delay seconds before retrying..."
+    sleep "$retry_delay"
+    Request __RetryRequest_params __RetryRequest_response
+    CheckStatusCode "${__RetryRequest_response[status]}" && return 0
+    (( retry_count++ ))
+    Log info "Retry count is '$retry_count'"
+  done
+
+  Log error "Reached maximum retries, aborting"
+  return 1
+}
