@@ -16,6 +16,10 @@ ValidateInput() {
         Log error "Expected integer but got '$input'."
         return 1
       }
+      (( (( "$input" + 1 )) - 1 >= 0 && "${#input}" <= 19 )) || {
+        Log error "Integer out of range."
+        return 1
+      }
     ;;
 
     boolean  )
