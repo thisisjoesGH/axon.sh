@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseEventReportsDelete() {
@@ -35,9 +35,10 @@ SynapseEventReportsDelete() {
     [path]="${api[path]}"
   )
   # make request
-  local response
-  Request params response || {
-    HandleMatrixError response
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
     return 1
   }
 }

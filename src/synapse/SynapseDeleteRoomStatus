@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDeleteRoomStatus() {
@@ -35,8 +35,9 @@ SynapseDeleteRoomStatus() {
     [path]="${api[path]}"
   )
   # make request
-  local response
-  Request params response || {
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
     HandleMatrixError response
     return 1
   }
@@ -44,7 +45,7 @@ SynapseDeleteRoomStatus() {
   # get key values
   local -a keys=(status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error)
   local -A values
-  ProcessResponse response keys values || return 1
+  ProcessResponse response[body] keys values || return 1
 
   # output
   echo -e "\nDeletion job status: ${values[status]}"

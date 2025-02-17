@@ -36,16 +36,17 @@ SynapseRoomDetails() {
     [path]="${api[path]}"
   )
   # make request
-  local response
-  Request params response || {
-    HandleMatrixError response
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
     return 1
   }
 
   # get key values
   local -a keys=(room_id name avatar topic canonical_alias joined_members joined_local_members joined_local_devices version creator encryption federatable public join_rules guest_access history_visibility state_events room_type forgotten)
   local -A values
-  ProcessResponse response keys values || return 1
+  ProcessResponse response[body] keys values || return 1
 
   # output
   echo -e "Room ID: ${values[room_id]}"

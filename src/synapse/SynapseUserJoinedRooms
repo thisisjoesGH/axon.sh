@@ -32,16 +32,17 @@ SynapseUserJoinedRooms() {
     [path]="${api[path]}"
   )
   # make request
-  local response
-  Request params response || {
-    HandleMatrixError response
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
     return 1
   }
 
   # get key values
   local -a keys=(joined_rooms total)
   local -A values
-  ProcessResponse response keys values || return 1
+  ProcessResponse response[body] keys values || return 1
 
   # output
   echo -e "Joined rooms:\n${values[joined_rooms]}"

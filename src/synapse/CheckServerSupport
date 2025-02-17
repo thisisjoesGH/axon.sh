@@ -22,15 +22,16 @@ CheckServerSupport() {
     [method]="${s_version_api[method]}"
     [path]="${s_version_api[path]}"
   )
-  local response
-  Request params response || {
-    HandleMatrixError response
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
     return 1
   }
 
   local -a keys=(server_version)
   local -A values
-  ProcessResponse response keys values || return 1
+  ProcessResponse response[body] keys values || return 1
   local server_version="${values[server_version]}"
 
   local -A minimum_version_parts
