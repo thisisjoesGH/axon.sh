@@ -10,7 +10,8 @@ CancelPrompt() {
              echo "Goodbye!"
              exit 0
            ;;
-    *      ) echo
+    *      ) unset IFS
+             echo
              Log info "Cancelling current prompt."
              echo "Press again to exit."
              Prompt
