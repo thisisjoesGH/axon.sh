@@ -38,7 +38,7 @@ SynapseDeleteForwardExtremities() {
   local -A response
   Request params response || return 1
   CheckStatusCode "${response[status]}" || {
-    HandleMatrixError response
+    HandleMatrixError response[body]
     return 1
   }
 
