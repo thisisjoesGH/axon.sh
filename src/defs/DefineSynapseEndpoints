@@ -182,6 +182,14 @@ DefineSynapseEndpoints() {
     [minimum_version]="1.27.0rc1"
   )
 
+  declare -Agr s_user_unshadowban_api=(
+    [method]="DELETE"
+    [path]="/_synapse/admin/v1/users/USER_ID/shadow_ban"
+    [url_params]="s_user_unshadowban_url_params"
+    [body_params]=""
+    [minimum_version]="1.48.0rc1"
+  )
+
   declare -Agr s_user_redact_api=(
     [method]="POST"
     [path]="/_synapse/admin/v1/user/USER_ID/redact"

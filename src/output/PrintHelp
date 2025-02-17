@@ -83,6 +83,7 @@ PrintHelp() {
                   echo '    password      Resets a user'\''s password. Optionally logs the user out of all devices.'
                   echo '    deactivate    Deactivates a user. Optionally erases the user'\''s profile.'
                   echo '    shadowban     Shadowbans a user.'
+                  echo '    unshadowban   Un-shadowbans a user.'
                   echo '    rooms         Shows all rooms a user is currently a member of.'
                   echo '    redact [username [reason]] or [status [job ID]]'
                   echo '      Redacts a users messages. Optionally provides a publicly visible reason.'

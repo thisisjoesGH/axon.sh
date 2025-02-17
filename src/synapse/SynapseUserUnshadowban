@@ -1,0 +1,39 @@
+# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseUserUnshadowban() {
+  Log debug "Got args '$*'"
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_unshadowban_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_unshadowban_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
+
+  Log info "Un-shadowbanning user on homeserver ${config[homeserver]}"
+
+  # input
+  local input_user_name
+  Read -r -p "Username to un-shadowban:" input_user_name
+    local user_id="@$input_user_name:${config[homeserver]}"
+    Log debug "User ID is '$user_id'"
+    url_params[user_id]="$user_id"
+    Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+
+  SetPathParameters url_params api[path]
+
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
+    return 1
+  }
+}

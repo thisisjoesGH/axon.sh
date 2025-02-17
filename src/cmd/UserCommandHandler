@@ -16,6 +16,7 @@ UserCommandHandler() {
     redact     ) SynapseUserRedact "${subcommands[@]:1}";;
     deactivate ) SynapseUserDeactivate "${subcommands[@]:1}";;
     shadowban  ) SynapseUserShadowban "${subcommands[@]:1}";;
+    unshadowban) SynapseUserUnshadowban "${subcommands[@]:1}";;
     ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
     *          ) Log error "Unrecognized subcommand '$1'. Type 'help user' for a list of subcommands.";;
   esac

@@ -151,6 +151,10 @@ DefineSynapseParams() {
     [user_id]=""
   )
 
+  declare -Agr s_user_unshadowban_url_params=(
+    [user_id]=""
+  )
+
   declare -Agr s_user_redact_url_params=(
     [user_id]=""
   )
