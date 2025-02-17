@@ -60,6 +60,13 @@ ValidateInput() {
       }
     ;;
 
+    port     )
+      { [[ "$input" =~ ^[[:digit:]]+$ ]] && (( "$input" < 65536 )) && (( "$input" > 0 )) } || {
+        Log error "Expected Internet port but got '$input'."
+        return 1
+      }
+    ;;
+
     *        ) Log error "Unknown type '$type'."; return 1 ;;
   esac
 }
