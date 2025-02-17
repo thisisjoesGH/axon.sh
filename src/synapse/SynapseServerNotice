@@ -17,36 +17,71 @@ SynapseServerNotice() {
   Log info "Sending server notice on homeserver ${config[homeserver]}"
 
   # input
-  local input_user_name
-  Read -r -p "Target user name:" input_user_name
-    local user_id="@$input_user_name:${config[homeserver]}"
+  local message_type="$1"
+  [[ ! -z "$message_type" ]] || {
+    local input_message_type
+    Read -r -p "Message type (m.room.message):" input_message_type
+    [[ -z "$input_message_type" ]] || {
+      ValidateInput text "$input_message_type" || return 1
+      message_type="$input_message_type"
+    }
+  }
+  body_params[msg_type]="$message_type"
+
+  local message_body="$2"
+  [[ ! -z "$message_body" ]] || {
+    local input_message_body
+    Read -r -p "Message body:" input_message_body
+    message_body="$input_message_body"
+  }
+  ValidateInput text "$message_body" || return 1
+  body_params[body]="$message_body"
+
+  local -a usernames
+  local IFS=,
+  read -r -a usernames <<<"$3"
+  unset IFS
+  [[ ! -z "$usernames" ]] || {
+    local -a input_usernames
+    local IFS=,
+    Read -r -p "Target username(s):" -a input_usernames
+    unset IFS
+    CopyArray input_usernames usernames
+  }
+
+  local -a user_ids
+  local IFS=,
+  for username in "${usernames[@]}"; do
+    user_ids+=("@${username}:${config[homeserver]}")
+  done
+  unset IFS
+
+  for user_id in "${user_ids[@]}"; do
     Log debug "User ID is '$user_id'"
     body_params[user_id]="$user_id"
     Log debug "Body 'user_id' param set to '${body_params[user_id]}'"
-  local input_msg_type
-  Read -r -p "Message type (m.room.message):" input_msg_type
-    if [[ ! -z "$input_msg_type" ]]; then
-      body_params[msg_type]="$input_msg_type"
-    fi
-  local input_msg_body
-  Read -r -p "Message body:" input_msg_body
-    body_params[body]="$input_msg_body"
+    Log info "Sending server notice to '${body_params[user_id]}'."
 
-  # construct request body
-  local object
-  ConstructObject s_server_notice body_params object || return 1
+    # construct request body
+    local object
+    ConstructObject s_server_notice body_params object || return 1
 
-  # set request parameters
-  local -A params=(
-    [method]="${api[method]}"
-    [path]="${api[path]}"
-    [data]="$object"
-  )
-  # make request
-  local -A response
-  Request params response || return 1
-  CheckStatusCode "${response[status]}" || {
-    HandleMatrixError response[body]
-    return 1
-  }
+    # set request parameters
+    local -A params=(
+      [method]="${api[method]}"
+      [path]="${api[path]}"
+      [data]="$object"
+    )
+    # make request
+    local -A response
+    Request params response || return 1
+    CheckStatusCode "${response[status]}" || {
+      if [[ "${response[status]}" == 429 ]]; then
+        RetryRequest params response || return 1
+      else
+        HandleMatrixError response[body]
+        return 1
+      fi
+    }
+  done
 }
