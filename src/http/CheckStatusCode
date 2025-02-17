@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckStatusCode() {
+  Log debug "Got args '$*'."
   local status_code="$1"
 
   case "$status_code" in
