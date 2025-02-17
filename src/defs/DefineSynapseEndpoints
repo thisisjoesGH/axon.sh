@@ -82,6 +82,7 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v2/rooms/ROOM_ID"
     [url_params]="s_delete_room_url_params"
     [body_params]="s_delete_room_body_params"
+    [minimum_version]="1.48.0rc1"
   )
 
   declare -Agr s_delete_room_status_api=(
@@ -89,6 +90,7 @@ DefineSynapseEndpoints() {
     [path]="/_synapse/admin/v2/rooms/delete_status/JOB_ID"
     [url_params]="s_delete_room_status_url_params"
     [body_params]=""
+    [minimum_version]="1.48.0rc1"
   )
 
   declare -Agr s_forward_extremities_api=(
