@@ -4,6 +4,7 @@
 Request() {
   Log debug "Got args '$*'"
   local -n __Request_parameters="$1"
+  Assert __Request_parameters HASH
   local method="${__Request_parameters[method]}"
   local path="${__Request_parameters[path]}"
   local data="${__Request_parameters[data]}"
@@ -12,6 +13,7 @@ Request() {
   local redirect="${__Request_parameters[redirect]}"
   local -A headers="${__Request_parameters[headers]}"
   local -n __Request_response="$2"
+  Assert __Request_response HASH
   local scheme="${config[scheme]}"
   local port="${__Request_parameters[port]}"
 
