@@ -123,6 +123,7 @@ ConstructObject() {
     ;;
   esac
 
+  MinifyJSON constructed_object || return 1
   Log debug "Constructed object '$constructed_object'"
   __ConstructObject_object="$constructed_object"
 }

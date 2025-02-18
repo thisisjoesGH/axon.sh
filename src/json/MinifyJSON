@@ -1,0 +1,20 @@
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+MinifyJSON() {
+  local -n __MinifyJSON_json="$1"
+  [[ "$__MinifyJSON_json" ]] || {
+    Log error "No JSON passed."
+    return 1
+  }
+
+  local std_out
+  local std_err
+
+  CatchStream std_out std_err jq -c . <<<"$__MinifyJSON_json" || {
+    Log error "Invalid JSON. jq returned message '$std_err'"
+    return 1
+  }
+
+  __MinifyJSON_json="$std_out"
+}
