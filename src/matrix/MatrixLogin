@@ -17,7 +17,7 @@ MatrixLogin() {
   local domainpart
   local homeserver
   while Read -r -p "MXID (@user:example.com):" input_mxid; do
-    if [[ ! -z "$input_mxid" ]]; then
+    if [[ -n "$input_mxid" ]]; then
       ParseMXID "$input_mxid" localpart domainpart || continue
       config[admin_user]="$localpart"
       body_params[user]="${config[admin_user]}"
@@ -32,7 +32,7 @@ MatrixLogin() {
   if [[ -z "${config[admin_token]}" ]]; then
     local input_password
     while Read -s -r -p "password:" input_password; do
-      if [[ ! -z "$input_password" ]]; then
+      if [[ -n "$input_password" ]]; then
         body_params[password]="$input_password"
         break
       else

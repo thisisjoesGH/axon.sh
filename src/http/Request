@@ -43,7 +43,7 @@ Request() {
 
   # construct the header arg
   local -a header_arg=()
-  if [[ ! -z "${headers[*]}" ]]; then
+  if [[ -n "${headers[*]}" ]]; then
     for header in "${!headers[@]}"; do
       Log debug "Got header name '$header', value '${headers[$header]}'"
       header_arg+=(--header "${header}: ${headers[$header]}")

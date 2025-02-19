@@ -11,7 +11,7 @@ SynapseVersion() {
   CheckLoginStatus || return 1
 
   # only proceed if we have a configured homeserver
-  if [[ ! -z "${config[homeserver]}" ]]; then
+  if [[ -n "${config[homeserver]}" ]]; then
     # set request parameters
     local -A params=(
       [method]="${api[method]}"
