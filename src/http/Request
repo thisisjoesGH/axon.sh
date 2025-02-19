@@ -117,6 +117,7 @@ Request() {
 
   ValidateInput integer "$status_code" || {
     Log fatal "Invalid HTTP status code."
+    exit 1
   }
   Log info "Got HTTP status code '$status_code','${http_status_codes[$status_code]}' from '$host'"
   __Request_response[status]="$status_code"
