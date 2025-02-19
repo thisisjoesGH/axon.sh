@@ -1,19 +1,19 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ReadEnvironment() {
   if [[ -n "$AXON_CONFIG" ]]; then
-    Log config "Found configuration in environment."
+    LogTerm config "Found configuration in environment."
     local IFS=:
     read -r -a env_config <<< "$AXON_CONFIG"
     unset IFS
     for pair in "${env_config[@]}"; do
       if [[ "$pair" =~ '=' ]]; then
-        Log debug "pair is '$pair'"
+        LogTerm debug "pair is '$pair'"
         key="${pair%%=*}"
-        Log debug "key is '$key'"
+        LogTerm debug "key is '$key'"
         value="${pair##*=}"
-        Log debug "value is '$value'"
+        LogTerm debug "value is '$value'"
         config[$key]="$value"
       fi
     done
