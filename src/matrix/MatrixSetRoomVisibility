@@ -4,9 +4,6 @@
 MatrixSetRoomVisibility() {
   Log debug "Got args '$*'"
 
-  local room_id="$1"
-  local visibility="$2"
-
   # copy api map to local map
   local -A api
   CopyArray m_room_visibility_api api
@@ -19,20 +16,23 @@ MatrixSetRoomVisibility() {
 
   CheckLoginStatus || return 1
 
+  local -n __MatrixSetRoomVisibility_args="$1"
+  local -A options
+  ParseOptions __MatrixSetRoomVisibility_args options
   # ask for values if not passed
-  [[ ! -z "$room_id" ]] || {
+  [[ -n "${options[room_id]}" ]] || {
     local input_room_id
     Read -r -p "$(echo -e -n '\nRoom ID: ')" input_room_id
-    room_id="$input_room_id"
+    options[room_id]="$input_room_id"
   }
-  url_params[room_id]="$room_id"
+  url_params[room_id]="${options[room_id]}"
 
-  [[ ! -z "$visibility" ]] || {
+  [[ -n "${options[visibility]}" ]] || {
     local input_visibility
     Read -r -p "$(echo -e -n '\nRoom visibility (public/private): ')" input_visibility
-    visibility="$input_visibility"
+    options[visibility]="$input_visibility"
   }
-  body_params[visibility]="$visibility"
+  body_params[visibility]="${options[visibility]}"
 
   # construct request body
   local object

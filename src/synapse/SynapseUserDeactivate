@@ -19,6 +19,10 @@ SynapseUserDeactivate() {
 
   Log info "Deactivating user on homeserver ${config[homeserver]}"
 
+
+  local -n __SynapseUserDeactivate_args="$1"
+  local -A options
+  ParseOptions __SynapseUserDeactivate_args options || return 1
   # input
   local input_user_name
   Read -r -p "Username to deactivate:" input_user_name

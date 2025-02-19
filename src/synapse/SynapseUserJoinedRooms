@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserJoinedRooms() {
@@ -16,13 +16,21 @@ SynapseUserJoinedRooms() {
 
   Log info "Getting joined rooms for user on ${config[homeserver]}"
 
+  local -n __SynapseUserJoinedRooms_args="$1"
+  local -A options
+  ParseOptions __SynapseUserJoinedRooms_args options || return 1
   # input
-  local input_user_name
-  Read -r -p "User name:" input_user_name
-    local user_id="@$input_user_name:${config[homeserver]}"
-    Log debug "User ID is '$user_id'"
-    url_params[user_id]="$user_id"
-    Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  local username="${options[username]}"
+  [[ -n "$username" ]] || {
+    local input_username
+    Read -r -p "User name:" input_username
+    username="$input_username"
+  }
+  ValidateInput text "$username" || return 1
+  local user_id="@$username:${config[homeserver]}"
+  Log debug "User ID is '$user_id'"
+  url_params[user_id]="$user_id"
+  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   SetPathParameters url_params api[path]
 

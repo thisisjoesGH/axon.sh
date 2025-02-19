@@ -4,12 +4,12 @@
 SynapseForwardExtremities() {
   Log debug "Got args '$*'"
 
-  if [[ "$1" == "delete" ]]; then
-    SynapseDeleteForwardExtremities "$2" || return 1
+  local -n __SynapseForwardExtremities_args="$1"
+  if [[ "${__SynapseForwardExtremities_args[0]}" == "delete" ]]; then
+    ShiftArray __SynapseForwardExtremities_args || return 1
+    SynapseDeleteForwardExtremities __SynapseForwardExtremities_args || return 1
     return 0
   fi
-
-  local room="$1"
 
   # copy api map to local map
   local -A api
@@ -24,13 +24,15 @@ SynapseForwardExtremities() {
 
   Log info "Checking forward extremities on ${config[homeserver]}"
 
+  local -A options
+  ParseOptions __SynapseForwardExtremities_args options
   # ask for room ID or alias if not passed
-  [[ ! -z "$room" ]] || {
+  [[ -n "${options[room]}" ]] || {
     Read -r -p "Room ID or alias:" input_room
-      room="$input_room"
-      Log debug "Room is '$room'"
+      options[room]="$input_room"
+      Log debug "Room is '${options[room]}'"
   }
-  url_params[room_id_or_alias]="$room"
+  url_params[room_id_or_alias]="${options[room]}"
   Log debug "URL 'room_id_or_alias' param set to '${url_params[room_id_or_alias]}'"
 
   SetPathParameters url_params api[path]

@@ -21,7 +21,9 @@ Main() {
     PrintInfo short
     Prompt
   else
-    HandleCommand "$@"
+    local -a input
+    for element in "$@"; do input+=("$element"); done
+    HandleCommand input
   fi
 }
 

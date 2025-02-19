@@ -3,23 +3,24 @@
 
 HandleCommand() {
   Log debug "Got args '$*'"
-  local commands
-  read -r -a commands <<<"$*"
+  local -n __HandleCommand_args="$1"
+  local command="${__HandleCommand_args[0]}"
+  ShiftArray __HandleCommand_args
 
-  case "${commands[0]}" in
-    login       ) MatrixLogin "${commands[@]:1}";;
-    logout      ) MatrixLogout "${commands[@]:1}";;
-    whoami      ) MatrixWhoAmI "${commands[@]:1}";;
-    server      ) ServerCommandHandler "${commands[@]:1}";;
-    destination ) DestinationCommandHandler "${commands[@]:1}";;
-    room        ) RoomCommandHandler "${commands[@]:1}";;
-    user        ) UserCommandHandler "${commands[@]:1}";;
-    config      ) Configure "${commands[@]:1}";;
+  case "$command" in
+    login       ) MatrixLogin __HandleCommand_args;;
+    logout      ) MatrixLogout __HandleCommand_args;;
+    whoami      ) MatrixWhoAmI __HandleCommand_args;;
+    server      ) ServerCommandHandler __HandleCommand_args;;
+    destination ) DestinationCommandHandler __HandleCommand_args;;
+    room        ) RoomCommandHandler __HandleCommand_args;;
+    user        ) UserCommandHandler __HandleCommand_args;;
+    config      ) Configure __HandleCommand_args;;
     version     ) echo "$projectName v$projectVersion";;
-    help        ) PrintHelp "${commands[@]:1}";;
+    help        ) PrintHelp __HandleCommand_args;;
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
     exit        ) exit 0;;
-    *           ) echo "Unrecognized command '${commands[0]}'. Type 'help' for help.";;
+    *           ) echo "Unrecognized command '$command'. Type 'help' for help.";;
   esac
 }

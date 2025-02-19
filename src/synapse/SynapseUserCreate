@@ -19,6 +19,9 @@ SynapseUserCreate() {
 
   Log info "Creating new user on homeserver ${config[homeserver]}"
 
+  local -n __SynapseUserCreate_args="$1"
+  local -A options
+  ParseOptions __SynapseUserCreate_args options || return 1
   # input
   local input_user_name
   Read -r -p "New user name:" input_user_name

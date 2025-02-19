@@ -15,9 +15,12 @@ SynapseRoomDetails() {
 
   Log info "Getting room details from ${config[homeserver]}"
 
+  local -n __SynapseRoomDetails_args="$1"
+  local -A options
+  ParseOptions __SynapseRoomDetails_args options || return 1
   # input
-  local room_id="$1"
-  [[ ! -z "$room_id" ]] || {
+  local room_id="${options[id]}"
+  [[ -n "$room_id" ]] || {
     local input_room_id
     Read -r -p "Room ID:" input_room_id
     room_id="$input_room_id"

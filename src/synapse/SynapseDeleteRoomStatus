@@ -4,8 +4,6 @@
 SynapseDeleteRoomStatus() {
   Log debug "Got args '$*'"
 
-  local job_id="$1"
-
   # copy api map to local map
   local -A api
   CopyArray s_delete_room_status_api api
@@ -18,13 +16,17 @@ SynapseDeleteRoomStatus() {
 
   Log info "Getting room deletion job status from '${config[homeserver]}'"
 
+  local -n __SynapseDeleteRoomStatus_args="$1"
+  local -A options
+  ParseOptions __SynapseDeleteRoomStatus_args options || return 1
+
   # ask for job ID if not passed
-  [[ ! -z "$job_id" ]] || {
+  [[ -n "${options[job_id]}" ]] || {
     local input_job_id
     Read -r -p "Job ID:" input_job_id
-    job_id="$input_job_id"
+    options[job_id]="$input_job_id"
   }
-  url_params[job_id]="$job_id"
+  url_params[job_id]="${options[job_id]}"
   Log debug "URL 'job_id' param set to '${url_params[job_id]}'"
 
   SetPathParameters url_params api[path]

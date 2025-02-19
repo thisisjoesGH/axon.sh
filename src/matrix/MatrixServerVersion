@@ -8,22 +8,24 @@ MatrixServerVersion() {
   local -A api
   CopyArray m_server_version_api api
 
+  local -n __MatrixServerVersion_args="$1"
+  local -A options
+  ParseOptions __MatrixServerVersion_args options || return 1
   # ask for server if not passed
-  local server="$1"
-  [[ ! -z "$server" ]] || {
+  [[ -n "${options[destination]}" ]] || {
     local input_server
     Read -r -p "Destination:" input_server
-    server="$input_server"
+    options[destination]="$input_server"
   }
-  ValidateInput host "$server" || return 1
+  ValidateInput host "${options[destination]}" || return 1
 
-  Log info "Getting server version for '$server'"
+  Log info "Getting server version for '${options[destination]}'"
 
   local homeserver
   local host
   local port
   {
-    GetWellKnown "$server" homeserver && \
+    GetWellKnown "${options[destination]}" homeserver && \
     ParseServerName "$homeserver" host port
   } || {
     Log info "Falling back to default S2S port"

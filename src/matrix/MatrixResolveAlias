@@ -4,15 +4,19 @@
 MatrixResolveAlias() {
   Log debug "Got args '$*'"
 
-  if [[ "$1" == "create" ]]; then
-    MatrixCreateAlias "$2" "$3" || return 1
-    return 0
-  elif [[ "$1" == "delete" ]]; then
-    MatrixDeleteAlias "$2" || return 1
-    return 0
-  fi
-
-  local alias="$1"
+  local -n __MatrixResolveAlias_args="$1"
+  case "${__MatrixResolveAlias_args[0]}" in
+    create)
+      ShiftArray __MatrixResolveAlias_args || return 1
+      MatrixCreateAlias __MatrixResolveAlias_args || return 1
+      return 0
+    ;;
+    delete)
+      ShiftArray __MatrixResolveAlias_args || return 1
+      MatrixDeleteAlias __MatrixResolveAlias_args || return 1
+      return 0
+    ;;
+  esac
 
   # copy api map to local map
   local -A api
@@ -23,13 +27,16 @@ MatrixResolveAlias() {
 
   CheckLoginStatus || return 1
 
+  local -A options
+  ParseOptions __MatrixResolveAlias_args options
   # ask for alias if not passed
-  [[ ! -z "$alias" ]] || {
+  Log debug "Alias is ${options[alias]}"
+  [[ -n "${options[alias]}" ]] || {
     local input_alias
     Read -r -p "$(echo -e -n '\nAlias to resolve:')" input_alias
-    alias="$input_alias"
+    options[alias]="$input_alias"
   }
-  url_params[alias]="$alias"
+  url_params[alias]="${options[alias]}"
 
   SetPathParameters url_params api[path]
 

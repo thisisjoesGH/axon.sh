@@ -3,7 +3,6 @@
 
 SynapseDeleteUserRatelimit() {
   Log debug "Got args '$*'"
-  local user="$1"
 
   # copy api map to local map
   local -A api
@@ -17,13 +16,16 @@ SynapseDeleteUserRatelimit() {
 
   Log info "Deleting user ratelimit override on ${config[homeserver]}"
 
-  # ask for user if not passed
-  [[ ! -z "$user" ]] || {
+  local -n __SynapseDeleteUserRatelimit_args="$1"
+  local -A options
+  ParseOptions __SynapseDeleteUserRatelimit_args options || return 1
+  # ask for username if not passed
+  [[ -n "${options[username]}" ]] || {
     Read -r -p "Username:" input_user
-      user="$input_user"
-      Log debug "User is '$user'"
+      options[username]="$input_user"
+      Log debug "Username is '$username'"
   }
-  local mxid="@${user}:${config[homeserver]}"
+  local mxid="@${options[username]}:${config[homeserver]}"
   url_params[user_id]="$mxid"
   Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 

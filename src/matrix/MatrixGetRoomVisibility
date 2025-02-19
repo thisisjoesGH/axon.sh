@@ -4,12 +4,12 @@
 MatrixGetRoomVisibility() {
   Log debug "Got args '$*'"
 
-  if [[ "$1" == 'set' ]]; then
-    MatrixSetRoomVisibility "$2" "$3" || return 1
+  local -n __MatrixGetRoomVisibility_args="$1"
+  if [[ "${__MatrixGetRoomVisibility_args[0]}" == 'set' ]]; then
+    ShiftArray __MatrixGetRoomVisibility_args || return 1
+    MatrixSetRoomVisibility __MatrixGetRoomVisibility_args || return 1
     return 0
   fi
-
-  local room_id="$1"
 
   # copy api map to local map
   local -A api
@@ -20,19 +20,21 @@ MatrixGetRoomVisibility() {
 
   CheckLoginStatus || return 1
 
+  local -A options
+  ParseOptions __MatrixGetRoomVisibility_args options
   # ask for value if not passed
-  [[ ! -z "$room_id" ]] || {
+  [[ -n "${options[room_id]}" ]] || {
     local input_room_id
     Read -r -p "$(echo -e -n '\nRoom ID: ')" input_room_id
-    room_id="$input_room_id"
+    options[room_id]="$input_room_id"
   }
-  url_params[room_id]="$room_id"
+  url_params[room_id]="${options[room_id]}"
 
   SetPathParameters url_params api[path]
 
   # set request parameters
   local -A params=(
-    [method]="GET"
+    [method]="${api[method]}"
     [path]="${api[path]}"
   )
   # make request

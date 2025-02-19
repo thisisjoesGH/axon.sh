@@ -3,8 +3,6 @@
 
 MatrixCreateAlias() {
   Log debug "Got args '$*'"
-  local alias="$1"
-  local room_id="$2"
 
   # copy api map to local map
   local -A api
@@ -18,20 +16,23 @@ MatrixCreateAlias() {
 
   CheckLoginStatus || return 1
 
+  local -n __MatrixCreateAlias_args="$1"
+  local -A options
+  ParseOptions __MatrixCreateAlias_args options
   # input
-  [[ ! -z "$alias" ]] || {
+  [[ -n "${options[alias]}" ]] || {
     local input_alias
     Read -r -p "$(echo -e -n '\nAlias to create:')" input_alias
-    alias="$input_alias"
+    options[alias]="$input_alias"
   }
 
-  [[ ! -z "$room_id" ]] || {
+  [[ -n "${options[room_id]}" ]] || {
     local input_room_id
     Read -r -p "$(echo -e -n '\nRoom ID to link:')" input_room_id
-    room_id="$input_room_id"
+    options[room_id]="$input_room_id"
   }
-  url_params[alias]="$alias"
-  body_params[room_id]="$room_id"
+  url_params[alias]="${options[alias]}"
+  body_params[room_id]="${options[room_id]}"
 
   SetPathParameters url_params api[path]
 

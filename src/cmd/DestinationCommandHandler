@@ -3,16 +3,16 @@
 
 DestinationCommandHandler() {
   Log debug "Got args '$*'"
-  local subcommands
-  read -r -a subcommands <<< "$*"
-  Log debug "Have subcommands '${subcommands[*]}'"
-  Log debug "Testing '${subcommands[0]}'"
-  case "${subcommands[0]}" in
-    discover ) MatrixDiscover "${subcommands[@]:1}";;
-    details  ) SynapseDestinationDetails "${subcommands[@]:1}";;
-    reset    ) SynapseDestinationReset "${subcommands[@]:1}";;
-    version  ) MatrixServerVersion "${subcommands[@]:1}";;
+  local -n __DestinationCommandHandler_args="$1"
+  local subcommand="${__DestinationCommandHandler_args[0]}"
+  ShiftArray __DestinationCommandHandler_args
+  Log debug "Testing '$subcommand'"
+  case "$subcommand" in
+    discover ) MatrixDiscover __DestinationCommandHandler_args;;
+    details  ) SynapseDestinationDetails __DestinationCommandHandler_args;;
+    reset    ) SynapseDestinationReset __DestinationCommandHandler_args;;
+    version  ) MatrixServerVersion __DestinationCommandHandler_args;;
     ''       ) Log error "Subcommand required. Type 'help destination' for a list of subcommands.";;
-    *        ) Log error "Unrecognized subcommand '$1'. Type 'help destination' for a list of subcommands.";;
+    *        ) Log error "Unrecognized subcommand '$subcommand'. Type 'help destination' for a list of subcommands.";;
   esac
 }

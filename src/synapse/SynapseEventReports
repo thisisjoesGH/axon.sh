@@ -4,15 +4,19 @@
 SynapseEventReports() {
   Log debug "Got args '$*'"
 
-  if [[ "$1" == 'details' ]]; then
-    SynapseEventReportsDetails "${@:2}" || return 1
-    return 0
-  fi
-
-  if [[ "$1" == 'delete' ]]; then
-    SynapseEventReportsDelete "${@:2}" || return 1
-    return 0
-  fi
+  local -n __SynapseEventReports_args="$1"
+  case "${__SynapseEventReports_args[0]}" in
+    details )
+      ShiftArray __SynapseEventReports_args || return 1
+      SynapseEventReportsDetails __SynapseEventReports_args || return 1
+      return 0
+    ;;
+    delete )
+      ShiftArray __SynapseEventReports_args || return 1
+      SynapseEventReportsDelete __SynapseEventReports_args || return 1
+      return 0
+    ;;
+  esac
 
   # copy api map to local map
   local -A api
@@ -26,9 +30,12 @@ SynapseEventReports() {
 
   Log info "Getting event reports from ${config[homeserver]}"
 
+  local -A options
+  ParseOptions __SynapseEventReports_args options
+
   # ask for limit if not passed
-  local limit="$1"
-  [[ ! -z "$limit" ]] || {
+  local limit="${options[limit]}"
+  [[ -n "$limit" ]] || {
     local input_limit
     Read -r -p "Maximum reports to return at once:" input_limit
       limit="$input_limit"
@@ -38,8 +45,8 @@ SynapseEventReports() {
   Log debug "Limit is '${url_params[limit]}'"
 
   # use default `from` value if not passed
-  local from="$2"
-  [[ ! -z "$from" ]] && {
+  local from="${options[from]}"
+  [[ -n "$from" ]] && {
     ValidateInput integer "$from" || return 1
     url_params[from]="$from"
   }

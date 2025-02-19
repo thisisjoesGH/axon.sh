@@ -3,18 +3,19 @@
 
 RoomCommandHandler() {
   Log debug "Got args '$*'"
-  local subcommands
-  read -r -a subcommands <<< "$*"
-  Log debug "Have subcommands '${subcommands[*]}'"
-  Log debug "Testing '${subcommands[0]}'"
-  case "${subcommands[0]}" in
-    purge       ) SynapsePurgeHistory "${subcommands[@]:1}";;
-    delete      ) SynapseDeleteRoom "${subcommands[@]:1}";;
-    extremities ) SynapseForwardExtremities "${subcommands[@]:1}";;
-    details     ) SynapseRoomDetails "${subcommands[@]:1}";;
-    alias       ) MatrixResolveAlias "${subcommands[@]:1}";;
-    visibility  ) MatrixGetRoomVisibility "${subcommands[@]:1}";;
+  local -n __RoomCommandHandler_args="$1"
+  local subcommand="${__RoomCommandHandler_args[0]}"
+  ShiftArray __RoomCommandHandler_args
+  Log debug "Testing '$subcommand'"
+
+  case "$subcommand" in
+    purge       ) SynapsePurgeHistory __RoomCommandHandler_args;;
+    delete      ) SynapseDeleteRoom __RoomCommandHandler_args;;
+    extremities ) SynapseForwardExtremities __RoomCommandHandler_args;;
+    details     ) SynapseRoomDetails __RoomCommandHandler_args;;
+    alias       ) MatrixResolveAlias __RoomCommandHandler_args;;
+    visibility  ) MatrixGetRoomVisibility __RoomCommandHandler_args;;
     ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
-    *           ) Log error "Unrecognized subcommand '$1'. Type 'help room' for a list of subcommands.";;
+    *           ) Log error "Unrecognized subcommand '$subcommand'. Type 'help room' for a list of subcommands.";;
   esac
 }

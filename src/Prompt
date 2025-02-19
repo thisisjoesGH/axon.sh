@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Prompt() {
@@ -7,10 +7,11 @@ Prompt() {
   history -n || Log warn "Failed to load history from '$HISTFILE'"
   while true; do
     local prompt="[axon]>"
-    local -a prompt_input
-    Read -e -r -p "$prompt" -a prompt_input
-    history -s "${prompt_input[@]}" || Log warn "Failed to append entry to history"
+    local user_input
+    Read -e -r -p "$prompt" user_input
+    local -a input="($user_input)"
+    history -s "$user_input" || Log warn "Failed to append entry to history"
     history -w || Log warn "Failed to write history to '$HISTFILE'"
-    HandleCommand "${prompt_input[@]}"
+    HandleCommand input
   done
 }

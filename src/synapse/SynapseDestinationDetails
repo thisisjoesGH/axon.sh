@@ -4,8 +4,6 @@
 SynapseDestinationDetails() {
   Log debug "Got args '$*'"
 
-  local destination="$1"
-
   # copy api map to local map
   local -A api
   CopyArray s_destination_details_api api
@@ -18,15 +16,18 @@ SynapseDestinationDetails() {
 
   Log info "Getting destination details from ${config[homeserver]}"
 
+  local -n __SynapseDestinationDetails_args="$1"
+  local -A options
+  ParseOptions __SynapseDestinationDetails_args options || return 1
   # input
-  [[ ! -z "$destination" ]] || {
+  [[ -n "${options[destination]}" ]] || {
     local input_destination
     Read -r -p "Destination:" input_destination
-      destination="$input_destination"
+      options[destination]="$input_destination"
   }
-  Log debug "Destination is '$destination'"
-  ValidateInput host "$destination" || return 1
-  url_params[destination]="$destination"
+  Log debug "Destination is '${options[destination]}'"
+  ValidateInput host "${options[destination]}" || return 1
+  url_params[destination]="${options[destination]}"
   Log debug "URL 'destination' param set to '${url_params[destination]}'"
 
   SetPathParameters url_params api[path]

@@ -4,8 +4,6 @@
 SynapseUserRedactStatus() {
   Log debug "Got args '$*'"
 
-  local job_id="$1"
-
   # copy api map to local map
   local -A api
   CopyArray s_user_redact_status_api api
@@ -18,8 +16,13 @@ SynapseUserRedactStatus() {
 
   Log info "Getting user redaction job status from '${config[homeserver]}'"
 
+  local -n __SynapseUserRedactStatus_args="$1"
+  local -A options
+  ParseOptions __SynapseUserRedactStatus_args options || return 1
+
   # ask for job ID if not passed
-  [[ ! -z "$job_id" ]] || {
+  local job_id="${options[id]}"
+  [[ -n "$job_id" ]] || {
     local input_job_id
     Read -r -p "Job ID: " input_job_id
     job_id="$input_job_id"

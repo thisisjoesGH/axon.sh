@@ -16,9 +16,12 @@ SynapseEventReportsDelete() {
 
   Log info "Deleting event report from ${config[homeserver]}"
 
+  local -n __SynapseEventReportsDelete_args="$1"
+  local -A options
+  ParseOptions __SynapseEventReportsDelete_args options || return 1
   # ask for report ID if not passed
-  local report_id="$1"
-  [[ ! -z "$report_id" ]] || {
+  local report_id="${options[id]}"
+  [[ -n "$report_id" ]] || {
     local input_report_id
     Read -r -p "Report ID to delete:" input_report_id
       report_id="$input_report_id"

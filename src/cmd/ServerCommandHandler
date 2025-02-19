@@ -1,18 +1,19 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ServerCommandHandler() {
   Log debug "Got args '$*'"
-  local subcommands
-  read -r -a subcommands <<< "$*"
-  Log debug "Have subcommands '${subcommands[*]}'"
-  Log debug "Testing '${subcommands[0]}'"
-  case "${subcommands[0]}" in
-    version ) SynapseVersion "${subcommands[@]:1}";;
-    reports ) SynapseEventReports "${subcommands[@]:1}";;
-    notice  ) SynapseServerNotice "${subcommands[@]:1}";;
+  local -n __ServerCommandHandler_args="$1"
+  local subcommand="${__ServerCommandHandler_args[0]}"
+  ShiftArray __ServerCommandHandler_args
+  Log debug "Testing '$subcommand'"
+
+  case "$subcommand" in
+    version ) SynapseVersion __ServerCommandHandler_args;;
+    reports ) SynapseEventReports __ServerCommandHandler_args;;
+    notice  ) SynapseServerNotice __ServerCommandHandler_args;;
     address ) if [ -z "${config[homeserver]}" ]; then Log error "No homeserver configured!"; else echo "${config[homeserver]}"; fi;;
     ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands.";;
-    *       ) Log error "Unrecognized subcommand '$1'. Type 'help server' for a list of subcommands.";;
+    *       ) Log error "Unrecognized subcommand '$subcommand'. Type 'help server' for a list of subcommands.";;
   esac
 }

@@ -16,9 +16,12 @@ SynapseServerNotice() {
 
   Log info "Sending server notice on homeserver ${config[homeserver]}"
 
+  local -n __SynapseServerNotice_args="$1"
+  local -A options
+  ParseOptions __SynapseServerNotice_args options || return 1
   # input
-  local message_type="$1"
-  [[ ! -z "$message_type" ]] || {
+  local message_type="${options[type]}"
+  [[ -n "${options[body]}" ]] || {
     local input_message_type
     Read -r -p "Message type (m.room.message):" input_message_type
     [[ -z "$input_message_type" ]] || {
@@ -28,8 +31,8 @@ SynapseServerNotice() {
   }
   body_params[msg_type]="$message_type"
 
-  local message_body="$2"
-  [[ ! -z "$message_body" ]] || {
+  local message_body="${options[body]}"
+  [[ -n "$message_body" ]] || {
     local input_message_body
     Read -r -p "Message body:" input_message_body
     message_body="$input_message_body"
@@ -39,9 +42,9 @@ SynapseServerNotice() {
 
   local -a usernames
   local IFS=,
-  read -r -a usernames <<<"$3"
+  read -r -a usernames <<<"${options[usernames]}"
   unset IFS
-  [[ ! -z "$usernames" ]] || {
+  [[ -n "$usernames" ]] || {
     local -a input_usernames
     local IFS=,
     Read -r -p "Target username(s):" -a input_usernames

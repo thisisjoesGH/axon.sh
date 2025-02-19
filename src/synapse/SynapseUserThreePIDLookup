@@ -4,9 +4,6 @@
 SynapseUserThreePIDLookup() {
   Log debug "Got args '$*'"
 
-  local medium="$1"
-  local address="$2"
-
   # copy api map to local map
   local -A api
   CopyArray s_user_threepid_lookup_api api
@@ -19,18 +16,19 @@ SynapseUserThreePIDLookup() {
 
   Log info "Looking up user by 3PID on ${config[homeserver]}"
 
+  local -n __SynapseUserThreePIDLookup_args="$1"
+  local -A options
+  ParseOptions __SynapseUserThreePIDLookup_args options || return 1
   # input
   # ask for medium if not passed
-  [[ ! -z "$medium" ]] || {
-  local input_medium
-  Read -r -p "Medium:" input_medium
-    medium="$input_medium"
+  local medium="${options[medium]}"
+  [[ -n "$medium" ]] || {
+    Read -r -p "Medium:" medium
   }
   # ask for address if not passed
-  [[ ! -z "$address" ]] || {
-  local input_address
-  Read -r -p "Address:" input_address
-    address="$input_address"
+  local address="${options[address]}"
+  [[ -n "$address" ]] || {
+    Read -r -p "Address:" address
   }
   url_params[medium]="$medium"
   Log debug "URL 'medium' param set to '${url_params[medium]}'"

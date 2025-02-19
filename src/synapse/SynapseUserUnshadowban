@@ -16,13 +16,18 @@ SynapseUserUnshadowban() {
 
   Log info "Un-shadowbanning user on homeserver ${config[homeserver]}"
 
+  local -n __SynapseUserUnshadowban_args="$1"
+  local -A options
+  ParseOptions __SynapseUserUnshadowban_args options || return 1
   # input
-  local input_user_name
-  Read -r -p "Username to un-shadowban:" input_user_name
-    local user_id="@$input_user_name:${config[homeserver]}"
-    Log debug "User ID is '$user_id'"
-    url_params[user_id]="$user_id"
-    Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  local username="${options[username]}"
+  [[ -n "$username" ]] || {
+    Read -r -p "Username to un-shadowban:" username
+  }
+  local user_id="@$username:${config[homeserver]}"
+  Log debug "User ID is '$user_id'"
+  url_params[user_id]="$user_id"
+  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   SetPathParameters url_params api[path]
 

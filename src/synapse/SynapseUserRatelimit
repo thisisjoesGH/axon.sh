@@ -1,15 +1,21 @@
-# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserRatelimit() {
   Log debug "Got args '$*'"
-
-  case "$1" in
-    'set'    ) SynapseSetUserRatelimit "$2" "$3" "$4" || return 1; return 0;;
-    'delete' ) SynapseDeleteUserRatelimit "$2" || return 1; return 0;;
+  local -n __SynapseUserRatelimit_args="$1"
+  case "${__SynapseUserRatelimit_args[0]}" in
+    'set')
+      ShiftArray __SynapseUserRatelimit_args || return 1
+      SynapseSetUserRatelimit __SynapseUserRatelimit_args || return 1
+      return 0
+    ;;
+    'delete')
+      ShiftArray __SynapseUserRatelimit_args
+      SynapseDeleteUserRatelimit __SynapseUserRatelimit_args || return 1
+      return 0
+    ;;
   esac
-
-  local user="$1"
 
   # copy api map to local map
   local -A api
@@ -23,8 +29,11 @@ SynapseUserRatelimit() {
 
   Log info "Getting ratelimit for user on ${config[homeserver]}"
 
+  local -A options
+  ParseOptions __SynapseUserRatelimit_args options || return 1
   # ask for user if not passed
-  [[ ! -z "$user" ]] || {
+  local user="${options[username]}"
+  [[ -n "$user" ]] || {
     local input_user
     Read -r -p "Username:" input_user
       user="$input_user"
