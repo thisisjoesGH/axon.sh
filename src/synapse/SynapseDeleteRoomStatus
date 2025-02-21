@@ -21,12 +21,12 @@ SynapseDeleteRoomStatus() {
   ParseOptions __SynapseDeleteRoomStatus_args options || return 1
 
   # ask for job ID if not passed
-  [[ -n "${options[job_id]}" ]] || {
+  [[ -n "${options[id]}" ]] || {
     local input_job_id
     Read -r -p "Job ID:" input_job_id
-    options[job_id]="$input_job_id"
+    options[id]="$input_job_id"
   }
-  url_params[job_id]="${options[job_id]}"
+  url_params[job_id]="${options[id]}"
   Log debug "URL 'job_id' param set to '${url_params[job_id]}'"
 
   SetPathParameters url_params api[path]
