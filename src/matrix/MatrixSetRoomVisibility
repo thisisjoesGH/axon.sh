@@ -20,12 +20,12 @@ MatrixSetRoomVisibility() {
   local -A options
   ParseOptions __MatrixSetRoomVisibility_args options
   # ask for values if not passed
-  [[ -n "${options[room_id]}" ]] || {
+  [[ -n "${options[id]}" ]] || {
     local input_room_id
     Read -r -p "$(echo -e -n '\nRoom ID: ')" input_room_id
-    options[room_id]="$input_room_id"
+    options[id]="$input_room_id"
   }
-  url_params[room_id]="${options[room_id]}"
+  url_params[room_id]="${options[id]}"
 
   [[ -n "${options[visibility]}" ]] || {
     local input_visibility
