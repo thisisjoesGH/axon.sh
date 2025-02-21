@@ -20,7 +20,7 @@ SynapseUserJoinedRooms() {
   local -A options
   ParseOptions __SynapseUserJoinedRooms_args options || return 1
   # input
-  local username="${options[username]}"
+  local username="${options[user]}"
   [[ -n "$username" ]] || {
     local input_username
     Read -r -p "User name:" input_username
