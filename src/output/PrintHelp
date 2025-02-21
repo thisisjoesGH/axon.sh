@@ -22,7 +22,7 @@ PrintHelp() {
                   echo '        [body]  The notice content. Newlines may be inserted with `\n`.'
                   echo '        [users] A comma seperated list of local usernames. For'
                   echo
-                  echo '    reports [limit=<maximum>] OR [details|delete] [id=<report ID>]'
+                  echo '    reports [limit=<integer>] OR [details|delete] [id=<report ID>]'
                   echo '      Gets event reports.'
                   echo '      Subcommand options:'
                   echo '        [limit] The maximum number of event reports to retrieve at once. Skips user prompt if passed.'
