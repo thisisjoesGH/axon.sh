@@ -28,12 +28,12 @@ SynapseDeleteRoom() {
   local -A options
   ParseOptions __SynapseDeleteRoom_args options || return 1
   # input
-  [[ -n "${options[room_id]}" ]] || {
+  [[ -n "${options[id]}" ]] || {
     local input_room_id
     Read -r -p "Room ID:" input_room_id
     options[room_id]="$input_room_id"
   }
-  url_params[room_id]="${options[room_id]}"
+  url_params[room_id]="${options[id]}"
   Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
 
   [[ -n "${options[block]}" ]] || {
