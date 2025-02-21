@@ -32,7 +32,7 @@ SynapseUserRatelimit() {
   local -A options
   ParseOptions __SynapseUserRatelimit_args options || return 1
   # ask for user if not passed
-  local user="${options[username]}"
+  local user="${options[user]}"
   [[ -n "$user" ]] || {
     local input_user
     Read -r -p "Username:" input_user

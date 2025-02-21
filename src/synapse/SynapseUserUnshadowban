@@ -20,7 +20,7 @@ SynapseUserUnshadowban() {
   local -A options
   ParseOptions __SynapseUserUnshadowban_args options || return 1
   # input
-  local username="${options[username]}"
+  local username="${options[user]}"
   [[ -n "$username" ]] || {
     Read -r -p "Username to un-shadowban:" username
   }
