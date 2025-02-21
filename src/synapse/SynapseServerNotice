@@ -42,7 +42,7 @@ SynapseServerNotice() {
 
   local -a usernames
   local IFS=,
-  read -r -a usernames <<<"${options[usernames]}"
+  read -r -a usernames <<<"${options[users]}"
   unset IFS
   [[ -n "$usernames" ]] || {
     local -a input_usernames
