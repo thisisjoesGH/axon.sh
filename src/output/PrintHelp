@@ -146,7 +146,7 @@ PrintHelp() {
                   echo '    [value] The new value for the given configuration option.'
                 ;;
     ''          ) echo 'Usage: <COMMAND> [SUBCOMMAND] [VERB] [<OPTION>=<VALUE> ...]'
-                  echo '  VERBS must immediately follow a SUBCOMMAND.'
+                  echo '  VERB must immediately follow a SUBCOMMAND.'
                   echo '  OPTION(s) may be passed in any order.'
                   echo '  VALUE(s) containing spaces must be quoted.'
                   echo
