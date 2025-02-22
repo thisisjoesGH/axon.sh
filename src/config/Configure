@@ -3,13 +3,14 @@
 
 Configure() {
   Log debug "Got args '$*'"
-  local key="$1"
-  local value="$2"
+  local -n __Configure_args="$1"
+  local key="${__Configure_args[0]}"
+  local value="${__Configure_args[1]}"
   if [[ "$value" == \'\' || "$value" == \"\" ]]; then
     value=""
   fi
 
-  case "$#" in
+  case "${#__Configure_args[@]}" in
     0 ) for config_key in "${!config[@]}"; do
           printf "%-20s %s\n" "$config_key" "${config[$config_key]}"
         done
