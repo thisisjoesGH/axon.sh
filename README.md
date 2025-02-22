@@ -1,13 +1,13 @@
-# axon.sh
+# axon
 
 [![License](https://shields.thisisjoes.site/badge/dynamic/json.svg?label=license&color=red&url=https://git.thisisjoes.site/api/v1/repos/joe/axon.sh/labels/@license&query=$.description)](https://git.thisisjoes.site/joe/axon.sh/src/branch/dev/LICENSE)
 [![Latest Release](https://shields.thisisjoes.site/badge/dynamic/json.svg?label=latest%20release&color=green&url=https://git.thisisjoes.site/api/v1/repos/joe/axon.sh/releases&query=$[0].tag_name)](https://git.thisisjoes.site/joe/axon.sh/releases)
 [![Matrix](https://shields.thisisjoes.site/matrix/axon%3Amatrix.thisisjoes.site?fetchMode=summary&logo=matrix&logoColor=%2395b1fb&color=%2395b1fb)](matrix:/r/axon:matrix.thisisjoes.site)
 
-A Matrix Synapse administration tool written in bash. In early development, but works pretty well!
+A Matrix Synapse administration CLI. Better than typing curl requests!
 
 ## Seeking user feedback
-If you have used axon.sh please provide your feedback, positive or negative. Feel free to open an issue or leave a message in the [matrix] room at `#axon:matrix.thisisjoes.site`.
+If you have used axon please provide your feedback, positive or negative. Feel free to open an issue or leave a message in the [matrix] room at `#axon:matrix.thisisjoes.site`.
 
 In particular, feedback on command usability and desired functionality would be valuable.
 
