@@ -1,9 +1,12 @@
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 GetWellKnown() {
   local server_name="$1"
-  local -n __GetWellKnown_homeserver="$2"
+  local -n __GetWellKnown_homeserver="$2" || {
+    Log fatal "Empty reference'"
+    exit 1
+  }
 
   [[ "$server_name" ]] || {
     Log error "No server name passed."
@@ -14,6 +17,7 @@ GetWellKnown() {
     [method]="GET"
     [host]="$server_name"
     [path]="/.well-known/matrix/server"
+    [port]="443"
     [keys]="m.server"
     [auth]="false"
     [redirect]="true"
