@@ -12,24 +12,24 @@ MatrixServerVersion() {
   local -A options
   ParseOptions __MatrixServerVersion_args options || return 1
   # ask for server if not passed
-  [[ -n "${options[destination]}" ]] || {
+  local destination="${options[destination]}"
+  [[ -n "$destination" ]] || {
     local input_server
-    Read -r -p "Destination:" input_server
-    options[destination]="$input_server"
+    Read -r -p "Destination:" destination
   }
-  ValidateInput host "${options[destination]}" || return 1
+  ValidateInput host "$destination" || return 1
 
-  Log info "Getting server version for '${options[destination]}'"
+  Log info "Getting server version for '$destination'"
 
   local homeserver
   local host
   local port
   {
-    GetWellKnown "${options[destination]}" homeserver && \
+    GetWellKnown "$destination" homeserver && \
     ParseServerName "$homeserver" host port
   } || {
     Log info "Falling back to default S2S port"
-    host="$server"
+    host="$destination"
     port="8448"
   }
 
