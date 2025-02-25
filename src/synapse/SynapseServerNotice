@@ -21,6 +21,7 @@ SynapseServerNotice() {
   ParseOptions __SynapseServerNotice_args options || return 1
   # input
   local message_type="${options[type]}"
+  # only prompt for type if no body passed
   [[ -n "${options[body]}" ]] || {
     local input_message_type
     Read -r -p "Message type (m.room.message):" input_message_type
@@ -53,11 +54,9 @@ SynapseServerNotice() {
   }
 
   local -a user_ids
-  local IFS=,
   for username in "${usernames[@]}"; do
     user_ids+=("@${username}:${config[homeserver]}")
   done
-  unset IFS
 
   for user_id in "${user_ids[@]}"; do
     Log debug "User ID is '$user_id'"
