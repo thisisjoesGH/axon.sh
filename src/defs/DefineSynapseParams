@@ -110,6 +110,8 @@ DefineSynapseParams() {
   declare -Agr s_user_create_body_params=(
     [password]=""
     [displayname]=""
+    [threepid.medium]=""
+    [threepid.address]=""
     [admin]="false"
   )
 

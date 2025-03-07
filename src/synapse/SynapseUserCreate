@@ -49,6 +49,21 @@ SynapseUserCreate() {
   }
   body_params[password]="$password"
 
+  local threepid_medium="${options[threepid_medium]}"
+  [[ -n "$threepid_medium" ]] || {
+    Read -r -p "Add third-party ID? (email/None):" threepid_medium
+  }
+  case "$threepid_medium" in
+    email )
+      body_params[threepid.medium]="email"
+      local threepid_address="${options[threepid_address]}"
+      [[ -n "$threepid_address" ]] || {
+        Read -r -p "Address:" threepid_address
+      }
+      body_params[threepid.address]="$threepid_address";;
+    *     ) : ;;
+  esac
+
   local make_admin="${options[make_admin]}"
   [[ -n "$make_admin" ]] || {
     local input

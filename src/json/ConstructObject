@@ -90,6 +90,16 @@ ConstructObject() {
         ".displayname = ${parameters[displayname]}"
         ".admin = ${parameters[admin]}"
       )
+      if [[ -z "${parameters[threepid.medium]}" ]]; then
+        filters+=(
+          'del( .threepids )'
+        )
+      else
+        filters+=(
+          ".threepids[0].medium = \"${parameters[threepid.medium]}\""
+          ".threepids[0].address = \"${parameters[threepid.address]}\""
+        )
+      fi
       ModifyJSON "$s_user_create_object" filters constructed_object || return 1
     ;;
 
