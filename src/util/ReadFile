@@ -19,5 +19,5 @@ ReadFile() {
     return 1
   }
   Log debug "Read data from '$path'."
-  echo "$output"
+  printf '%s' "$output"
 }
