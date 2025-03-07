@@ -1,0 +1,18 @@
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+EncodeJSON() {
+  local json="$1"
+
+  [[ "$json" ]] || {
+    Log error "No JSON passed."
+    return 1
+  }
+
+  local std_out
+  local std_err
+  CatchStream std_out std_err jq -R <<<"$json" || {
+    Log fatal "Failed to encode string as JSON, jq returned error '$std_err'."
+  }
+  printf '%s' "$std_out"
+}
