@@ -1,0 +1,23 @@
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+ReadFile() {
+  local path="$1"
+  # does this file exist?
+  [[ -a "$path" ]] || {
+    Log error "File '$path' not found."
+    return 1
+  }
+
+  # is this file readable?
+  [[ -r "$path" ]] || {
+    Log error "File '$path' is not readable."
+    return 1
+  }
+  local output="$(<$path)" || {
+    Log error "Failed to read from '$path'."
+    return 1
+  }
+  Log debug "Read data from '$path'."
+  echo "$output"
+}
