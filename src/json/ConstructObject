@@ -14,12 +14,12 @@ ConstructObject() {
 
   case "$object_to_construct" in
     m_login )
-      parameters[password]="${parameters[password]//\"/\\\"}" # Escape double-quotes
+      EncodeJSON "${parameters[password}" parameters[password]
       local -a filters=(
         ".type = \"${parameters[type]}\""
         ".identifier.type = \"${parameters[identifier]}\""
         ".identifier.user = \"${parameters[user]}\""
-        ".password = \"${parameters[password]}\""
+        ".password = ${parameters[password]}"
         ".device_id = \"${parameters[device_id]}\""
       )
       ModifyJSON "$m_login_object" filters constructed_object || return 1
@@ -40,11 +40,12 @@ ConstructObject() {
     ;;
 
     s_server_notice )
-      parameters[body]="${parameters[body]//\"/\\\"}" # Escape double-quotes
+      EncodeJSON "${parameters[body]}" parameters[body]
+      parameters[body]="${parameters[body]//\\\\n/\\n}" # unescape newline
       local -a filters=(
         ".user_id = \"${parameters[user_id]}\""
         ".content.msgtype = \"${parameters[msg_type]}\""
-        ".content.body = \"${parameters[body]}\""
+        ".content.body = ${parameters[body]}"
       )
       ModifyJSON "$s_server_notice_object" filters constructed_object || return 1
     ;;
@@ -58,7 +59,9 @@ ConstructObject() {
     ;;
 
     s_delete_room )
-      parameters[message]="${parameters[message]//\"/\\\"}" # Escape double-quotes
+      EncodeJSON "${parameters[room_name]}" parameters[room_name]
+      EncodeJSON "${parameters[message]}" parameters[message]
+      parameters[message]="${parameters[message]//\\\\n/\\n}" # unescape newline
       local -a filters=(
         ".block = ${parameters[block]}"
         ".purge = ${parameters[purge]}"
@@ -72,27 +75,28 @@ ConstructObject() {
       else
         filters+=(
           ".new_room_user_id = \"${parameters[new_room_user_id]}\""
-          ".room_name = \"${parameters[room_name]}\""
-          ".message = \"${parameters[message]}\""
+          ".room_name = ${parameters[room_name]}"
+          ".message = ${parameters[message]}"
         )
       fi
       ModifyJSON "$s_delete_room_object" filters constructed_object || return 1
     ;;
 
     s_user_create )
-      parameters[password]="${parameters[password]//\"/\\\"}" # Escape double-quotes
+      EncodeJSON "${parameters[password]}" parameters[password]
+      EncodeJSON "${parameters[displayname]}" parameters[displayname]
       local -a filters=(
-        ".password = \"${parameters[password]}\""
-        ".displayname = \"${parameters[displayname]}\""
+        ".password = ${parameters[password]}"
+        ".displayname = ${parameters[displayname]}"
         ".admin = ${parameters[admin]}"
       )
       ModifyJSON "$s_user_create_object" filters constructed_object || return 1
     ;;
 
     s_user_reset_password )
-      parameters[password]="${parameters[password]//\"/\\\"}" # Escape double-quotes
+      EncodeJSON "${parameters[password]}" parameters[password]
       local -a filters=(
-        ".new_password = \"${parameters[password]}\""
+        ".new_password = ${parameters[password]}"
         ".logout_devices = ${parameters[logout]}"
       )
       ModifyJSON "$s_user_reset_password_object" filters constructed_object || return 1
@@ -114,10 +118,12 @@ ConstructObject() {
     ;;
 
     s_user_redact )
+      EncodeJSON "${parameters[reason]}" parameters[reason]
+      parameters[reason]="${parameters[reason]//\\\\n/\\n}" # unescape newline
       local -a filters=(
         ".rooms = [${parameters[rooms]}]"
         ".limit = ${parameters[limit]}"
-        ".reason = \"${parameters[reason]}\""
+        ".reason = ${parameters[reason]}"
       )
       ModifyJSON "$s_user_redact_object" filters constructed_object || return 1
     ;;
