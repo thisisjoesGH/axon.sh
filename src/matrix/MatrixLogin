@@ -11,45 +11,62 @@ MatrixLogin() {
   local -A body_params
   CopyArray m_login_body_params body_params
 
+  local -n __MatrixLogin_args="$1"
+  local -A options
+  ParseOptions __MatrixLogin_args options
+
   # input
-  local input_mxid
+  local mxid="${options[mxid]}"
+  [[ -n "$mxid" ]] || {
+    Read -r -p "MXID (@user:example.com):" mxid
+  }
   local localpart
   local domainpart
+  ParseMXID "$mxid" localpart domainpart || return 1
+  config[admin_user]="$localpart"
+  Log debug "Admin user set to '${config[admin_user]}'."
+  body_params[user]="${config[admin_user]}"
+  config[homeserver]="$domainpart"
+
   local homeserver
-  while Read -r -p "MXID (@user:example.com):" input_mxid; do
-    if [[ -n "$input_mxid" ]]; then
-      ParseMXID "$input_mxid" localpart domainpart || continue
-      config[admin_user]="$localpart"
-      body_params[user]="${config[admin_user]}"
-      config[homeserver]="$domainpart"
-      GetWellKnown "$domainpart" homeserver || continue
-      ParseServerName "$homeserver" host port
-      config[base_url]="$host"
-      [[ "$port" ]] && config[port]="$port"
-      break
-    fi
-  done
-  if [[ -z "${config[admin_token]}" ]]; then
-    local input_password
-    while Read -s -r -p "password:" input_password; do
-      if [[ -n "$input_password" ]]; then
-        body_params[password]="$input_password"
+  GetWellKnown "$domainpart" homeserver || return 1
+  ParseServerName "$homeserver" host port || return 1
+  config[base_url]="$host"
+  [[ "$port" ]] && config[port]="$port"
+
+  [[ -z "${config[admin_token]}" ]] || {
+    LogTerm warn "An access token is already present. Logging out..."
+    MatrixLogout || return 1
+  }
+
+  local password
+  [[ -n "${options[password_file]}" ]] && {
+    local path="${options[password_file]}"
+    password="$(ReadFile $path)"
+  }
+  [[ -n "$password" ]] || {
+    while Read -s -r -p "password:" password; do
+      if [[ -n "$password" ]]; then
         break
       else
         echo
-        Log error "Password required"
+        LogTerm error "Password required."
       fi
     done
-  else
-    echo "Access token already present"
-    return 0;
-  fi
-  local input_save_token_pref
-  Read -r -p "$(echo -e -n '\nSave access token to local config file? (y/n)')" input_save_token_pref
+  }
+  body_params[password]="$password"
+
+  local save_token="${options[save_token]}"
+  [[ -n "$save_token" ]] || {
+    local input
+    Read -r -p "$(echo -e -n '\nSave access token to local config file? (Y/n)')" input
     case "$input_save_token_pref" in
-      [yY]|[Yy][Ee][Ss] ) config[save_token]="true";;
-      [Nn]|[Nn][Oo]     ) config[save_token]="false";;
+      [yY]|[Yy][Ee][Ss]|'') save_token="true";;
+      [Nn]|[Nn][Oo]       ) save_token="false";;
     esac
+  }
+  ValidateInput boolean "$save_token" || return 1
+  config[save_token]="$save_token"
 
   GenDeviceId
   body_params[device_id]="${config[device_id]}"
