@@ -5,7 +5,12 @@ PrintHelp() {
   local -n __PrintHelp_args="$1"
   local subcommand="${__PrintHelp_args[0]}"
   case "$subcommand" in
-    login   ) echo 'Logs in to an account on a homeserver.';;
+    login   ) echo 'Usage: login [mxid=<admin user>] [password_file=<filepath>] [save_token=<boolean>]'
+              echo '  Logs in to an account on a homeserver.';;
+              echo '  Options:'
+              echo '    [mxid]          The matrix ID to login with. For example `@admin:example.org`.'
+              echo '    [password_file] The path to a file containing the password to authenticate with.'
+              echo '    [save_token]    Saves the access token retreived from the server to the configuration file if set to `true`.'
     logout  ) echo 'Logs out of the currently logged in account';;
     whoami  ) echo 'Prints the MXID of the currently logged in account';;
     version ) echo 'Prints the axon.sh version.';;
@@ -102,14 +107,27 @@ PrintHelp() {
                 ;;
     user        ) echo 'Usage: user <subcommand> [verb] [<option>=<value> ...]'
                   echo '  Subcommands:'
-                  echo '    create        Creates a new user.'
-                  echo '    password      Resets a user'\''s password. Optionally logs the user out of all devices.'
                   echo '    shadowban     Shadowbans a user.'
                   echo '    unshadowban   Un-shadowbans a user.'
+                  echo '    create [user=<username>] [displayname=<text>] [password_file=<filepath>] [admin=<boolean>]'
+                  echo '      Creates a new user.'
+                  echo '      Options:'
+                  echo '        [user]          The username for the new user.'
+                  echo '        [displayname]   The display name for the new user. Defaults to the username if not passed.'
+                  echo '        [password_file] The path to a file containing the password for the new user.'
+                  echo '        [admin]         Makes the user a server admin if set to `true`.'
+                  echo
+                  echo '    password [user=<username>] [password_file=<filepath>] [logout=<boolean>]'
+                  echo '      Resets a user'\''s password. Optionally logs the user out of all devices.'
+                  echo '      Options:'
+                  echo '        [user]          A local username.'
+                  echo '        [password_file] The path to a file containing the new password.'
+                  echo '        [logout]        Logs out all of the user'\''s devices if set to `true`.'
+                  echo
                   echo '    deactivate [user=<username>] [erase=<boolean>]'
                   echo '      Deactivates a user. Optionally erases the user'\''s profile.'
                   echo '      Options:'
-                  echo '        [user] A local username.'
+                  echo '        [user]  A local username.'
                   echo '        [erase] Erases the user'\''s profile if set to `true`.'
                   echo
                   echo '    rooms [user=<username>]'
