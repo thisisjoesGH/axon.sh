@@ -42,7 +42,7 @@ MatrixLogin() {
   local password
   [[ -n "${options[password_file]}" ]] && {
     local path="${options[password_file]}"
-    password="$(ReadFile $path)"
+    password="$(ReadFile "$path")"
   }
   [[ -n "$password" ]] || {
     while Read -s -r -p "password:" password; do

@@ -42,7 +42,7 @@ SynapseUserCreate() {
   local password
   [[ -n "${options[password_file]}" ]] && {
     local path="${options[password_file]}"
-    password="$(ReadFile $path)"
+    password="$(ReadFile "$path")"
   }
   [[ -n "$password" ]] || {
     Read -r -p "New user password:" password
