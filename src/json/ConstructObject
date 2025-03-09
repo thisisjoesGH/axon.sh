@@ -14,7 +14,7 @@ ConstructObject() {
 
   case "$object_to_construct" in
     m_login )
-      EncodeJSON "${parameters[password}" parameters[password]
+      EncodeJSON "${parameters[password]}" parameters[password]
       local -a filters=(
         ".type = \"${parameters[type]}\""
         ".identifier.type = \"${parameters[identifier]}\""
