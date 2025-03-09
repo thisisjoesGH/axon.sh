@@ -6,11 +6,12 @@ PrintHelp() {
   local subcommand="${__PrintHelp_args[0]}"
   case "$subcommand" in
     login   ) echo 'Usage: login [mxid=<admin user>] [password_file=<filepath>] [save_token=<boolean>]'
-              echo '  Logs in to an account on a homeserver.';;
+              echo '  Logs in to an account on a homeserver.'
               echo '  Options:'
               echo '    [mxid]          The matrix ID to login with. For example `@admin:example.org`.'
               echo '    [password_file] The path to a file containing the password to authenticate with.'
               echo '    [save_token]    Saves the access token retreived from the server to the configuration file if set to `true`.'
+            ;;
     logout  ) echo 'Logs out of the currently logged in account';;
     whoami  ) echo 'Prints the MXID of the currently logged in account';;
     version ) echo 'Prints the axon.sh version.';;
