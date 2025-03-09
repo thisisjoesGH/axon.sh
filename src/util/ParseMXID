@@ -27,7 +27,7 @@ ParseMXID() {
 
   local array
   local IFS=':'
-  read -ra array <<< "$mxid"
+  read -r -a array <<< "$mxid"
   unset IFS
 
   __ParseMXID_localpart="${array[0]}"
