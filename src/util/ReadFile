@@ -14,7 +14,7 @@ ReadFile() {
     Log error "File '$path' is not readable."
     return 1
   }
-  local output="$(<$path)" || {
+  local output="$(<"$path")" || {
     Log error "Failed to read from '$path'."
     return 1
   }
