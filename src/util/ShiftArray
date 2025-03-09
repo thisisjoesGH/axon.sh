@@ -1,0 +1,15 @@
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+ShiftArray() {
+  local -n __ShiftArray_array="$1"
+  local shift_by=${2:-1}
+  (( "${#__ShiftArray_array[@]}" > 0 )) || {
+    Log fatal "Cannot shift empty array."
+    exit 1
+  }
+
+  Log debug "Original array was '${__ShiftArray_array[*]}'."
+  __ShiftArray_array=("${__ShiftArray_array[@]:$shift_by}")
+  Log debug "Shifted array is '${__ShiftArray_array[*]}'."
+}
