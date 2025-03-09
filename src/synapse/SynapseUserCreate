@@ -64,17 +64,17 @@ SynapseUserCreate() {
     *     ) : ;;
   esac
 
-  local make_admin="${options[make_admin]}"
-  [[ -n "$make_admin" ]] || {
+  local admin="${options[admin]}"
+  [[ -n "$admin" ]] || {
     local input
     Read -r -p "Make new user admin? (Y/n):" input
     case "$input" in
-      [yY]|[Yy][Ee][Ss] ) make_admin="true";;
-      [Nn]|[Nn][Oo]     ) make_admin="false";;
+      [yY]|[Yy][Ee][Ss] ) admin="true";;
+      [Nn]|[Nn][Oo]     ) admin="false";;
     esac
   }
-  ValidateInput boolean "$make_admin" || return 1
-  body_params[admin]="$make_admin"
+  ValidateInput boolean "$admin" || return 1
+  body_params[admin]="$admin"
 
   SetPathParameters url_params api[path]
 
