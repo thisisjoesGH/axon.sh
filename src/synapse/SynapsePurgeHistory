@@ -48,7 +48,7 @@ SynapsePurgeHistory() {
     local input
     Read -r -p "Delete local events? (y/N):" input
     case "$input" in
-      [yY]|[Yy][Ee][Ss] ) include_local_events]="true";;
+      [yY]|[Yy][Ee][Ss] ) include_local_events="true";;
       [Nn]|[Nn][Oo]     ) include_local_events="false";;
     esac
   }
