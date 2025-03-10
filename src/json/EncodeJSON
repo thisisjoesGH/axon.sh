@@ -4,12 +4,6 @@
 EncodeJSON() {
   local json="$1"
   local -n __EncodeJSON_output="$2"
-
-  [[ "$json" ]] || {
-    Log error "No JSON passed."
-    return 1
-  }
-
   local std_out
   local std_err
   CatchStream std_out std_err jq -R <<<"$json" || {
