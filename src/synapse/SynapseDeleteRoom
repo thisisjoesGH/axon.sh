@@ -28,65 +28,67 @@ SynapseDeleteRoom() {
   local -A options
   ParseOptions __SynapseDeleteRoom_args options || return 1
   # input
-  [[ -n "${options[id]}" ]] || {
-    local input_room_id
-    Read -r -p "Room ID:" input_room_id
-    options[room_id]="$input_room_id"
+  local room_id="${options[id]}"
+  [[ -n "$room_id" ]] || {
+    Read -r -p "Room ID:" room_id
   }
-  url_params[room_id]="${options[id]}"
+  url_params[room_id]="$room_id"
   Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
 
-  [[ -n "${options[block]}" ]] || {
+  local block="${options[block]}"
+  [[ -n "$block" ]] || {
     local input_block_joins
     Read -r -p "Block users from rejoining the room? (y/N):" input_block_joins
     case "$input_block_joins" in
-      [yY]|[Yy][Ee][Ss] ) options[block]='true';;
-      [Nn]|[Nn][Oo]     ) options[block]='false';;
+      [yY]|[Yy][Ee][Ss] ) block='true';;
+      [Nn]|[Nn][Oo]|''  ) block='false';;
     esac
   }
-  body_params[block]="${options[block]}"
+  ValidateInput boolean "$block" || return 1
+  body_params[block]="$block"
 
-  [[ -n "${options[purge]}" ]] || {
-    local input_purge_events
-    Read -r -p "Purge all events? (y/N):" input_purge_events
-    case "$input_purge_events" in
-      [yY]|[Yy][Ee][Ss] ) options[purge]='true';;
-      [Nn]|[Nn][Oo]     ) options[purge]='false';;
+  local purge="${options[purge]}"
+  [[ -n "$purge" ]] || {
+    local input_purge
+    Read -r -p "Purge all events? (y/N):" input_purge
+    case "$input_purge" in
+      [yY]|[Yy][Ee][Ss] ) purge='true';;
+      [Nn]|[Nn][Oo]|''  ) purge='false';;
     esac
   }
-  body_params[purge]="${options[purge]}"
+  ValidateInput boolean "$purge" || return 1
+  body_params[purge]="$purge"
 
-  [[ -n "${options[move_users]}" ]] || {
-    local input_move_users
-    Read -r -p "Move removed users to new room? (y/N):" input_move_users
-    case "$input_move_users" in
-      [yY]|[Yy][Ee][Ss]) options[move_users]='true';;
-      [Nn]|[Nn][Oo]|*  ) options[move_users]='false';;
+  local migrate="${options[migrate]}"
+  [[ -n "$migrate" ]] || {
+    local input_migrate
+    Read -r -p "Migrate users to new room? (y/N):" input_migrate
+    case "$input_migrate" in
+      [yY]|[Yy][Ee][Ss]) migrate='true';;
+      [Nn]|[Nn][Oo]|''  ) migrate='false';;
     esac
-    Log debug "Option move_users set to '${options[move_users]}'."
   }
-
-  if [[ "${options[move_users]}" == true ]]; then
-    [[ -n "${options[mxid]}" ]] || {
-      local input_new_room_mxid
-      Read -r -p "New room user MXID:" input_new_room_mxid
-      options[mxid]="$input_new_room_mxid"
+  ValidateInput boolean "$migrate" || return 1
+  if [[ "$migrate" == true ]]; then
+    local mxid="${options[mxid]}"
+    [[ -n "$mxid" ]] || {
+      Read -r -p "New room user MXID:" mxid
     }
-    body_params[new_room_user_id]="${options[mxid]}"
+    body_params[new_room_user_id]="$mxid"
 
-    [[ -z "${options[room_name]}" ]] && {
-      local input_room_name
-      Read -r -p "New room name:" input_room_name
-      options[room_name]="$input_room_name"
+    local room_name="${options[room_name]}"
+    [[ -n "$room_name" ]] || {
+      Read -r -p "New room name:" room_name
     }
-    body_params[room_name]="${options[room_name]}"
+    ValidateInput text || return 1
+    body_params[room_name]="$room_name"
 
-    [[ -z "${options[message]}" ]] && {
-      local input_message
-      Read -r -p "New room message:" input_message
-      options[message]="$input_message"
+    local message="${options[message]}"
+    [[ -n "$message" ]] || {
+      Read -r -p "New room message:" message
     }
-    body_params[message]="${options[message]}"
+    ValidateInput text "$message" || return 1
+    body_params[message]="$message"
   fi
 
   SetPathParameters url_params api[path]
