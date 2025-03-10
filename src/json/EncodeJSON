@@ -6,7 +6,7 @@ EncodeJSON() {
   local -n __EncodeJSON_output="$2"
   local std_out
   local std_err
-  CatchStream std_out std_err jq -R <<<"$json" || {
+  CatchStream std_out std_err jq --raw-input <<<"$json" || {
     Log fatal "Failed to encode string as JSON, jq returned error '$std_err'."
   }
   __EncodeJSON_output="$std_out"
