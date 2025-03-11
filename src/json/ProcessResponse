@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ProcessResponse() {
@@ -13,24 +13,39 @@ ProcessResponse() {
     Log debug "Trying key '$key'"
     local parts
     local IFS='.'
-    read -r -a parts <<<"$key"
+    read -r -a parts <<<"${key#.}"
     unset IFS
     if (( "${#parts[@]}" > 1 )); then
       local arg=''
       for part in "${parts[@]}"; do
+        Log debug "Part is '$part'."
         if [[ "$part" == 'm'  ]]; then
+          Log debug "Part is 'm' prefix."
           arg+="\"$key\""
+          Log debug "Arg is '$arg'."
           break
         else
-          arg+="\"$part\"."
+          if [[ "$part" =~ \[*.\]$ ]]; then
+            arg+="${part}."
+          else
+            arg+="\"$part\"."
+          fi
         fi
       done
       arg="${arg%.}"
+      Log debug "Trimmed arg is '$arg'."
     else
-      local arg="\"$key\""
+      local arg
+      if [[ "$key" =~ \[[0123456789]*\]$ ]]; then
+        arg="$key"
+      else
+        arg="\"$key\""
+      fi
     fi
 
-    __ProcessResponse_values+=(["$key"]="$(jq -r -e ".$arg" <<< "$__ProcessResponse_body")")
+    Log debug "Final arg is '.$arg'."
+    local value; value="$(jq -r -e ".$arg" <<< "$__ProcessResponse_body")"
+    __ProcessResponse_values+=(["$key"]="$value")
     Log debug "Got value '${__ProcessResponse_values[$key]}'"
   done
 }
