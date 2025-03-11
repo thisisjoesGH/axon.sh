@@ -44,7 +44,7 @@ ProcessResponse() {
     fi
 
     Log debug "Final arg is '.$arg'."
-    local value; value="$(jq --raw-output --exit-status ".$arg" <<< "$__ProcessResponse_body")"
+    local value; value="$(jq --raw-output --compact-output --exit-status ".$arg" <<< "$__ProcessResponse_body")"
     __ProcessResponse_values+=(["$key"]="$value")
     Log debug "Got value '${__ProcessResponse_values[$key]}'"
   done
