@@ -73,7 +73,7 @@ Request() {
   Log debug "Assembled request '${header_arg[*]}'"
   Log debug "Assembled request '${auth_header:+--header $auth_header}'"
   Log debug "Assembled request '--user-agent ${projectName}/${projectVersion}'"
-  Log debug "Assembled request '--write-out '<+>%{response_code}''"
+  Log debug "Assembled request '--write-out $'\t'%{header_json}$'\t'%{response_code}$'\t''"
   Log debug "Assembled request '--silent'"
   Log debug "Assembled request '--show-error'"
   Log debug "Assembled request '--connect-timeout 15'"
@@ -88,7 +88,7 @@ Request() {
                                    "${header_arg[@]}" \
                                    ${auth_header:+--header "$auth_header"} \
                                    --user-agent "${projectName}/${projectVersion}" \
-                                   --write-out '<+>%{header_json}<+>%{response_code}' \
+                                   --write-out $'\t'%{header_json}$'\t'%{response_code}$'\t' \
                                    --silent \
                                    --show-error \
                                    --connect-timeout 15 \
@@ -101,19 +101,19 @@ Request() {
     return 1
   fi
 
-  # clean up response
-  std_out="${std_out//[[:cntrl:]]/}"
-  std_out="${std_out//|/}"
-  std_out="${std_out//<+>/|}"
-  Log debug "Cleaned up response data is '$std_out'"
+  # remove newlines
+  std_out="${std_out//$'\n'/}"
 
   # separate response body from response code
-  local IFS="|"
-  read -r -a response_data <<< "$std_out"
-  local body="${response_data[0]}"
-  local header_json="${response_data[1]}"
-  local status_code="${response_data[2]}"
-  unset IFS
+  local response_data
+  local -a parts
+  while read -r -d $'\t' response_data; do
+    Log debug "Response data is '$response_data'."
+    parts+=("$response_data")
+  done <<<"$std_out"
+  local status_code="${parts[2]}"
+  local body="${parts[0]}"
+  local header_json="${parts[1]}"
 
   ValidateInput integer "$status_code" || {
     Log fatal "Invalid HTTP status code."
