@@ -26,6 +26,6 @@ WriteConfiguration() {
     fi
   fi
   for key in "${!persistent_config[@]}"; do
-    printf '%s=%s' "$key" "${persistent_config[$key]}"
+    printf '%s=%s\n' "$key" "${persistent_config[$key]}"
   done > "${persistent_config[config_path]}/${persistent_config[config_file]}"
 }
