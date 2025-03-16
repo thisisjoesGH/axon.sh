@@ -72,7 +72,6 @@ MatrixLogin() {
   body_params[device_id]="${config[device_id]}"
 
   WriteConfiguration
-  ReadConfiguration
   Log debug "Save ID preference is '${config[save_id]}'"
   Log debug "Device ID is '${config[device_id]}'"
 
