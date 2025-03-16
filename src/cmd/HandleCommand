@@ -13,7 +13,7 @@ HandleCommand() {
     logout      )
       LogTerm warn "Your local session will be erased and your access token will be invalidated."
       ConfirmContinue || return 1
-      MatrixLogout __HandleCommand_args
+      DestroySession
     ;;
     whoami      ) MatrixWhoAmI __HandleCommand_args;;
     server      ) ServerCommandHandler __HandleCommand_args;;
@@ -25,7 +25,7 @@ HandleCommand() {
     help        ) PrintHelp __HandleCommand_args;;
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
-    exit        ) exit 0;;
+    exit        ) Exit || exit 1;;
     *           ) echo "Unrecognized command '$command'. Type 'help' for help.";;
   esac
 }
