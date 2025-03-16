@@ -6,15 +6,15 @@ CancelPrompt() {
   Log debug "Called in context '$context'."
 
   case "$context" in
-    Prompt ) Log info "Exiting..."
-             echo "Goodbye!"
-             exit 0
-           ;;
-    *      ) unset IFS
-             echo
-             Log info "Cancelling current prompt."
-             echo "Press again to exit."
-             Prompt
-           ;;
+    Prompt )
+      Exit || exit 1
+    ;;
+    *      )
+      unset IFS
+      echo
+      Log info "Cancelling current prompt."
+      echo "Press again to exit."
+      Prompt
+    ;;
   esac
 }
