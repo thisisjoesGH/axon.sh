@@ -22,10 +22,4 @@ MatrixLogout() {
     HandleMatrixError response[body]
     return 1
   }
-
-  # remove user and session configuration
-  config[admin_user]=""
-  config[admin_token]=""
-  config[device_id]=""
-  WriteConfiguration
 }
