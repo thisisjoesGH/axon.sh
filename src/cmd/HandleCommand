@@ -4,12 +4,17 @@
 HandleCommand() {
   Log debug "Got args '$*'"
   local -n __HandleCommand_args="$1"
+  Assert __HandleCommand_args ARRAY
   local command="${__HandleCommand_args[0]}"
   ShiftArray __HandleCommand_args
 
   case "$command" in
     login       ) MatrixLogin __HandleCommand_args;;
-    logout      ) MatrixLogout __HandleCommand_args;;
+    logout      )
+      LogTerm warn "Your local session will be erased and your access token will be invalidated."
+      ConfirmContinue || return 1
+      MatrixLogout __HandleCommand_args
+    ;;
     whoami      ) MatrixWhoAmI __HandleCommand_args;;
     server      ) ServerCommandHandler __HandleCommand_args;;
     destination ) DestinationCommandHandler __HandleCommand_args;;
