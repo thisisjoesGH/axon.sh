@@ -26,6 +26,6 @@ Main() {
   fi
 }
 
-trap CancelPrompt SIGINT SIGQUIT
+trap CancelPrompt SIGINT SIGQUIT SIGTERM
 
 Main "$@"
