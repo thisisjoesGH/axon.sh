@@ -12,7 +12,7 @@ Prompt() {
     local -a input="($user_input)"
     [[ -n "${input[*]}" ]] || {
       PrintHelp input
-      Prompt
+      continue
     }
     history -s "$user_input" || Log warn "Failed to append entry to history"
     history -w || Log warn "Failed to write history to '$HISTFILE'"
