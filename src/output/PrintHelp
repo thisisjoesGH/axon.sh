@@ -10,7 +10,7 @@ PrintHelp() {
               echo '  Options:'
               echo '    [mxid]          The matrix ID to login with. For example `@admin:example.org`.'
               echo '    [password_file] The path to a file containing the password to authenticate with.'
-              echo '    [save_token]    Saves the access token retreived from the server to the configuration file if set to `true`.'
+              echo '    [save_token]    Saves the access token retrieved from the server to the configuration file if set to `true`.'
             ;;
     logout  ) echo 'Logs out of the currently logged in account';;
     whoami  ) echo 'Prints the MXID of the currently logged in account';;
@@ -26,7 +26,7 @@ PrintHelp() {
                   echo '      Options:'
                   echo '        [type]  The notice event type. Defaults to `m.room.message`.'
                   echo '        [body]  The notice content. Newlines may be inserted with `\n`.'
-                  echo '        [users] A comma seperated list of local usernames. For'
+                  echo '        [users] A comma separated list of local usernames. For'
                   echo
                   echo '    reports [limit=<integer>] OR [details|delete] [id=<report ID>]'
                   echo '      Gets event reports.'
@@ -97,12 +97,12 @@ PrintHelp() {
                   echo '      Shared options:'
                   echo '        [alias] A room alias.'
                   echo
-                  echo '    visibility [set] [id=<room ID>] [visiblity={public|private}]'
+                  echo '    visibility [set] [id=<room ID>] [visibility={public|private}]'
                   echo '      Returns or manipulates the room directory visibility for the given room ID.'
                   echo '      Verbs:'
                   echo '        [set] Sets the room visibility.'
                   echo '        Verb options:'
-                  echo '          [visiblity] One of either `public` or `private`.'
+                  echo '          [visibility] One of either `public` or `private`.'
                   echo '      Shared options:'
                   echo '        [id] A room identifier.'
                 ;;
@@ -139,12 +139,12 @@ PrintHelp() {
                   echo '    redact [user=<username>] [reason="<text>"] OR [status] [id=<job ID>]'
                   echo '      Redacts a users messages. Optionally provides a publicly visible reason.'
                   echo '      Subcommand options:'
-                  echo '        [user]   The username whose messsages should be redacted.'
+                  echo '        [user]   The username whose messages should be redacted.'
                   echo '        [reason] The publicly visible reason for the redaction. Surround with double-quotes to protect spaces.'
                   echo '      Verbs:'
                   echo '        [status] Gets the status of the given redaction job ID.'
                   echo '        Verb options:'
-                  echo '          [job ID] The redaction job ID. Returned after intitiation a user redaction.'
+                  echo '          [job ID] The redaction job ID. Returned after initiating a user redaction.'
                   echo
                   echo '    threepid [medium=<3PID medium>] [address=<3PID address>]'
                   echo '      Returns the MXID of the user associated with the given third-party ID (3PID).'
