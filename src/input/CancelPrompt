@@ -7,7 +7,7 @@ CancelPrompt() {
 
   case "$context" in
     Prompt )
-      Exit || exit 1
+      Exit
     ;;
     *      )
       unset IFS

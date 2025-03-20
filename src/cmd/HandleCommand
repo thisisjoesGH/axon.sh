@@ -25,7 +25,7 @@ HandleCommand() {
     help        ) PrintHelp __HandleCommand_args;;
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
-    exit        ) Exit || exit 1;;
+    exit        ) Exit;;
     *           ) echo "Unrecognized command '$command'. Type 'help' for help.";;
   esac
 }
