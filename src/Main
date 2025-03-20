@@ -16,6 +16,7 @@ Main() {
   DefineMatrixEndpoints
   DefineSynapseParams
   DefineSynapseEndpoints
+  DefineOutputStrings
   CheckDependencies
   if (( "$#" < 1 )); then
     PrintInfo short
