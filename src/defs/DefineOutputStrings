@@ -40,4 +40,5 @@ DefineOutputStrings() {
         [version]='Version'
       )
     ;;
+  esac
 }
