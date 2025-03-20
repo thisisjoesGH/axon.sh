@@ -25,7 +25,6 @@ FormatOutput() {
       for key in "${__FormatOutput_keys[@]}"; do
       local value="${__FormatOutput_values[$key]}"
       if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
-          local key_length="${#key}"
           Log debug "Value is '$value'."
           value="$(JoinJSONArray "$value" $',\n\t ')"
         fi
