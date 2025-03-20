@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixLogout() {
-  Log debug "Got args '$*'"
-
   CheckLoginStatus || return 1
 
   # copy api map to local map
