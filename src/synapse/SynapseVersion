@@ -11,29 +11,29 @@ SynapseVersion() {
   CheckLoginStatus || return 1
 
   # only proceed if we have a configured homeserver
-  if [[ -n "${config[homeserver]}" ]]; then
-    # set request parameters
-    local -A params=(
-      [method]="${api[method]}"
-      [path]="${api[path]}"
-    )
-    # make request
-    local -A response
-    Request params response || return 1
-    CheckStatusCode "${response[status]}" || {
-      HandleMatrixError response[body]
-      return 1
-    }
-
-    # get key values
-    local -a keys=(server_version python_version)
-    local -A values
-    ProcessResponse response[body] keys values || return 1
-
-    # output
-    echo "Server version: ${values[server_version]}"
-    echo "Python version: ${values[python_version]}"
-  else
+  [[ -n "${config[homeserver]}" ]] || {
     Log error "Failed to get server version. No homeserver is configured."
-  fi
+    return 1
+  }
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
+    return 1
+  }
+
+  # get key values
+  local -a keys=(server_version python_version)
+  local -A values
+  ProcessResponse response[body] keys values || return 1
+
+  # output
+  echo "Server version: ${values[server_version]}"
+  echo "Python version: ${values[python_version]}"
 }
