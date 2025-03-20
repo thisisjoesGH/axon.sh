@@ -1,0 +1,43 @@
+DefineOutputStrings() {
+  local locale="${config[locale]:-en}"
+  case "$locale" in
+    en )
+      declare -Agr output_strings=(
+        [avatar]='Avatar'
+        [base_url]='Base URL'
+        [burst_count]='Burst count'
+        [canonical_alias]='Canonical alias'
+        [count]='Count'
+        [creator]='Creator'
+        [deleted]='Deleted'
+        [encryption]='Encryption'
+        [error]='Error'
+        [federatable]='Federatable'
+        [filtered]='Filtered'
+        [forgotten]='Forgotten'
+        [guest_access]='Guest access'
+        [history_visibility]='History visibility'
+        [join_rules]='Join rules'
+        [joined_local_devices]='Joined local devices'
+        [joined_local_members]='Joined local members'
+        [joined_members]='Joined members'
+        [joined_rooms]='Joined rooms'
+        [members]='Members'
+        [name]='Name'
+        [public]='Public'
+        [room_id]='Room ID'
+        [room_type]='Room type'
+        [servers]='Servers'
+        [shutdown_room.failed_to_kick_users]='Failed to kick users'
+        [shutdown_room.kicked_users]='Kicked users'
+        [shutdown_room.local_aliases]='Local aliases found'
+        [shutdown_room.new_room_id]='New room ID'
+        [state_events]='State events'
+        [status]='Status'
+        [topic]='Topic'
+        [total]='Total'
+        [user_id]='User ID'
+        [version]='Version'
+      )
+    ;;
+}
