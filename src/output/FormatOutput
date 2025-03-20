@@ -1,0 +1,103 @@
+# Copyright (C) 2024-2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+FormatOutput() {
+  Log debug "Got args $*"
+
+  local format="${1:-human}"
+  format="${format^^}"
+  local -n __FormatOutput_keys="$2"
+  Assert __FormatOutput_keys ARRAY
+  local -n __FormatOutput_values="$3"
+  Assert __FormatOutput_values HASH
+  local -n __FormatOutput_output="$4"
+
+  case "$format" in
+    RAW)
+      Log info "Returning raw output."
+      return 0
+    ;;
+    HUMAN)
+      Log debug "Formatting output as human-readable.";
+      __FormatOutput_output=''
+      # iterate over key array to preserve output ordering
+      local key
+      for key in "${__FormatOutput_keys[@]}"; do
+      local value="${__FormatOutput_values[$key]}"
+      if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
+          local key_length="${#key}"
+          Log debug "Value is '$value'."
+          value="$(JoinJSONArray "$value" $',\n\t ')"
+        fi
+        if Assert output_strings[$key]; then
+          local name="${output_strings[$key]}"
+        else
+          local name="$key"
+        fi
+        __FormatOutput_output+="$name: $value"$'\n'
+      done
+    ;;
+    PLAIN)
+      Log debug "Formatting output as plaintext"
+      __FormatOutput_output=''
+      local key
+      for key in "${__FormatOutput_keys[@]}"; do
+        local value="${__FormatOutput_values[$key]}"
+        if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
+          #value="$(jq --join-output ".${part}[]|.,\",\"" <<< "$value")"
+          #value="${value%,}"
+          Log debug "Value is '$value'."
+          value="$(JoinJSONArray "$value")"
+        fi
+        __FormatOutput_output+="$value"$'\n'
+      done
+       __FormatOutput_output="${__FormatOutput_output%$'\n'}"
+    ;;
+    PAIRS)
+      Log debug "Formatting output as key-value pairs."
+      __FormatOutput_output=''
+      local key
+      for key in "${__FormatOutput_keys[@]}"; do
+        local value="${__FormatOutput_values[$key]}"
+        if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
+          value="$(JoinJSONArray "$value")"
+        fi
+        __FormatOutput_output+="${key}=${value@Q}"$'\n'
+      done
+       __FormatOutput_output="${__FormatOutput_output%$'\n'}"
+    ;;
+    JSON) Log debug "Formatting output as JSON."
+      local key
+      local -a filter
+      local object="{}"
+      for key in "${__FormatOutput_keys[@]}"; do
+        local value="${__FormatOutput_values[$key]}"
+        Log debug "Key is '$key'"
+        [[ "$value" == 'null' ]] && {
+          filter+=(".\"$key\" = $value")
+          continue
+        }
+        [[ "$value" =~ ^[0123456789]+$ ]] && {
+          filter+=(".\"$key\" = $value")
+          continue
+        }
+        [[ "$value" =~ ^(true|false)$ ]] && {
+          filter+=(".\"$key\" = $value")
+          continue
+        }
+        [[ "$value" =~ ^\[  && "$value" =~ \]$ ]] && {
+          filter+=(".\"$key\" = $value")
+          continue
+        }
+        local json
+        EncodeJSON "$value" json
+        filter+=(".\"$key\" = $json")
+      done
+      ModifyJSON "$object" filter __FormatOutput_output
+    ;;
+    *)
+      Log error "Invalid format '$format'."
+      return 1
+    ;;
+  esac
+}
