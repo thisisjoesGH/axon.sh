@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 Exit() {
+  printf '\n'
   Log info "Exiting..."
   if [[ "${config[save_token]}" == 'false' && -n "${config[admin_token]}" ]]; then
     Log debug "User preference is to not save token, destroying session..."
