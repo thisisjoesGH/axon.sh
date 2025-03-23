@@ -14,22 +14,20 @@ LogFile() {
   local log_level="${config[log_level]^^}"
 #  echo "Log level is ${config[log_level]^^}"
 
-  DoLogFile() {
-    (umask 066; echo "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[4]} -> ${FUNCNAME[3]}: $file_log_message" 2>/dev/null >> "${config[log_path]}/${config[log_file]}") ||
-    {
-      return 1
-    }
-  }
-
   case $file_log_type in
-    DEBUG  ) if [[ "$log_level" = @(DEBUG) ]]; then DoLogFile; fi;;
-    INFO   ) if [[ "$log_level" = @(DEBUG|INFO) ]]; then DoLogFile; fi;;
-    WARN   ) if [[ "$log_level" = @(DEBUG|INFO|WARN) ]]; then DoLogFile; fi;;
-    ERROR  ) if [[ "$log_level" = @(DEBUG|INFO|WARN|ERROR) ]]; then DoLogFile; fi;;
-    FATAL  ) if [[ "$log_level" = @(DEBUG|INFO|WARN|ERROR|FATAL) ]]; then DoLogFile; fi;;
-    CONFIG ) if [[ "$log_level" != @(NONE) ]]; then DoLogFile; fi;;
-    *      ) if [[ "$log_level" = @(DEBUG) ]]; then DoLogFile; Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}', line number '${BASH_LINENO[1]}'"; fi;;
+    DEBUG  ) if [[ "$log_level" != @(DEBUG) ]]; then return 0; fi;;
+    INFO   ) if [[ "$log_level" != @(DEBUG|INFO) ]]; then return 0; fi;;
+    WARN   ) if [[ "$log_level" != @(DEBUG|INFO|WARN) ]]; then return 0; fi;;
+    ERROR  ) if [[ "$log_level" != @(DEBUG|INFO|WARN|ERROR) ]]; then return 0; fi;;
+    FATAL  ) if [[ "$log_level" != @(DEBUG|INFO|WARN|ERROR|FATAL) ]]; then return 0; fi;;
+    CONFIG ) if [[ "$log_level" = @(NONE) ]]; then return 0; fi;;
+    *      ) if [[ "$log_level" != @(DEBUG) ]]; then return 0; else Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}', line number '${BASH_LINENO[1]}'"; fi;;
   esac
+
+  (umask 066; echo "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[3]}: $file_log_message" 2>/dev/null >> "${config[log_path]}/${config[log_file]}") ||
+  {
+    return 1
+  }
 }
 
 #Log error "ur screwed lol"

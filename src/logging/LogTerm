@@ -7,17 +7,15 @@ LogTerm() {
 
   local verbosity="${config[verbosity]^^}"
 
-  DoLogTerm() {
-    echo "$term_log_type - $term_log_message" >&2
-  }
-
   case $term_log_type in
-    DEBUG  ) if [[ "$verbosity" = @(DEBUG) ]]; then DoLogTerm; fi;;
-    INFO   ) if [[ "$verbosity" = @(DEBUG|INFO) ]]; then DoLogTerm; fi;;
-    WARN   ) if [[ "$verbosity" = @(DEBUG|INFO|WARN) ]]; then DoLogTerm; fi;;
-    ERROR  ) if [[ "$verbosity" = @(DEBUG|INFO|WARN|ERROR) ]]; then DoLogTerm; fi;;
-    FATAL  ) if [[ "$verbosity" = @(DEBUG|INFO|WARN|ERROR|FATAL) ]]; then DoLogTerm; fi;;
-    CONFIG ) if [[ "$verbosity" = @(DEBUG|INFO) ]]; then DoLogTerm; fi;;
-    *      ) if [[ "$verbosity" = @(DEBUG) ]]; then DoLogTerm; Log debug "Invalid term log type '$term_log_type' in context '${FUNCNAME[2]}'"; fi;;
+    DEBUG  ) if [[ "$verbosity" != @(DEBUG) ]]; then return 0; fi;;
+    INFO   ) if [[ "$verbosity" != @(DEBUG|INFO) ]]; then return 0; fi;;
+    WARN   ) if [[ "$verbosity" != @(DEBUG|INFO|WARN) ]]; then return 0; fi;;
+    ERROR  ) if [[ "$verbosity" != @(DEBUG|INFO|WARN|ERROR) ]]; then return 0; fi;;
+    FATAL  ) if [[ "$verbosity" != @(DEBUG|INFO|WARN|ERROR|FATAL) ]]; then return 0; fi;;
+    CONFIG ) if [[ "$verbosity" != @(DEBUG|INFO) ]]; then return 0; fi;;
+    *      ) if [[ "$verbosity" != @(DEBUG) ]]; then return 0; else Log debug "Invalid term log type '$term_log_type' in context '${FUNCNAME[2]}'"; fi;;
   esac
+
+  echo "$term_log_type - $term_log_message" >&2
 }
