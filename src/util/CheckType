@@ -6,6 +6,10 @@ CheckType() {
 
   local variable_to_check
   variable_to_check="$(declare -p "$1" 2>/dev/null)"
+  [[ -n "$variable_to_check" ]] || {
+    Log error "Cannot check type of undefined variable."
+    return 1
+  }
   local -n __CheckType_type="$2"
 
   local pattern
