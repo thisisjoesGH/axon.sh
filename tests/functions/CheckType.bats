@@ -51,6 +51,15 @@ setup() {
   [[ "$type" == OTHER ]]
 }
 
+@test "returns type of reference variable for name reference" {
+  load CheckType
+  declare -A hash
+  declare -n ref=hash
+  declare type
+  CheckType ref type
+  [[ "$type" == HASH ]]
+}
+
 @test "returns error for undefined variable" {
   load CheckType
   declare type
