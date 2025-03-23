@@ -45,14 +45,14 @@ ValidateInput() {
     ;;
 
     host     )
-      [[ "$input" =~ $hostname_pattern || "$input" =~ $ip_pattern ]] || {
+      ( [[ "$input" =~ $hostname_pattern || "$input" =~ $ip_pattern ]] && (( "${#input}" <= 253 )) ) || {
         Log error "Expected hostname or IP literal but got '$input'."
         return 1
       }
     ;;
 
     hostname )
-      [[ "$input" =~ $hostname_pattern ]] || {
+      ( [[ "$input" =~ $hostname_pattern ]] && (( "${#input}" <= 253 )) ) || {
         Log error "Expected hostname but got '$input'."
         return 1
       }
