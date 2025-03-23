@@ -10,7 +10,7 @@ CheckType() {
     Log error "Cannot check type of undefined variable."
     return 1
   }
-  local -n __CheckType_type="$2"
+  local -n __CheckType_type="$2" || return 1
 
   local pattern
   pattern='^declare -n[^=]+=\"([^\"]+)\"$'
