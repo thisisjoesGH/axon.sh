@@ -32,7 +32,6 @@ SynapseRoomDetails() {
 
   SetPathParameters url_params api[path]
 
-
   # set request parameters
   local -A params=(
     [method]="${api[method]}"
@@ -47,7 +46,7 @@ SynapseRoomDetails() {
   }
 
   # get key values
-  local -a keys=(room_id name avatar topic canonical_alias joined_members joined_local_members joined_local_devices version creator encryption federatable public join_rules guest_access history_visibility state_events room_type forgotten)
+  local -a keys=(room_id room_type name avatar topic canonical_alias joined_members joined_local_members joined_local_devices version creator encryption federatable public join_rules guest_access history_visibility state_events forgotten)
   local -A values
   ProcessResponse response[body] keys values || return 1
 
