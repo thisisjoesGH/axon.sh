@@ -50,7 +50,7 @@ trigger:
     - dev
 
 steps:
-  - name: "Bats"
+  - name: "run tests"
     image: bats/bats
     pull: if-not-exists
     commands:
