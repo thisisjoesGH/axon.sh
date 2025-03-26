@@ -40,3 +40,19 @@ steps:
         - sha256
       title: "${DRONE_TAG}"
       prerelease: false
+
+---
+kind: pipeline
+name: tests
+
+trigger:
+  branch:
+    - dev
+
+steps:
+  - name: "Bats"
+    image: bats/bats
+    pull: if-not-exists
+    commands:
+      - apk --no-cache --update add jq curl
+      - bats ./tests/functions
