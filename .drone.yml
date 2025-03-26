@@ -55,4 +55,4 @@ steps:
     pull: if-not-exists
     commands:
       - apk --no-cache --update add jq curl
-      - bats ./tests/functions
+      - bats --pretty ./tests/functions
