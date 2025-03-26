@@ -56,3 +56,4 @@ steps:
     commands:
       - apk --no-cache --update add jq curl
       - bats ./tests/functions
+      - cat bats-debug.txt
