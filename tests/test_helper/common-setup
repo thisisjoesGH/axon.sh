@@ -3,6 +3,7 @@ _common_setup() {
   PROJECT_ROOT="$( cd "$( dirname "$BATS_TEST_FILENAME" )/../.." >/dev/null 2>&1 && pwd )"
   PATH="$PROJECT_ROOT/src:$PATH"
 
-  load $PROJECT_ROOT/tests/test_helper/bats-support/load
-  load $PROJECT_ROOT/tests/test_helper/bats-assert/load
+  BATS_LIB_PATH="${PROJECT_ROOT}/tests/test_helper"
+  bats_load_library bats-support
+  bats_load_library bats-assert
 }
