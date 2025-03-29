@@ -9,5 +9,6 @@ setup() {
 @test "whoami returns MXID" {
   run -0 axon.sh whoami
   username="$(axon.sh config admin_user)"
-  assert_line -n -1 "Authenticated as: @$username:matrix.thisisjoes.site"
+  homeserver="$(axon.sh config homeserver)"
+  assert_line -n -1 "Authenticated as: @$username:$homeserver"
 }
