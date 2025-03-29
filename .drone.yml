@@ -64,11 +64,11 @@ steps:
 
   - name: "synapse"
     image: matrixdotorg/synapse:latest
-    user: root
     volumes:
       - name: data
         path: /data
-    detach: true
+    commands:
+      - synctl --no-daemonize start /data/homeserver.yaml
 
   - name: "create admin user"
     image: matrixdotorg/synapse:latest
