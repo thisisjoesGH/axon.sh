@@ -4,6 +4,8 @@ setup() {
   load ../test_helper/common-setup
   _common_setup
   PATH="$PROJECT_ROOT/build:$PATH"
+
+  axon.sh config config_path axon
 }
 
 @test "whoami returns MXID" {
