@@ -63,6 +63,7 @@ steps:
     commands:
       - generate_config --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
       - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
+      - sleep 15
       - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET"
 
   - name: "run tests"
