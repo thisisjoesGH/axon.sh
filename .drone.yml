@@ -59,9 +59,9 @@ steps:
       SYNAPSE_SERVER_NAME: synapse.thisisjoes.test
       SYNAPSE_REPORT_STATS: no
       PASSWORD:
-        from_secret: admin_password
+        - from_secret: admin_password
       SECRET:
-        from_secret: shared_secret
+        - from_secret: shared_secret
     commands:
       - generate
       - sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml
