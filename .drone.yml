@@ -72,7 +72,7 @@ steps:
       SECRET:
         from_secret: shared_secret
     commands:
-      - sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml
+      - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
       - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET"
 
   - name: "run tests"
