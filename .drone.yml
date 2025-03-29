@@ -108,9 +108,10 @@ steps:
         from_secret: admin_password
     commands:
       - echo "$PASSWORD" >> passwd
-      - 'bash build/axon.sh config verbosity info'
-      - 'bash build/axon.sh config scheme http'
-      - 'bash build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd'
+      - chmod +x build/axon.sh
+      - 'build/axon.sh config verbosity info'
+      - 'build/axon.sh config scheme http'
+      - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd'
 
   - name: "run command tests"
     image: bats/bats
