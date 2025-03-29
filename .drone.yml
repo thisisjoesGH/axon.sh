@@ -62,8 +62,9 @@ steps:
       - generate_config --generate-secrets --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
       - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
       - 'sed -i "s/\[''::1'', ''127.0.0.1''\]/\[''0.0.0.0''\]/g" /data/homeserver.yaml'
+      - 'echo "serve_server_wellknown: true" >> /data/homeserver.yaml'
 
-  - name: "synapse"
+  - name: "synapse.thisisjoes.test"
     image: matrixdotorg/synapse:latest
     volumes:
       - name: data
@@ -83,8 +84,8 @@ steps:
       SECRET:
         from_secret: shared_secret
     commands:
-      - while ! curl --silent --max-time 5  'http://synapse:8008/_matrix/static'; do sleep 1; done
-      - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET" 'http://synapse:8008'
+      - while ! curl --silent --max-time 5  'http://synapse.thisisjoes.test:8008/_matrix/static'; do sleep 1; done
+      - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET" 'http://synapse.thisisjoes.test:8008'
 
   - name: "run tests"
     image: bats/bats
