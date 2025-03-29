@@ -55,11 +55,8 @@ steps:
     volumes:
       - name: data
         path: /data
-    environment:
-      SYNAPSE_SERVER_NAME: synapse.thisisjoes.test
-      SYNAPSE_REPORT_STATS: no
     commands:
-      - generate
+      - generate_config --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
 
   - name: "create admin user"
     image: matrixdotorg/synapse:latest
