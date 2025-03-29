@@ -111,7 +111,7 @@ steps:
       - chmod +x build/axon.sh
       - 'build/axon.sh config verbosity debug'
       - 'build/axon.sh config scheme http'
-      - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd'
+      - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd save_token=true'
 
   - name: "run command tests"
     image: bats/bats
