@@ -56,16 +56,31 @@ steps:
       - name: data
         path: /data
     environment:
-      PASSWORD:
-        from_secret: admin_password
       SECRET:
         from_secret: shared_secret
     commands:
       - generate_config --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
       - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
-      - synctl start /data/homeserver.yaml
-      - sleep 30
-      - curl 'http://localhost:8008/_matrix/static'
+
+  - name: "synapse"
+    image: matrixdotorg/synapse:latest
+    volumes:
+      - name: data
+        path: /data
+    detach: true
+
+  - name: "create admin user"
+    image: matrixdotorg/synapse:latest
+    volumes:
+      - name: data
+        path: /data
+    environment:
+      PASSWORD:
+        from_secret: admin_password
+      SECRET:
+        from_secret: shared_secret
+    commands:
+      - curl -fsS -m 5 --retry 5 -o /dev/null 'http://synapse:8008/_matrix/static'
       - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET"
 
   - name: "run tests"
