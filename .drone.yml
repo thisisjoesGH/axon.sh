@@ -52,7 +52,7 @@ trigger:
 steps:
   - name: "setup synapse"
     image: matrixdotorg/synapse:latest
-    user: root
+    user: 991
     volumes:
       - name: data
         path: /data
@@ -66,7 +66,7 @@ steps:
 
   - name: "synapse"
     image: matrixdotorg/synapse:latest
-    user: root
+    user: 991
     volumes:
       - name: data
         path: /data
@@ -74,7 +74,7 @@ steps:
 
   - name: "create admin user"
     image: matrixdotorg/synapse:latest
-    user: root
+    user: 991
     volumes:
       - name: data
         path: /data
