@@ -115,6 +115,8 @@ steps:
   - name: "run command tests"
     image: bats/bats
     pull: if-not-exists
+    environment:
+      AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
     commands:
       - apk --no-cache --update add jq curl
       - bats ./tests/commands
