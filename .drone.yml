@@ -61,6 +61,7 @@ steps:
     commands:
       - generate_config --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
       - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
+      - 'sed -i "s/port: 8008/&\n    bind_addresses: \[\"0.0.0.0\"\]/g"'
 
   - name: "synapse"
     image: matrixdotorg/synapse:latest
