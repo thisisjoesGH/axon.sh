@@ -53,8 +53,6 @@ steps:
   - name: "run tests"
     image: bats/bats
     pull: if-not-exists
-    environment:
-      TERM: linux
     commands:
       - apk --no-cache --update add jq curl
-      - bats --pretty ./tests/functions
+      - bats ./tests/functions
