@@ -5,7 +5,7 @@ setup() {
   _common_setup
   PATH="$PROJECT_ROOT/build:$PATH"
 
-  axon.sh config config_path axon
+  axon.sh config config_path "$PROJECT_ROOT/axon"
 }
 
 @test "whoami returns MXID" {
