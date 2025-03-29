@@ -83,7 +83,7 @@ steps:
       SECRET:
         from_secret: shared_secret
     commands:
-      - while ! curl --max-time 5  'http://synapse:8008/_matrix/static'; do sleep 1; done
+      - while ! curl --silent --max-time 5  'http://synapse:8008/_matrix/static'; do sleep 1; done
       - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET" 'http://synapse:8008'
 
   - name: "run tests"
