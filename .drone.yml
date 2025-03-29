@@ -68,8 +68,6 @@ steps:
     volumes:
       - name: data
         path: /data
-    commands:
-      - synctl start /data/homeserver.yaml
     detach: true
 
   - name: "create admin user"
