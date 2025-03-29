@@ -106,7 +106,7 @@ steps:
     environment:
       PASSWORD:
         from_secret: admin_password
-      AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
+      AXON_CONFIG: 'verbosity=info:scheme=http:config_path=axon:log_level=none'
     commands:
       - echo "$PASSWORD" >> passwd
       - chmod +x build/axon.sh
@@ -116,7 +116,7 @@ steps:
     image: bats/bats
     pull: if-not-exists
     environment:
-      AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
+      AXON_CONFIG: 'verbosity=info:scheme=http:config_path=axon:log_level=none'
     commands:
       - apk --no-cache --update add jq curl
       - bats ./tests/commands
