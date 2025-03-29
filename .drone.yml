@@ -109,7 +109,7 @@ steps:
     commands:
       - echo "$PASSWORD" >> passwd
       - chmod +x build/axon.sh
-      - 'build/axon.sh config verbosity info'
+      - 'build/axon.sh config verbosity debug'
       - 'build/axon.sh config scheme http'
       - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd'
 
