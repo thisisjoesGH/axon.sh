@@ -6,15 +6,15 @@ MatrixWhoAmI() {
 
   if [[ -z "${config[homeserver]}" ]]; then
     Log error "Failed to determine identity. No homeserver is configured."
-    Prompt
+    return 1
   fi
   if [[ -z "${config[admin_user]}" ]]; then
     Log error "Failed to determine identity. No user is configured."
-    Prompt
+    return 1
   fi
   if [[ -z "${config[admin_token]}" ]]; then
     Log error "Failed to determine identity. No access token is present. Do 'login' first."
-    Prompt
+    return 1
   fi
 
   # copy api map to local map
