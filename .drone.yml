@@ -81,3 +81,7 @@ steps:
     commands:
       - apk --no-cache --update add jq curl
       - bats ./tests/functions
+
+volumes:
+  - name: data
+    temp: {}
