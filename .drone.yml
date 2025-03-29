@@ -87,12 +87,34 @@ steps:
       - while ! curl --silent --max-time 5  'http://synapse.thisisjoes.test:8008/_matrix/static'; do sleep 1; done
       - register_new_matrix_user --admin --user admin --password "$PASSWORD" --shared-secret "$SECRET" 'http://synapse.thisisjoes.test:8008'
 
-  - name: "run tests"
+  - name: "run function tests"
     image: bats/bats
     pull: if-not-exists
     commands:
       - apk --no-cache --update add jq curl
       - bats ./tests/functions
+
+  - name: "build axon"
+    image: git.thisisjoes.site/joe/linac:latest
+    commands:
+      - linac build axon.sh.build
+
+  - name: "login"
+    image: ubuntu
+    pull: if-not-exists
+    environment:
+      PASSWORD:
+        from_secret: admin_password
+    commands:
+      - echo "$PASSWORD" >> passwd
+      - 'bash build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd'
+
+  - name: "run command tests"
+    image: bats/bats
+    pull: if-not-exists
+    commands:
+      - apk --no-cache --update add jq curl
+      - bats ./tests/commands
 
 volumes:
   - name: data
