@@ -70,7 +70,7 @@ steps:
       - name: data
         path: /data
     commands:
-      - synctl --no-daemonize start /data/homeserver.yaml
+      - synctl start /data/homeserver.yaml
 
   - name: "create admin user"
     image: matrixdotorg/synapse:latest
