@@ -1,0 +1,29 @@
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+ParseOptions() {
+  Log debug "Got args '$*'."
+  local -n __ParseOptions_input="$1"
+  Log debug "Input is '${__ParseOptions_input[*]}'"
+  Assert __ParseOptions_input ARRAY
+  local -n __ParseOptions_output="$2"
+  Assert __ParseOptions_output HASH
+
+  local pair
+  for pair in "${__ParseOptions_input[@]}"; do
+    Log debug "Pair is '$pair'"
+    if [[ "$pair" =~ '=' ]]; then
+      local option
+      option="${pair%%=*}"
+      Log debug "Option is '$option'"
+      local value
+      value="${pair##*=}"
+      Log debug "Value is '$value'"
+      __ParseOptions_output["$option"]="$value"
+      continue
+    else
+      Log error "Bad input while parsing '$pair', expected key-value pair."
+      return 1
+    fi
+  done
+}
