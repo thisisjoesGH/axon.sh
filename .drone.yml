@@ -59,10 +59,9 @@ steps:
       SECRET:
         from_secret: shared_secret
     commands:
-      - generate_config --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
+      - generate_config --generate-secrets --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
       - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
       - 'sed -i "s/\[''::1'', ''127.0.0.1''\]/\[''0.0.0.0''\]/g" /data/homeserver.yaml'
-      - cat /data/homeserver.yaml
 
   - name: "synapse"
     image: matrixdotorg/synapse:latest
