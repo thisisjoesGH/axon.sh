@@ -111,7 +111,6 @@ steps:
       - echo "$PASSWORD" >> passwd
       - chmod +x build/axon.sh
       - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd save_token=true'
-      - cat axon/axon.sh.conf
 
   - name: "run command tests"
     image: bats/bats
@@ -120,7 +119,6 @@ steps:
       AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
     commands:
       - apk --no-cache --update add jq curl
-      - cat axon/axon.sh.conf
       - bats ./tests/commands
 
 volumes:
