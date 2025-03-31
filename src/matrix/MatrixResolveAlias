@@ -59,7 +59,7 @@ MatrixResolveAlias() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo -e "\nRoom ID: ${values[room_id]}"
-  echo -e "Servers: ${values[servers]}\n"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

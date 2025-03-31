@@ -50,5 +50,7 @@ MatrixGetRoomVisibility() {
   local -A values
   ProcessResponse response[body] keys values
 
-  echo "Visibility: ${values[visibility]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

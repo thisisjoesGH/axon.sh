@@ -40,6 +40,7 @@ MatrixWhoAmI() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo "Authenticated as: ${values[user_id]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

@@ -20,5 +20,9 @@ MatrixDiscover() {
     return 1
   }
 
-  echo "Base URL: $base_url"
+  local -a keys=(base_url)
+  local -A values=([base_url]="$base_url")
+  local output="$base_url"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }
