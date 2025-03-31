@@ -10,5 +10,5 @@ setup() {
   run -0 axon.sh whoami
   username="$(axon.sh config admin_user)"
   homeserver="$(axon.sh config homeserver)"
-  assert_line -n -1 "Authenticated as: @$username:$homeserver"
+  assert_line -n -1 "User ID: @$username:$homeserver"
 }
