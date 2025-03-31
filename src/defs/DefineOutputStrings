@@ -1,3 +1,4 @@
+#!/bin/bash
 DefineOutputStrings() {
   local locale="${config[locale]:-en}"
   case "$locale" in

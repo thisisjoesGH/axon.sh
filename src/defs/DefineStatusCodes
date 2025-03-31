@@ -1,3 +1,4 @@
+#!/bin/bash
 DefineStatusCodes() {
   declare -Agr http_status_codes=(
     [100]="Continue"

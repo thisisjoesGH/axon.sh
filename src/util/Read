@@ -1,3 +1,4 @@
+#!/bin/bash
 Read() {
   read "$@" 2>/dev/tty || {
     Log debug "read returned non-zero exit code '$?'. Assuming Ctrl+D..."

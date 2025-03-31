@@ -1,3 +1,4 @@
+#!/bin/bash
 PrintInfo() {
   local info="$1"
   case "$info" in

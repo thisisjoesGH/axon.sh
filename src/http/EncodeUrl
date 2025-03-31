@@ -1,3 +1,4 @@
+#!/bin/bash
 EncodeUrl() {
   local string="$1"
   jq -Rj @uri <<< "$string"
