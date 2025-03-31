@@ -1,0 +1,23 @@
+#!/bin/bash
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+JoinJSONArray() {
+  local json="$1"
+  [[ "$json" ]] || {
+    Log error "No JSON passed."
+    return 1
+  }
+  local joiner="${2:-,}"
+
+  local std_out
+  local std_err
+
+  # array elements are converted to strings to avoid errors when joining arrays of objects, arrays of arrays, etc.
+  CatchStream std_out std_err jq --raw-output "[.[]|tostring]|join(\"$joiner\")" <<< "$json" || {
+    Log error "Failed to join JSON array elements. jq returned message '$std_err'."
+    return 1
+  }
+
+  printf '%s' "$std_out"
+}
