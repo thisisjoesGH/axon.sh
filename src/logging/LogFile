@@ -25,7 +25,7 @@ LogFile() {
     *      ) if [[ "$log_level" != @(DEBUG) ]]; then return 0; else Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}', line number '${BASH_LINENO[1]}'"; fi;;
   esac
 
-  (umask 066; echo "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[3]}: $file_log_message" 2>/dev/null >> "${config[log_path]}/${config[log_file]}") || return 1
+  echo "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[3]} -> ${FUNCNAME[2]}: $file_log_message" 2>/dev/null 3<"${config[log_path]}/${config[log_file]}" 3<&- >> "${config[log_path]}/${config[log_file]}" || return 1
 }
 
 #Log error "ur screwed lol"
