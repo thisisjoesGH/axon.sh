@@ -8,17 +8,15 @@ MatrixDiscover() {
   local -n __MatrixDiscover_args="$1"
   local -A options
   ParseOptions __MatrixDiscover_args options
-  [[ -n "${options[destination]}" ]] || {
-    local input_server_name
-    Read -r -p "Server name: " input_server_name
-    options[destination]="$input_server_name"
+  local destination="${options[destination]}"
+  [[ -n "$destination" ]] || {
+    Read -r -p "Server name: " destination
   }
-
-  ValidateInput host "${options[destination]}" || return 1
+  ValidateInput host destination || return 1
 
   local base_url
-  GetWellKnown "${options[destination]}" base_url || {
-    Log error "Matrix server discovery failed for server '${options[destination]}'"
+  GetWellKnown "$destination" base_url || {
+    Log error "Matrix server discovery failed for server '$destination'"
     return 1
   }
 
