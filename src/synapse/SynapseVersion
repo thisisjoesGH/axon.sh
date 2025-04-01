@@ -16,6 +16,12 @@ SynapseVersion() {
     Log error "Failed to get server version. No homeserver is configured."
     return 1
   }
+
+  # parse options
+  local -n __SynapseVersion_args="$1"
+  local -A options
+  ParseOptions __SynapseVersion_args options || return 1
+
   # set request parameters
   local -A params=(
     [method]="${api[method]}"
