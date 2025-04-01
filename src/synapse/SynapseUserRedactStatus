@@ -51,7 +51,7 @@ SynapseUserRedactStatus() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo -e "\nRedaction job status: ${values[status]}"
-  echo -e "Failed redactions: ${values[failed_redactions]}\n"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

@@ -56,7 +56,7 @@ SynapseForwardExtremities() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo -e "Forward extremities:\n${values[results]}"
-  echo "Count: ${values[count]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

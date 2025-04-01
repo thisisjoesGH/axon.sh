@@ -48,11 +48,11 @@ SynapsePurgeHistoryStatus() {
   local -a keys=(status error)
   local -A values
   ProcessResponse response[body] keys values || return 1
-
-  # output
-  echo -e "Purge job status: ${values[status]}"
-  if [[ "${values[status]}" = "failed" ]]; then
-    echo -e "Error: '${values[error]}'"
+  if [[ "${values[status]}" != "failed" ]]; then
+    unset -v 'keys[1]'
   fi
-  echo
+
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

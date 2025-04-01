@@ -50,6 +50,7 @@ SynapseDeleteForwardExtremities() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo "Deleted: ${values[deleted]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

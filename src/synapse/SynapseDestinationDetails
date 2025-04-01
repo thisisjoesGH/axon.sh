@@ -50,18 +50,18 @@ SynapseDestinationDetails() {
   local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
   local -A values
   ProcessResponse response[body] keys values || return 1
-
-  # output
-  echo -e "\nDestination: ${values[destination]}"
+  keys+=(failed)
   if [[ "${values[failure_ts]}" != "null" ]]; then
-    echo -e "Failed: true"
-    ConvertUnixTimestampMs "values[failure_ts]"
-    echo -e "Failed on: ${values[failure_ts]}"
-    ConvertUnixTimestampMs "values[retry_last_ts]"
-    echo -e "Last retried on: ${values[retry_last_ts]}"
-    echo -e "Retry interval: $(ConvertIntervalMs "${values[retry_interval]}")"
+    values[failed]=true
+    values[retry_interval]="$(ConvertIntervalMs "${values[retry_interval]}")"
+    ConvertUnixTimestampMs values[failure_ts]
+    ConvertUnixTimestampMs values[retry_last_ts]
   else
-    echo -e "Failed: false"
+    values[failed]=false
+    unset -v 'keys[1]' 'keys[2]' 'keys[3]'
   fi
-  echo -e "Last stream ordering: ${values[last_successful_stream_ordering]}"
+
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

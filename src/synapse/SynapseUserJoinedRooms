@@ -53,7 +53,7 @@ SynapseUserJoinedRooms() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo -e "Joined rooms:\n${values[joined_rooms]}"
-  echo "Total: ${values[total]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

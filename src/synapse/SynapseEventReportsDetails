@@ -51,9 +51,7 @@ SynapseEventReportsDetails() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo "Report ID: ${values[id]}"
-  echo "Reported by: ${values[user_id]}"
-  echo "Event ID: ${values[event_id]}"
-  echo -e "Event JSON:\n${values[event_json]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "$output"
 }

@@ -34,7 +34,7 @@ SynapseVersion() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  # output
-  echo "Server version: ${values[server_version]}"
-  echo "Python version: ${values[python_version]}"
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  echo "${output}"
 }
