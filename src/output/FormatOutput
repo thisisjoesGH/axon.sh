@@ -27,7 +27,7 @@ FormatOutput() {
       local value="${__FormatOutput_values[$key]}"
       if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
           Log debug "Value is '$value'."
-          value="$(JoinJSONArray "$value" $',\n\t ')"
+          value="$(JoinJSONArray "$value" $'\n\t')"
         fi
         if Assert output_strings[$key]; then
           local name="${output_strings[$key]}"
