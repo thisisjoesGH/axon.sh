@@ -20,7 +20,7 @@ MatrixDeleteAlias() {
   # ask for alias if not passed
   [[ -n "${options[alias]}" ]] || {
     local input_alias
-    Read -r -p "$(echo -e -n '\nAlias to delete:')" input_alias
+    Read -r -p "$(printf '%s' 'Alias to delete:')" input_alias
     options[alias]="$input_alias"
   }
   url_params[alias]="${options[alias]}"

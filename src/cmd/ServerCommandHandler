@@ -13,7 +13,7 @@ ServerCommandHandler() {
     version ) SynapseVersion __ServerCommandHandler_args;;
     reports ) SynapseEventReports __ServerCommandHandler_args;;
     notice  ) SynapseServerNotice __ServerCommandHandler_args;;
-    address ) if [ -z "${config[homeserver]}" ]; then Log error "No homeserver configured!"; else echo "${config[homeserver]}"; fi;;
+    address ) if [ -z "${config[homeserver]}" ]; then Log error "No homeserver configured!"; else printf '%s\n' "${config[homeserver]}"; fi;;
     ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands.";;
     *       ) Log error "Unrecognized subcommand '$subcommand'. Type 'help server' for a list of subcommands.";;
   esac

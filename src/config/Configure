@@ -17,7 +17,7 @@ Configure() {
         done
       ;;
     1 ) if [[ -v config["$key"] ]]; then
-          echo "${config[$key]}"
+          printf '%s\n' "${config[$key]}"
         else
           Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
           return 1

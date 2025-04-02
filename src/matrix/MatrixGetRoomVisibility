@@ -26,7 +26,7 @@ MatrixGetRoomVisibility() {
   # ask for value if not passed
   [[ -n "${options[id]}" ]] || {
     local input_room_id
-    Read -r -p "$(echo -e -n '\nRoom ID: ')" input_room_id
+    Read -r -p "$(printf '%s' 'Room ID: ')" input_room_id
     options[id]="$input_room_id"
   }
   url_params[room_id]="${options[id]}"
@@ -52,5 +52,5 @@ MatrixGetRoomVisibility() {
 
   local output="${response[body]}"
   FormatOutput "${options[format]}" keys values output || return 1
-  echo "$output"
+  printf '%s\n' "$output"
 }

@@ -23,5 +23,5 @@ ConvertIntervalMs() {
     unit="milliseconds"
   fi
 
-  echo "$interval $unit"
+  printf '%s\n' "$interval $unit"
 }

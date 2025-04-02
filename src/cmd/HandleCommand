@@ -22,11 +22,11 @@ HandleCommand() {
     room        ) RoomCommandHandler __HandleCommand_args;;
     user        ) UserCommandHandler __HandleCommand_args;;
     config      ) Configure __HandleCommand_args;;
-    version     ) echo "$projectName v$projectVersion";;
+    version     ) printf '%s\n' "$projectName v$projectVersion";;
     help        ) PrintHelp __HandleCommand_args;;
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
     exit        ) Exit;;
-    *           ) echo "Unrecognized command '$command'. Type 'help' for help.";;
+    *           ) printf '%s\n' "Unrecognized command '$command'. Type 'help' for help.";;
   esac
 }

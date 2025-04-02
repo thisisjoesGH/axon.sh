@@ -52,5 +52,5 @@ SynapseDeleteForwardExtremities() {
 
   local output="${response[body]}"
   FormatOutput "${options[format]}" keys values output || return 1
-  echo "$output"
+  printf '%s\n' "$output"
 }

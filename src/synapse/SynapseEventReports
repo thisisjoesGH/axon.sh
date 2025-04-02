@@ -79,14 +79,14 @@ SynapseEventReports() {
   ValidateInput integer "$total" || return 1
 
   # output
-  echo -e "Event reports:\n${values[event_reports]}"
-  echo "Total: $total"
+  printf '%s\n' 'Event reports:' "${values[event_reports]}"
+  printf '%s\n' "Total: $total"
   Log debug "Next token is '$next_token'"
   # paginate if necessary
   if (( $next_token > 0 )); then
-    echo "Remaining: $(( $total - $next_token ))"
+    printf '%s\n' "Remaining: $(( $total - $next_token ))"
     local input_paginate
-    Read -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+    Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
       case "$input_paginate" in
         [Nn] ) SynapseEventReports "$limit" "$next_token";;
         [Rr] ) return 0;;

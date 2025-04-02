@@ -2,20 +2,20 @@
 PrintInfo() {
   local info="$1"
   case "$info" in
-    short      ) echo "${projectName} Copyright (C) 2021-2025 ${projectAuthor}"
-                 echo -e "\nThis program comes with ABSOLUTELY NO WARRANTY; for details type 'warranty'."
-                 echo -e "\nThis is free software, and you are welcome to redistribute it under certain conditions;"
-                 echo    "type 'conditions' for details."
+    short      ) printf '%s\n' "${projectName} Copyright (C) 2021-2025 ${projectAuthor}"
+                 printf '\n%s\n' "This program comes with ABSOLUTELY NO WARRANTY; for details type 'warranty'."
+                 printf '\n%s\n' 'This is free software, and you are welcome to redistribute it under certain conditions;'
+                 printf '%s\n' "type 'conditions' for details."
                ;;
-    warranty   ) echo "This program is distributed in the hope that it will be useful, but WITHOUT"
-                 echo "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS"
-                 echo "FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details."
-                 echo -e "\nYou should have received a copy of the GNU General Public License along with"
-                 echo "this program. If not, see <https://www.gnu.org/licenses/>."
+    warranty   ) printf '%s\n' 'This program is distributed in the hope that it will be useful, but WITHOUT'
+                 printf '%s\n' 'ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS'
+                 printf '%s\n' 'FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.'
+                 printf '\n%s\n' 'You should have received a copy of the GNU General Public License along with'
+                 printf '%s\n' 'this program. If not, see <https://www.gnu.org/licenses/>.'
                ;;
-    conditions ) echo "This program is free software: you can redistribute it and/or modify it under"
-                 echo "the terms of the GNU General Public License as published by the Free Software"
-                 echo "Foundation, version 3."
+    conditions ) printf '%s\n' 'This program is free software: you can redistribute it and/or modify it under'
+                 printf '%s\n' 'the terms of the GNU General Public License as published by the Free Software'
+                 printf '%s\n' 'Foundation, version 3.'
                ;;
   esac
 }

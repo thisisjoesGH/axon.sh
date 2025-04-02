@@ -18,5 +18,5 @@ LogTerm() {
     *      ) if [[ "$verbosity" != @(DEBUG) ]]; then return 0; else Log debug "Invalid term log type '$term_log_type' in context '${FUNCNAME[2]}'"; fi;;
   esac
 
-  echo "$term_log_type - $term_log_message" >&2
+  printf '%s\n' "$term_log_type - $term_log_message" >&2
 }

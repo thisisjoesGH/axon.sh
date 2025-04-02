@@ -23,13 +23,13 @@ MatrixCreateAlias() {
   # input
   [[ -n "${options[alias]}" ]] || {
     local input_alias
-    Read -r -p "$(echo -e -n '\nAlias to create:')" input_alias
+    Read -r -p "$(printf '%s' 'Alias to create:')" input_alias
     options[alias]="$input_alias"
   }
 
   [[ -n "${options[id]}" ]] || {
     local input_room_id
-    Read -r -p "$(echo -e -n '\nRoom ID to link:')" input_room_id
+    Read -r -p "$(printf '%s' 'Room ID to link:')" input_room_id
     options[id]="$input_room_id"
   }
   url_params[alias]="${options[alias]}"

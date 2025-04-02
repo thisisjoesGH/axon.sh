@@ -24,5 +24,5 @@ MatrixDiscover() {
   local -A values=([base_url]="$base_url")
   local output="$base_url"
   FormatOutput "${options[format]}" keys values output || return 1
-  echo "$output"
+  printf '%s\n' "$output"
 }

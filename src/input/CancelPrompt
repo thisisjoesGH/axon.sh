@@ -12,9 +12,9 @@ CancelPrompt() {
     ;;
     *      )
       unset IFS
-      echo
+      printf '\n'
       Log info "Cancelling current prompt."
-      echo "Press again to exit."
+      printf '%s\n' "Press again to exit."
       Prompt
     ;;
   esac

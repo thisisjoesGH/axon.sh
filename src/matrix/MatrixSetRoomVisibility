@@ -23,14 +23,14 @@ MatrixSetRoomVisibility() {
   # ask for values if not passed
   [[ -n "${options[id]}" ]] || {
     local input_room_id
-    Read -r -p "$(echo -e -n '\nRoom ID: ')" input_room_id
+    Read -r -p "$(printf '%s' 'Room ID: ')" input_room_id
     options[id]="$input_room_id"
   }
   url_params[room_id]="${options[id]}"
 
   [[ -n "${options[visibility]}" ]] || {
     local input_visibility
-    Read -r -p "$(echo -e -n '\nRoom visibility (public/private): ')" input_visibility
+    Read -r -p "$(printf '%s' 'Room visibility (public/private): ')" input_visibility
     options[visibility]="$input_visibility"
   }
   body_params[visibility]="${options[visibility]}"
