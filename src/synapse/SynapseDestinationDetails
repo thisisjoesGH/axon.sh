@@ -50,8 +50,8 @@ SynapseDestinationDetails() {
   local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
   local -A values
   ProcessResponse response[body] keys values || return 1
-  keys+=(failed)
   if [[ "${values[failure_ts]}" != "null" ]]; then
+    keys=(destination failed failure_ts retry_last_ts retry_interval last_successful_stream_ordering)
     values[failed]=true
     values[retry_interval]="$(ConvertIntervalMs "${values[retry_interval]}")"
     ConvertUnixTimestampMs values[failure_ts]
@@ -59,6 +59,7 @@ SynapseDestinationDetails() {
   else
     values[failed]=false
     unset -v 'keys[1]' 'keys[2]' 'keys[3]'
+    keys=(destination failed "${keys[@]:1}")
   fi
 
   local output="${response[body]}"
