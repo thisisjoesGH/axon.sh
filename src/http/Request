@@ -89,7 +89,7 @@ Request() {
                                    "${header_arg[@]}" \
                                    ${auth_header:+--header "$auth_header"} \
                                    --user-agent "${projectName}/${projectVersion}" \
-                                   --write-out $'\t'%{header_json}$'\t'%{response_code}$'\t' \
+                                   --write-out $'\t%{header_json}\t%{response_code}\t' \
                                    --silent \
                                    --show-error \
                                    --connect-timeout 15 \
