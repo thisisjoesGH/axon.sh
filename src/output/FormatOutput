@@ -29,7 +29,7 @@ FormatOutput() {
           Log debug "Value is '$value'."
           value="$(JoinJSONArray "$value" $'\n\t')"
         fi
-        if Assert output_strings[$key]; then
+        if Assert output_strings["$key"]; then
           local name="${output_strings[$key]}"
         else
           local name="$key"
