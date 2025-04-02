@@ -86,7 +86,7 @@ SynapseEventReports() {
   if (( $next_token > 0 )); then
     echo "Remaining: $(( $total - $next_token ))"
     local input_paginate
-    Read -e -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+    Read -r -p "$(echo -e '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
       case "$input_paginate" in
         [Nn] ) SynapseEventReports "$limit" "$next_token";;
         [Rr] ) return 0;;
