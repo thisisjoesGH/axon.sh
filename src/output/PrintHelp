@@ -187,6 +187,12 @@ PrintHelp() {
                   printf '%s\n' '    version        Prints the axon.sh version.'
                   printf '%s\n' '    help           Prints usage information. Takes another command as an option.'
                   printf '%s\n' '    exit           Exits axon.sh.'
+                  printf '\n'
+                  printf '%s\n' '  GLOBAL OPTIONS:'
+                  printf '%s\n' '    These options may be used with any command or subcommand.'
+                  printf '%s\n' '    [format] The format which should be used when printing output.'
+                  printf '%s\n' '             Defaults to `human` but may be one of the following:'
+                  printf '%s\n' '             `human`, `json`, `pairs`, `plain`, `raw`'
                 ;;
     *           ) Log error "Unknown subcommand '$subcommand'. Type 'help' with no options for a list of commands."
                 ;;
