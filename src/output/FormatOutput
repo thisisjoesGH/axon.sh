@@ -21,20 +21,35 @@ FormatOutput() {
     HUMAN)
       Log debug "Formatting output as human-readable.";
       __FormatOutput_output=''
-      # iterate over key array to preserve output ordering
       local key
+      local padding
+      local max_key_length
+      # find the longest output string for this array of keys and set padding to its length
       for key in "${__FormatOutput_keys[@]}"; do
-      local value="${__FormatOutput_values[$key]}"
-      if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
+        local key_length="${#output_strings["$key"]}"
+        (( "${key_length:-0}" > "${max_key_length:-0}" )) && {
+          max_key_length="$key_length"
+        }
+        padding="$max_key_length"
+        Log debug "Padding is '$padding'."
+      done
+      # iterate over keys array instead of values map to preserve output ordering
+      for key in "${__FormatOutput_keys[@]}"; do
+        local value="${__FormatOutput_values[$key]}"
+        if [[ "$value" =~ ^\[ && "$value" =~ \]$ ]]; then
           Log debug "Value is '$value'."
-          value="$(JoinJSONArray "$value" $'\n\t')"
+          # indent joined array values to match padding of other values
+          local indent
+          indent="$(printf "%-*s" "$((${padding:-1} + 2))" '')"
+          value="$(JoinJSONArray "$value" "\n${indent}")"
         fi
+        # use human-friendly string for key if it is defined
         if Assert output_strings["$key"]; then
           local name="${output_strings[$key]}"
         else
           local name="$key"
         fi
-        __FormatOutput_output+="$name: $value"$'\n'
+        __FormatOutput_output+="$(printf "%-${padding:-1}s%s" "$name" ": $value")"$'\n'
       done
     ;;
     PLAIN)
