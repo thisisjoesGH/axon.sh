@@ -69,7 +69,7 @@ SynapseEventReports() {
   }
 
   # get the values for the keys we are interested in
-  local -a keys=(event_reports next_token total)
+  local -a keys=(event_reports total next_token)
   local -A values
   ProcessResponse response[body] keys values || return 1
 
@@ -79,11 +79,12 @@ SynapseEventReports() {
   ValidateInput integer "$total" || return 1
 
   # output
-  printf '%s\n' 'Event reports:' "${values[event_reports]}"
-  printf '%s\n' "Total: $total"
+  output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output
+  printf '%s\n' "$output"
   Log debug "Next token is '$next_token'"
   # paginate if necessary
-  if (( $next_token > 0 )); then
+  if (( $next_token > 0 )) && [[ "${FUNCNAME[*]}" =~ 'Prompt' ]]; then
     printf '%s\n' "Remaining: $(( $total - $next_token ))"
     local input_paginate
     Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
