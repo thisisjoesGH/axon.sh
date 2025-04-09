@@ -89,7 +89,13 @@ SynapseEventReports() {
     local input_paginate
     Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
       case "$input_paginate" in
-        [Nn] ) SynapseEventReports "$limit" "$next_token";;
+        [Nn] )
+          local -a args=(
+            "limit=$limit"
+            "from=$next_token"
+          )
+          SynapseEventReports args
+          ;;
         [Rr] ) return 0;;
         *    ) return 0;;
       esac
