@@ -148,6 +148,12 @@ ConstructObject() {
       )
       ModifyJSON "$s_user_redact_object" filters constructed_object || return 1
     ;;
+
+    s_user_join_room )
+      local -a filters=(
+        ".user_id = \"${parameters[user_id]}\""
+      )
+    ModifyJSON "$s_user_join_room_object" filters constructed_object || return 1
   esac
 
   MinifyJSON constructed_object || return 1
