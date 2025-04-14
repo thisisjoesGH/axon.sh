@@ -64,6 +64,13 @@ DefineSynapseEndpoints() {
     [minimum_version]="1.14.0rc1"
   )
 
+  declare -Agr s_room_members_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/rooms/ROOM_ID/members"
+    [url_params]="s_room_members_url_params"
+    [body_params]=""
+  )
+
   declare -Agr s_purge_history_api=(
     [method]="POST"
     [path]="/_synapse/admin/v1/purge_history/ROOM_ID"

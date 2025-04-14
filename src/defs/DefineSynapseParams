@@ -38,6 +38,10 @@ DefineSynapseParams() {
     [room_id]=""
   )
 
+  declare -Agr s_room_members_url_params=(
+    [room_id]=""
+  )
+
   declare -Agr s_purge_history_url_params=(
     [room_id]=""
   )

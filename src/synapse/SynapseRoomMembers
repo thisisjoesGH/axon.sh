@@ -1,0 +1,64 @@
+#!/bin/bash
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseRoomMembers() {
+  Log debug "Got args '$*'"
+  # copy api map to local map
+  local -A api
+  CopyArray s_room_members_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_room_members_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
+
+  Log info "Getting room members from ${config[homeserver]}"
+
+  local -n __SynapseRoomMembers_args="$1"
+  local -A options
+  ParseOptions __SynapseRoomMembers_args options || return 1
+  # input
+  local room_id="${options[id]}"
+  [[ -n "$room_id" ]] || {
+    Read -r -p "Room ID:" room_id
+  }
+  Log debug "Room ID is '$room_id'"
+  ValidateInput text "$room_id" || return 1
+  url_params[room_id]="$room_id"
+  Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
+
+  SetPathParameters url_params api[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
+    return 1
+  }
+
+  local -a keys=(members total)
+  local homeserver="${options[homeserver]}"
+  [[ -n "$homeserver" ]] && {
+    ValidateInput host "$homeserver" || return 1
+    local -a filters=(
+      "del(.members[] | select(test(\":$homeserver\$\")|not))"
+      ".filtered = (.total - (.members | length))"
+    )
+    ModifyJSON "${response[body]}" filters response[body] || return 1
+    keys+=(filtered)
+  }
+  local -A values
+  ProcessResponse response[body] keys values
+
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output
+  printf '%s\n' "$output"
+}
