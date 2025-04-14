@@ -8,5 +8,5 @@ setup() {
 
 @test "creates user successfully" {
   printf '%s' "CorrectHorseBatteryStaple" > user_pass
-  run -0 axon.sh user create user='sankyu' displayname='thirty-nine' admin=false password_file=user_pass
+  run -0 axon.sh user create user='sankyu' displayname='thirty-nine' admin=false password_file=user_pass threepid_medium=None
 }
