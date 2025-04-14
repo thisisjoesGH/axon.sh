@@ -40,6 +40,16 @@ ConstructObject() {
       ModifyJSON "$m_room_visibility_object" filters constructed_object || return 1
     ;;
 
+    m_room_create )
+      local -a filters=(
+        ".creation_content.\"m.federate\" = ${parameters[creation_content.m.federate]}"
+        ".preset = \"${parameters[preset]}\""
+        ".name = \"${parameters[name]}\""
+        ".topic = \"${parameters[topic]}\""
+      )
+      ModifyJSON "$m_room_create_object" filters constructed_object || return 1
+    ;;
+
     s_server_notice )
       EncodeJSON "${parameters[body]}" parameters[body]
       parameters[body]="${parameters[body]//\\\\n/\\n}" # unescape newline

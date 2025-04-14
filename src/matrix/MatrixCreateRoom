@@ -1,0 +1,96 @@
+#!/bin/bash
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+MatrixCreateRoom() {
+  Log debug "Got args '$*'"
+
+  # copy api map to local map
+  local -A api
+  CopyArray m_room_create_api api
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray m_room_create_body_params body_params
+
+  CheckLoginStatus || return 1
+
+  Log info "Creating room on '${config[homeserver]}'."
+
+  local -n __MatrixCreateRoom_args="$1"
+  local -A options
+  ParseOptions __MatrixCreateRoom_args options
+  # input
+  [[ -n "${options[name]}" ]] || {
+    local input_name
+    Read -r -p "$(printf '%s' 'Room name:')" input_name
+    options[name]="$input_name"
+  }
+  body_params[name]="${options[name]}"
+
+  [[ -n "${options[topic]}" ]] || {
+    local input_topic
+    Read -r -p "$(printf '%s' 'Room description:')" input_topic
+    options[topic]="$input_topic"
+  }
+  body_params[topic]="${options[topic]}"
+
+  [[ -n "${options[preset]}" ]] || {
+    local input_preset
+    Read -r -p "$(printf '%s' "Room preset (Type 'help' for more info):")" input_preset
+    [[ "$input_preset" == 'help' ]] && {
+      local -A presets=(
+        [public]='Anyone may join. Members may view all room history. Guests are forbidden.'
+        [private]='An invite is required to join. Members may view all room history. Guests are allowed.'
+        [trusted]='All members are admins. An invite is required to join. Members may view all room history. Guests are allowed.'
+      )
+      printf '%s\n' 'Available presets:'
+      for preset in "${!presets[@]}"; do
+        printf '\t%-7s: %s\n' "$preset" "${presets["$preset"]}"
+      done
+      MatrixCreateRoom "$1" || return 1
+    }
+      options[preset]="$input_preset"
+  }
+  case "${options[preset]}" in
+      public)
+        body_params[preset]='public_chat'
+      ;;
+      private)
+        body_params[preset]='private_chat'
+      ;;
+      trusted)
+        body_params[preset]='trusted_private_chat'
+      ;;
+      *)
+        Log error "Invalid preset '${options[preset]}', must be one of 'public', 'private', 'trusted'."
+        return 1
+      ;;
+  esac
+
+
+  # construct request body
+  local object
+  ConstructObject m_room_create body_params object || return 1
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+    [data]="$object"
+  )
+  # make request
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
+    return 1
+  }
+
+  local -a keys=(room_id)
+  local -A values
+  ProcessResponse response[body] keys values || return 1
+
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  printf '%s\n' "$output"
+}

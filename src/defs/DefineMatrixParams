@@ -34,4 +34,11 @@ DefineMatrixParams() {
   declare -Agr m_room_visibility_body_params=(
     [visibility]="public"
   )
+
+  declare -Agr m_room_create_body_params=(
+    [creation_content.m.federate]="false"
+    [preset]="private_chat"
+    [name]=""
+    [topic]=""
+  )
 }

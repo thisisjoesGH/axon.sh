@@ -27,6 +27,18 @@ DefineObjects() {
     }
   '
 
+  declare -gr m_room_create_object='
+    {
+      "creation_content": {
+        "m.federate": false
+      },
+      "preset": "private_chat",
+      "name": "",
+      "topic": ""
+    }
+  '
+
+
   declare -gr s_server_notice_object='
     {
       "user_id": "",

@@ -52,6 +52,13 @@ DefineMatrixEndpoints() {
     [body_params]="m_room_visiblity_body_params"
   )
 
+  declare -Agr m_room_create_api=(
+    [method]="POST"
+    [path]="/_matrix/client/v3/createRoom"
+    [url_params]=""
+    [body_params]="m_room_create_body_params"
+  )
+
   declare -Agr m_server_version_api=(
     [method]="GET"
     [path]="/_matrix/federation/v1/version"
