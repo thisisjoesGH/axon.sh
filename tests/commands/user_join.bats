@@ -8,7 +8,7 @@ setup() {
 
 @test "joins user to room" {
   room_id="$(axon.sh room create name="Chinese Room" topic="thought experiments" preset="private" federate="false" format=plain)"
-  run -0 axon.sh user join user=admin room="$room_id"
+  run -0 axon.sh user join user=sankyu room="$room_id"
 }
 
 @test "fails to join non-existent user" {
