@@ -65,6 +65,18 @@ MatrixCreateRoom() {
       ;;
   esac
 
+  local federate="${options[federate]}"
+  [[ -n "$federate" ]] || {
+    local input
+    Read -r -p "$(printf '%s' 'Allow other homeservers to participate? (Y/n): ')" input
+    case "$input" in
+      [yY]|[Yy][Ee][Ss]|'') federate="true";;
+      [Nn]|[Nn][Oo]       ) federate="false";;
+    esac
+  }
+  ValidateInput boolean "$federate" || return 1
+  body_params[creation_content.m.federate]="$federate"
+
   # construct request body
   local object
   ConstructObject m_room_create body_params object || return 1
