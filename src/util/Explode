@@ -1,0 +1,29 @@
+#!/bin/bash
+# Copyright (C) 2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+Explode() {
+  Log debug "Got args '$*'."
+  local delimiter="$1"
+  local string="$2"
+  local -n __Explode_array="$3"
+  Assert __Explode_array ARRAY
+
+  [[ -n "$delimiter" ]] || {
+    Log error "Cannot use empty string as delimiter."
+    return 1
+  }
+  (( "${#delimiter}" == 1 )) || {
+    Log error "Delimiter must not be longer than one character."
+    return 1
+  }
+  [[ -n "$string" ]] || {
+    Log error "Cannot explode empty string."
+    return 1
+  }
+  Log debug "Exploding string '$string' with delimiter '$delimiter'."
+
+  local IFS="$delimiter"
+  read -r -a __Explode_array <<<"$string"
+  unset IFS
+}
