@@ -19,6 +19,7 @@ UserCommandHandler() {
     deactivate ) SynapseUserDeactivate __UserCommandHandler_args;;
     shadowban  ) SynapseUserShadowban __UserCommandHandler_args;;
     unshadowban) SynapseUserUnshadowban __UserCommandHandler_args;;
+    join       ) SynapseUserJoinRoom __UserCommandHandler_args;;
     ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
     *          ) Log error "Unrecognized subcommand '$subcommand'. Type 'help user' for a list of subcommands.";;
   esac

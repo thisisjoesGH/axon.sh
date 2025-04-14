@@ -216,6 +216,13 @@ DefineSynapseEndpoints() {
     [minimum_version]="1.116.0rc1"
   )
 
+  declare -Agr s_user_join_room_api=(
+    [method]="POST"
+    [path]="/_synapse/admin/v1/join/ROOM_ID_OR_ALIAS"
+    [url_params]="s_user_join_room_url_params"
+    [body_params]="s_user_join_room_body_params"
+  )
+
   declare -Agr s_room_membership_api=(
     [method]="POST"
     [path]="/_synapse/admin/v1/join/ROOM_ID_OR_ALIAS"

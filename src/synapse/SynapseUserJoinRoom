@@ -1,0 +1,79 @@
+#!/bin/bash
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseUserJoinRoom() {
+  Log debug "Got args '$*'"
+
+  local -n __SynapseUserJoinRoom_args="$1"
+  if [[ "${__SynapseUserJoinRoom_args[0]}" = "status" ]]; then
+    ShiftArray __SynapseUserJoinRoom_args || return 1
+    SynapseUserJoinRoomStatus __SynapseUserJoinRoom_args || return 1
+    return 0
+  fi
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_user_join_room_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_user_join_room_url_params url_params
+  # copy body parameters to local map
+  local -A body_params
+  CopyArray s_user_join_room_body_params body_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport 'api[minimum_version]' || return 1
+
+  Log info "Joining user on ${config[homeserver]} to room."
+
+  local -A options
+  ParseOptions __SynapseUserJoinRoom_args options || return 1
+  # input
+  local room="${options[room]}"
+  [[ -n "$room" ]] || {
+    Read -r -p "Room ID or alias: " room
+  }
+  url_params[room_id_or_alias]="$room"
+  Log debug "URL 'room_id_or_alias' param set to ${url_params[room_id_or_alias]}"
+
+  local username="${options[user]}"
+  [[ -n "$username" ]] || {
+    local input_username
+    Read -r -p "User name: " input_username
+      local username="$input_username"
+      Log debug "User name is '$username'"
+  }
+  local user_id="@$username:${config[homeserver]}"
+  body_params[user_id]="$user_id"
+  Log debug "Body 'user_id' param set to '${body_params[user_id]}'"
+
+  SetPathParameters url_params api[path]
+
+  # construct request body
+  local object
+  ConstructObject s_user_join_room body_params object || return 1
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+    [data]="$object"
+  )
+  # make request
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
+    return 1
+  }
+
+  # get key values
+  local -a keys=(room_id)
+  local -A values
+  ProcessResponse response[body] keys values || return 1
+
+  local output="${response[body]}"
+  FormatOutput "${options[format]}" keys values output || return 1
+  printf '%s\n' "$output"
+}

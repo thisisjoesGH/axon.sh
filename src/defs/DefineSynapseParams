@@ -175,4 +175,12 @@ DefineSynapseParams() {
   declare -Agr s_user_redact_status_url_params=(
     [job_id]=""
   )
+
+  declare -Agr s_user_join_room_url_params=(
+    [room_id_or_alias]=""
+  )
+
+  declare -Agr s_user_join_room_body_params=(
+    [user_id]=""
+  )
 }

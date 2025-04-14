@@ -94,4 +94,10 @@ DefineObjects() {
       "reason": ""
     }
   '
+
+  declare -gr s_user_join_room_object='
+    {
+      "user_id": ""
+    }
+  '
 }
