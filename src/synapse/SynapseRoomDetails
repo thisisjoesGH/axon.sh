@@ -48,12 +48,9 @@ SynapseRoomDetails() {
 
   # get key values
   local -a keys=(room_id room_type name avatar topic canonical_alias joined_members joined_local_members joined_local_devices version creator encryption federatable public join_rules guest_access history_visibility state_events forgotten)
-  if [[ -n "${options[json_keys]}" ]]; then
-    local -a keys=()
-    local IFS=,
-    read -r -a keys <<<"${options[json_keys]}"
-    unset IFS
-  fi
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

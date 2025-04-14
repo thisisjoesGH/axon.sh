@@ -37,6 +37,9 @@ SynapseVersion() {
 
   # get key values
   local -a keys=(server_version python_version)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

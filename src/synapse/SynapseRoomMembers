@@ -45,6 +45,9 @@ SynapseRoomMembers() {
   }
 
   local -a keys=(members total)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local homeserver="${options[homeserver]}"
   [[ -n "$homeserver" ]] && {
     ValidateInput host "$homeserver" || return 1

@@ -47,6 +47,9 @@ MatrixGetRoomVisibility() {
   }
 
   local -a keys=(visibility)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values
 

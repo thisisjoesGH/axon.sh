@@ -53,6 +53,9 @@ SynapseForwardExtremities() {
 
   # get key values
   local -a keys=(results count)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

@@ -48,6 +48,9 @@ SynapseUserRedactStatus() {
 
   # get key values
   local -a keys=(status failed_redactions)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

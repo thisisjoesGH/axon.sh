@@ -48,6 +48,9 @@ SynapseEventReportsDetails() {
 
   # get the values for the keys we are interested in
   local -a keys=(id user_id event_id event_json)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

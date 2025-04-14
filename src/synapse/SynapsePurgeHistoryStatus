@@ -46,6 +46,9 @@ SynapsePurgeHistoryStatus() {
 
   # get key values
   local -a keys=(status error)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
   if [[ "${values[status]}" != "failed" ]]; then

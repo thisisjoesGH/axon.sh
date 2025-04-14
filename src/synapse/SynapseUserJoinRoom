@@ -70,6 +70,9 @@ SynapseUserJoinRoom() {
 
   # get key values
   local -a keys=(room_id)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

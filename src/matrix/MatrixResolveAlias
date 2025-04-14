@@ -55,7 +55,10 @@ MatrixResolveAlias() {
   }
 
   # get key values
-  local -a keys=(room_id servers)
+  local -a keys=(servers room_id)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

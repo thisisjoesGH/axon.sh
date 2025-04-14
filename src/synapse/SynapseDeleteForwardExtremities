@@ -47,6 +47,9 @@ SynapseDeleteForwardExtremities() {
 
   # get key values
   local -a keys=(deleted)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 

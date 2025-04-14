@@ -48,6 +48,9 @@ SynapseDestinationDetails() {
 
   # get key values
   local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
   if [[ "${values[failure_ts]}" != "null" ]]; then

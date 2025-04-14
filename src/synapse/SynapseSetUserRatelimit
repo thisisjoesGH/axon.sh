@@ -72,6 +72,9 @@ SynapseSetUserRatelimit() {
 
   # get key values
   local -a keys=(messages_per_second burst_count)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
   local -A values
   ProcessResponse response[body] keys values || return 1
 
