@@ -20,24 +20,22 @@ MatrixCreateRoom() {
   local -A options
   ParseOptions __MatrixCreateRoom_args options
   # input
-  [[ -n "${options[name]}" ]] || {
-    local input_name
-    Read -r -p "$(printf '%s' 'Room name:')" input_name
-    options[name]="$input_name"
+  local room_name="${options[name]}"
+  [[ -n "room_name" ]] || {
+    Read -r -p "$(printf '%s' 'Room name:')" room_name
   }
-  body_params[name]="${options[name]}"
+  body_params[name]="$room_name"
 
-  [[ -n "${options[topic]}" ]] || {
-    local input_topic
-    Read -r -p "$(printf '%s' 'Room description:')" input_topic
-    options[topic]="$input_topic"
+  local room_topic="${options[topic]}"
+  [[ -n "$room_topic" ]] || {
+    Read -r -p "$(printf '%s' 'Room description:')" room_topic
   }
-  body_params[topic]="${options[topic]}"
+  body_params[topic]="$room_topic"
 
-  [[ -n "${options[preset]}" ]] || {
-    local input_preset
-    Read -r -p "$(printf '%s' "Room preset (Type 'help' for more info):")" input_preset
-    [[ "$input_preset" == 'help' ]] && {
+  local room_preset="${options[preset]}"
+  [[ -n "$room_preset" ]] || {
+    Read -r -p "$(printf '%s' "Room preset (Type 'help' for more info):")" room_preset
+    [[ "$room_preset" == 'help' ]] && {
       local -A presets=(
         [public]='Anyone may join. Members may view all room history. Guests are forbidden.'
         [private]='An invite is required to join. Members may view all room history. Guests are allowed.'
@@ -49,9 +47,8 @@ MatrixCreateRoom() {
       done
       MatrixCreateRoom "$1" || return 1
     }
-      options[preset]="$input_preset"
   }
-  case "${options[preset]}" in
+  case "$room_preset" in
       public)
         body_params[preset]='public_chat'
       ;;
@@ -62,11 +59,10 @@ MatrixCreateRoom() {
         body_params[preset]='trusted_private_chat'
       ;;
       *)
-        Log error "Invalid preset '${options[preset]}', must be one of 'public', 'private', 'trusted'."
+        Log error "Invalid preset '$room_preset', must be one of 'public', 'private', 'trusted'."
         return 1
       ;;
   esac
-
 
   # construct request body
   local object
