@@ -19,9 +19,10 @@ MatrixCreateRoom() {
   local -n __MatrixCreateRoom_args="$1"
   local -A options
   ParseOptions __MatrixCreateRoom_args options
+
   # input
   local room_name="${options[name]}"
-  [[ -n "room_name" ]] || {
+  [[ -n "$room_name" ]] || {
     Read -r -p "$(printf '%s' 'Room name:')" room_name
   }
   body_params[name]="$room_name"
