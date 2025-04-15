@@ -10,7 +10,8 @@ Prompt() {
     local prompt="[axon]>"
     local user_input
     Read -e -r -p "$prompt" user_input
-    local -a input="($user_input)"
+    # create array from input, escape parentheses
+    local -a input="(${user_input//[()]/\\&})"
     [[ -n "${input[*]}" ]] || {
       PrintHelp input
       continue
