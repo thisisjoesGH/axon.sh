@@ -21,19 +21,25 @@ MatrixCreateAlias() {
   local -A options
   ParseOptions __MatrixCreateAlias_args options
   # input
-  [[ -n "${options[alias]}" ]] || {
-    local input_alias
-    Read -r -p "$(printf '%s' 'Alias to create:')" input_alias
-    options[alias]="$input_alias"
-  }
-
-  [[ -n "${options[id]}" ]] || {
-    local input_room_id
-    Read -r -p "$(printf '%s' 'Room ID to link:')" input_room_id
-    options[id]="$input_room_id"
+  local alias="${options[alias]}"
+  [[ -n "$alias" ]] || {
+    Read -r -p "$(printf '%s' 'Alias to create:')" alias
   }
   url_params[alias]="${options[alias]}"
-  body_params[room_id]="${options[id]}"
+
+  local room="${options[room]:-${options[id]}}"
+  [[ -n "$room" ]] || {
+    Read -r -p "$(printf '%s' 'Room to link:')" room
+  }
+  [[ "${room:0:1}" == '#' ]] && {
+    local -a args=(
+      alias="$room"
+      keys=room_id
+      format=plain
+    )
+    room="$(MatrixResolveAlias args)" || return 1
+  }
+  body_params[room_id]="$room"
 
   SetPathParameters url_params api[path]
 

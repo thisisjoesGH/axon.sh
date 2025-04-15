@@ -28,6 +28,7 @@ MatrixResolveAlias() {
 
   CheckLoginStatus || return 1
 
+  Log info "Resolving room alias through '${config[homeserver]}'."
   local -A options
   ParseOptions __MatrixResolveAlias_args options
   # ask for alias if not passed

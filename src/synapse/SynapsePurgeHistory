@@ -30,12 +30,20 @@ SynapsePurgeHistory() {
   local -A options
   ParseOptions __SynapsePurgeHistory_args options || return 1
   # input
-  local room_id="${options[id]}"
-  [[ -n "$room_id" ]] || {
-    Read -r -p "Room ID:" room_id
+  local room="${options[room]:-${options[id]}}"
+  [[ -n "$room" ]] || {
+    Read -r -p "Room ID:" room
   }
-  Log debug "Room ID is '$room_id'"
-  url_params[room_id]="$room_id"
+  [[ "${room:0:1}" == '#' ]] && {
+    local -a args=(
+      alias="$room"
+      keys=room_id
+      format=plain
+    )
+    room="$(MatrixResolveAlias args)" || return 1
+  }
+  Log debug "Room ID is '$room'"
+  url_params[room_id]="$room"
   Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
   local timestamp="${options[timestamp]}"
   [[ -n "$timestamp" ]] || {
