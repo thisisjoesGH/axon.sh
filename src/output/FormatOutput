@@ -31,8 +31,8 @@ FormatOutput() {
           max_key_length="$key_length"
         }
         padding="$max_key_length"
-        Log debug "Padding is '$padding'."
       done
+      Log debug "Padding is '$padding'."
       # iterate over keys array instead of values map to preserve output ordering
       for key in "${__FormatOutput_keys[@]}"; do
         local value="${__FormatOutput_values[$key]}"
