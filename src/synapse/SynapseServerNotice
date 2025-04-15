@@ -21,7 +21,7 @@ SynapseServerNotice() {
   local -A options
   ParseOptions __SynapseServerNotice_args options || return 1
   # input
-  local message_type="${options[type]}"
+  local message_type="${options[type]:-${body_params[msg_type]}}"
   # only prompt for type if no body passed
   [[ -n "${options[body]}" ]] || {
     local input_message_type
