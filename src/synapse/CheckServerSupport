@@ -19,21 +19,12 @@ CheckServerSupport() {
   fi
 
   Log info "Checking if server supports the requested API..."
-  local -A params=(
-    [method]="${s_version_api[method]}"
-    [path]="${s_version_api[path]}"
+  local -a args=(
+    keys=server_version
+    format=plain
   )
-  local -A response
-  Request params response || return 1
-  CheckStatusCode "${response[status]}" || {
-    HandleMatrixError response[body]
-    return 1
-  }
-
-  local -a keys=(server_version)
-  local -A values
-  ProcessResponse response[body] keys values || return 1
-  local server_version="${values[server_version]}"
+  local server_version
+  server_version="$(SynapseVersion args)" || return 1
 
   local -A minimum_version_parts
   local minimum_release_candidate
