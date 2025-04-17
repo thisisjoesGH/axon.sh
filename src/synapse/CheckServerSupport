@@ -26,48 +26,44 @@ CheckServerSupport() {
   local server_version
   server_version="$(SynapseVersion args)" || return 1
 
-  local -A minimum_version_parts
-  local minimum_release_candidate
   [[ "$minimum_version" =~ ([0-9]*)\.([0-9]*)\.([0-9]*)(rc[0-9][0-9]*)? ]] && {
-    minimum_version_parts[major]="${BASH_REMATCH[1]}"
-    minimum_version_parts[minor]="${BASH_REMATCH[2]}"
-    minimum_version_parts[patch]="${BASH_REMATCH[3]}"
-    minimum_release_candidate="${BASH_REMATCH[4]##rc}"
+    local minimum_major="${BASH_REMATCH[1]}"
+    local minimum_minor="${BASH_REMATCH[2]}"
+    local minimum_patch="${BASH_REMATCH[3]}"
+    local minimum_release_candidate="${BASH_REMATCH[4]##rc}"
     minimum_release_candidate="${minimum_release_candidate:=99}"
   }
 
-  local -A server_version_parts
-  local server_release_candidate
   [[ "$server_version" =~ ([0-9]*)\.([0-9]*)\.([0-9]*)(rc[0-9][0-9]*)? ]] && {
-    server_version_parts[major]="${BASH_REMATCH[1]}"
-    server_version_parts[minor]="${BASH_REMATCH[2]}"
-    server_version_parts[patch]="${BASH_REMATCH[3]}"
-    server_release_candidate="${BASH_REMATCH[4]##rc}"
+    local server_major="${BASH_REMATCH[1]}"
+    local server_minor="${BASH_REMATCH[2]}"
+    local server_patch="${BASH_REMATCH[3]}"
+    local server_release_candidate="${BASH_REMATCH[4]##rc}"
     server_release_candidate="${server_release_candidate:=99}"
   }
 
-   Log debug "Minimum version parts are '${minimum_version_parts[*]}', release candidate '$minimum_release_candidate'"
-   Log debug "Server version parts are '${server_version_parts[*]}', release candidate '$server_release_candidate'"
+   Log debug "Minimum version parts are '$minimum_major $minimum_minor $minimum_patch', release candidate '$minimum_release_candidate'"
+   Log debug "Server version parts are '$server_major $server_minor $server_patch', release candidate '$server_release_candidate'"
 
   local adequate
-  if (( "${server_version_parts[major]}" > "${minimum_version_parts[major]}" )); then
-     Log debug "Major part is greater"
+  if (( "$server_major" > "$minimum_major" )); then
+    Log debug "Major part is greater"
     adequate="true"
-  elif (( "${server_version_parts[major]}" == "${minimum_version_parts[major]}" )) && (( "${server_version_parts[minor]}" > "${minimum_version_parts[minor]}" )); then
-     Log debug "Major part is equal and minor part is equal or greater"
+  elif (( "$server_major" == "$minimum_major" )) && (( "$server_minor" > "$minimum_minor" )); then
+    Log debug "Major part is equal and minor part is equal or greater"
     adequate="true"
-  elif (( "${server_version_parts[major]}" == "${minimum_version_parts[major]}" )) && (( "${server_version_parts[minor]}" == "${minimum_version_parts[minor]}" )) && (( "${server_version_parts[patch]}" > "${minimum_version_parts[patch]}" )); then
-     Log debug "Major part and minor part are equal and patch part is greater"
+  elif [[ "${server_major}${server_minor}" == "${minimum_major}${minimum_minor}" ]] && (( "$server_patch" > "$minimum_patch" )); then
+    Log debug "Major part and minor part are equal and patch part is greater"
     adequate="true"
-  elif [[ "${server_version_parts[*]}" == "${minimum_version_parts[*]}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
-     Log debug "Major part, minor part, and patch part are equal and release candidate is equal or greater"
+  elif [[ "${server_version%%rc+(*)}" == "${minimum_version%%rc+(*)}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
+    Log debug "Major part, minor part, and patch part are equal and release candidate is equal or greater"
     adequate="true"
   else
     adequate="false"
   fi
 
   if [[ "$adequate" == true ]]; then
-     Log info "Server meets minimum version requirement for the requested API, continuing..."
+    Log info "Server meets minimum version requirement for the requested API, continuing..."
   else
     Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${server_version}', minimum version '$minimum_version'"
     ConfirmContinue || return 1
