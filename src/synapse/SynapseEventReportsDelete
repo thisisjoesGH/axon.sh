@@ -13,7 +13,9 @@ SynapseEventReportsDelete() {
   CopyArray s_event_reports_delete_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport 'api[minimum_version]' || return 1
+  CheckServerSupport 'api[minimum_version]' || {
+    ConfirmContinue || return 1
+  }
 
   Log info "Deleting event report from ${config[homeserver]}"
 

@@ -26,7 +26,9 @@ SynapseUserRatelimit() {
   CopyArray s_user_ratelimit_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport 'api[minimum_version]' || return 1
+  CheckServerSupport 'api[minimum_version]' || {
+    ConfirmContinue || return 1
+  }
 
   Log info "Getting ratelimit for user on ${config[homeserver]}"
 

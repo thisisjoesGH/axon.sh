@@ -13,7 +13,9 @@ SynapseUserUnshadowban() {
   CopyArray s_user_unshadowban_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport 'api[minimum_version]' || return 1
+  CheckServerSupport 'api[minimum_version]' || {
+    ConfirmContinue || return 1
+  }
 
   Log info "Un-shadowbanning user on homeserver ${config[homeserver]}"
 

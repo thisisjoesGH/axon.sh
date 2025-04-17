@@ -13,7 +13,9 @@ SynapsePurgeHistoryStatus() {
   CopyArray s_purge_history_status_url_params url_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport 'api[minimum_version]' || return 1
+  CheckServerSupport 'api[minimum_version]' || {
+    ConfirmContinue || return 1
+  }
 
   Log info "Getting purge history job status from '${config[homeserver]}'"
 

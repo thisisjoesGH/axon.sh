@@ -16,7 +16,9 @@ SynapseUserDeactivate() {
   CopyArray s_user_deactivate_body_params body_params
 
   CheckLoginStatus || return 1
-  CheckServerSupport 'api[minimum_version]' || return 1
+  CheckServerSupport 'api[minimum_version]' || {
+    ConfirmContinue || return 1
+  }
 
   Log info "Deactivating user on homeserver ${config[homeserver]}"
 
