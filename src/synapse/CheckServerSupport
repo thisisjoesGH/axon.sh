@@ -45,6 +45,7 @@ CheckServerSupport() {
    Log debug "Minimum version parts are '$minimum_major $minimum_minor $minimum_patch', release candidate '$minimum_release_candidate'"
    Log debug "Server version parts are '$server_major $server_minor $server_patch', release candidate '$server_release_candidate'"
 
+  shopt -s extglob
   local adequate
   if (( "$server_major" > "$minimum_major" )); then
     Log debug "Major part is greater"
@@ -61,6 +62,7 @@ CheckServerSupport() {
   else
     adequate="false"
   fi
+  shopt -u extglob
 
   if [[ "$adequate" == true ]]; then
     Log info "Server meets minimum version requirement for the requested API, continuing..."
