@@ -4,16 +4,16 @@
 
 CheckServerSupport() {
   Log debug "Got args '$*'"
-  local -n minimum_version="$1" || {
+  local -n __CheckServerSupport_version="$1" || {
     Log fatal "Empty or invalid reference."
     exit 1
   }
 
-  Assert minimum_version || {
+  Assert __CheckServerSupport_version || {
     Log info "No minimum server version defined for endpoint, skipping check."
     return 0
   }
-  if [[ "$minimum_version" == "" ]]; then
+  if [[ "$__CheckServerSupport_version" == "" ]]; then
     Log fatal "Empty version string passed."
     exit 1
   fi
@@ -26,7 +26,7 @@ CheckServerSupport() {
   local server_version
   server_version="$(SynapseVersion args)" || return 1
 
-  [[ "$minimum_version" =~ ([0-9]*)\.([0-9]*)\.([0-9]*)(rc[0-9][0-9]*)? ]] && {
+  [[ "$__CheckServerSupport_version" =~ ([0-9]*)\.([0-9]*)\.([0-9]*)(rc[0-9][0-9]*)? ]] && {
     local minimum_major="${BASH_REMATCH[1]}"
     local minimum_minor="${BASH_REMATCH[2]}"
     local minimum_patch="${BASH_REMATCH[3]}"
@@ -55,7 +55,7 @@ CheckServerSupport() {
   elif [[ "${server_major}${server_minor}" == "${minimum_major}${minimum_minor}" ]] && (( "$server_patch" > "$minimum_patch" )); then
     Log debug "Major part and minor part are equal and patch part is greater"
     adequate="true"
-  elif [[ "${server_version%%rc+(*)}" == "${minimum_version%%rc+(*)}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
+  elif [[ "${server_version%%rc+(*)}" == "${__CheckServerSupport_version%%rc+(*)}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
     Log debug "Major part, minor part, and patch part are equal and release candidate is equal or greater"
     adequate="true"
   else
@@ -65,7 +65,7 @@ CheckServerSupport() {
   if [[ "$adequate" == true ]]; then
     Log info "Server meets minimum version requirement for the requested API, continuing..."
   else
-    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${server_version}', minimum version '$minimum_version'"
+    Log warn "Server failed to meet minimum version requirement for the requested API. Server version '${server_version}', minimum version '$__CheckServerSupport_version'"
     ConfirmContinue || return 1
   fi
 }
