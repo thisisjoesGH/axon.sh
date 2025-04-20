@@ -68,13 +68,16 @@ Request() {
     local auth_header="Authorization: Bearer ${config[admin_token]}"
   fi
 
+  local field_separator
+  GenerateRandomAlphanumericString 12 field_separator
+
   Log debug "Assembled request '--request $method'"
   Log debug "Assembled request '${data:+--data $data}'"
   Log debug "Assembled request '${redirect_arg:+$redirect_arg}'"
   Log debug "Assembled request '${header_arg[*]}'"
   Log debug "Assembled request '${auth_header:+--header $auth_header}'"
   Log debug "Assembled request '--user-agent ${projectName}/${projectVersion}'"
-  Log debug "Assembled request '--write-out $'\t'%{header_json}$'\t'%{response_code}$'\t''"
+  Log debug "Assembled request '--write-out ${field_separator}%{header_json}${field_separator}%{response_code}${field_separator}'"
   Log debug "Assembled request '--silent'"
   Log debug "Assembled request '--show-error'"
   Log debug "Assembled request '--connect-timeout 15'"
@@ -89,7 +92,7 @@ Request() {
                                    "${header_arg[@]}" \
                                    ${auth_header:+--header "$auth_header"} \
                                    --user-agent "${projectName}/${projectVersion}" \
-                                   --write-out $'\t%{header_json}\t%{response_code}\t' \
+                                   --write-out "${field_separator}%{header_json}${field_separator}%{response_code}${field_separator}" \
                                    --silent \
                                    --show-error \
                                    --connect-timeout 15 \
@@ -102,8 +105,9 @@ Request() {
     return 1
   fi
 
-  # remove newlines
   std_out="${std_out//$'\n'/}"
+  std_out="${std_out//$'\t'/}"
+  std_out="${std_out//$field_separator/$'\t'}"
 
   # separate response body from response code
   local -a response_data
@@ -120,6 +124,7 @@ Request() {
     Log fatal "Invalid HTTP status code."
     exit 1
   }
+
   Log info "Got HTTP status code '$status_code','${http_status_codes[$status_code]}' from '$host'"
   __Request_response[status]="$status_code"
   __Request_response[body]="$body"
