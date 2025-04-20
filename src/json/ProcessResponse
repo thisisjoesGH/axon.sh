@@ -17,6 +17,7 @@ ProcessResponse() {
     read -r -a parts <<<"${key#.}"
     unset IFS
     if (( "${#parts[@]}" > 1 )); then
+      Log debug "Got multipart key selector."
       local arg=''
       for part in "${parts[@]}"; do
         Log debug "Part is '$part'."
@@ -26,8 +27,9 @@ ProcessResponse() {
           Log debug "Arg is '$arg'."
           break
         else
-          if [[ "$part" =~ \[*.\]$ ]]; then
-            arg+="${part}."
+          if [[ "$part" =~ \[[0123456789]*\]$ ]]; then
+            Log debug "Part is array selector."
+            arg+="\"${part%%\[[0123456789]\]}\"${part//*\[/\[}."
           else
             arg+="\"$part\"."
           fi
@@ -38,7 +40,8 @@ ProcessResponse() {
     else
       local arg
       if [[ "$key" =~ \[[0123456789]*\]$ ]]; then
-        arg="$key"
+        Log debug "Key is array selector."
+        arg="\"${key%%\[[0123456789]\]}\"${key//*\[/\[}"
       else
         arg="\"$key\""
       fi
