@@ -189,7 +189,7 @@ setup() {
   run -1 ValidateInput port -1
 }
 
-@test "Unkown type" {
+@test "Unknown type" {
   load ValidateInput
   run -1 ValidateInput untype
 }
