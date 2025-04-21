@@ -10,8 +10,17 @@ Prompt() {
     local prompt="[axon]>"
     local user_input
     Read -e -r -p "$prompt" user_input
-    # create array from input, escape parentheses
-    local -a input="(${user_input//[()]/\\&})"
+    # create array from input, escape special characters
+    # TODO: handle unmatched quotes?
+    local -a input="(${user_input//[()<>&]/\\&})"
+    local index
+    for index in "${!input[@]}"; do
+      # unescape characters in array elements
+      local char
+      for char in '(' ')' '<' '>' '&'; do
+        input[$index]="${input[$index]//\\"$char"/"$char"}"
+      done
+    done
     [[ -n "${input[*]}" ]] || {
       PrintHelp input
       continue
