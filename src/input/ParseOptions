@@ -18,7 +18,7 @@ ParseOptions() {
       option="${pair%%=*}"
       Log debug "Option is '$option'"
       local value
-      value="${pair##*=}"
+      value="${pair#*=}"
       Log debug "Value is '$value'"
       __ParseOptions_output["$option"]="$value"
       continue
