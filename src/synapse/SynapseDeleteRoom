@@ -91,7 +91,7 @@ SynapseDeleteRoom() {
     [[ -n "$room_name" ]] || {
       Read -r -p "New room name:" room_name
     }
-    ValidateInput text || return 1
+    ValidateInput text "$room_name" || return 1
     body_params[room_name]="$room_name"
 
     local message="${options[message]}"
