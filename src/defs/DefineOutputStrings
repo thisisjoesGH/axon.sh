@@ -46,6 +46,8 @@ DefineOutputStrings() {
         [room_type]='Room type'
         [servers]='Servers'
         [server_version]="Server version"
+        [server.name]="Server name"
+        [server.version]="Server version"
         [shutdown_room.failed_to_kick_users]='Failed to kick users'
         [shutdown_room.kicked_users]='Kicked users'
         [shutdown_room.local_aliases]='Local aliases found'
