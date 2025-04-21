@@ -61,7 +61,7 @@ SynapseServerNotice() {
     Log info "Sending server notice to '${body_params[user_id]}'."
 
     # construct request body
-    local object
+    local object=''
     ConstructObject s_server_notice body_params object || return 1
 
     # set request parameters
