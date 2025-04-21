@@ -37,23 +37,16 @@ SynapseServerNotice() {
 
   local message_body="${options[body]}"
   [[ -n "$message_body" ]] || {
-    local input_message_body
-    Read -r -p "Message body:" input_message_body
-    message_body="$input_message_body"
+    Read -r -p "Message body:" message_body
   }
   ValidateInput text "$message_body" || return 1
   body_params[body]="$message_body"
 
   local -a usernames
-  local IFS=,
-  read -r -a usernames <<<"${options[users]}"
-  unset IFS
+  Explode ',' "${options[users]}" usernames
   [[ -n "${usernames[*]}" ]] || {
-    local -a input_usernames
-    local IFS=,
-    Read -r -p "Target username(s):" -a input_usernames
-    unset IFS
-    CopyArray input_usernames usernames
+    Read -r -p "Target username(s):" usernames
+    Explode ',' "$usernames" usernames
   }
 
   local -a user_ids
