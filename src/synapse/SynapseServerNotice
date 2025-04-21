@@ -40,7 +40,7 @@ SynapseServerNotice() {
     Read -r -p "Message body:" message_body
   }
   ValidateInput text "$message_body" || return 1
-  body_params[body]="$message_body"
+  EncodeJSON "$message_body" body_params[body] || return 1
 
   local -a usernames
   Explode ',' "${options[users]}" usernames

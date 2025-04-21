@@ -51,7 +51,6 @@ ConstructObject() {
     ;;
 
     s_server_notice )
-      EncodeJSON "${parameters[body]}" parameters[body]
       parameters[body]="${parameters[body]//\\\\n/\\n}" # unescape newline
       local -a filters=(
         ".user_id = \"${parameters[user_id]}\""
