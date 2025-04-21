@@ -13,7 +13,7 @@ ValidateInput() {
 
   case "$type" in
     integer  )
-      [[ "$input" =~ ^[[:digit:]]+$ ]] || {
+      [[ "$input" =~ ^[0123456789]+$ ]] || {
         Log error "Expected integer but got '$input'."
         return 1
       }
@@ -66,7 +66,7 @@ ValidateInput() {
     ;;
 
     port     )
-      ( [[ "$input" =~ ^[[:digit:]]+$ ]] && (( "$input" < 65536 )) && (( "$input" > 0 )) ) || {
+      ( [[ "$input" =~ ^[0123456789]+$ ]] && (( "$input" < 65536 )) && (( "$input" > 0 )) ) || {
         Log error "Expected Internet port but got '$input'."
         return 1
       }
