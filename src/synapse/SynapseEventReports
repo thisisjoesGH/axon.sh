@@ -98,6 +98,8 @@ SynapseEventReports() {
           local -a args=(
             "limit=$limit"
             "from=$next_token"
+            "format=${options[format]}"
+            "keys=${options[keys]}"
           )
           SynapseEventReports args
           ;;
