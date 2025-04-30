@@ -78,19 +78,24 @@ SynapseEventReports() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  local next_token="${values[next_token]}"
   local total="${values[total]}"
-  ValidateInput integer "$next_token" || return 1
   ValidateInput integer "$total" || return 1
+  local next_token="${values[next_token]}"
+  [[ "$next_token" == 'null' ]] || {
+    ValidateInput integer "$next_token" || return 1
+    keys+=(remaining)
+    values+=([remaining]="$(( $total - $next_token ))")
+  }
 
   # output
   output="${response[body]}"
+  Log debug "Next token is '$next_token'"
   FormatOutput "${options[format]}" keys values output
   printf '%s\n' "$output"
-  Log debug "Next token is '$next_token'"
+
   # paginate if necessary
-  if (( $next_token > 0 )) && [[ "${FUNCNAME[*]}" =~ 'Prompt' ]]; then
-    printf '%s\n' "Remaining: $(( $total - $next_token ))"
+  Log debug "Call stack is '${FUNCNAME[*]}'."
+  if [[ "${FUNCNAME[*]}" =~ 'Prompt' && "$next_token" != 'null' ]]; then
     local input_paginate
     Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
       case "$input_paginate" in
