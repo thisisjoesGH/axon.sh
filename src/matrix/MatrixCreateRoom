@@ -46,7 +46,11 @@ MatrixCreateRoom() {
       for preset in "${!presets[@]}"; do
         printf '\t%-7s: %s\n' "$preset" "${presets["$preset"]}"
       done
-      MatrixCreateRoom "$1" || return 1
+      local -a args=(
+        name="$room_name"
+        topic="$room_topic"
+      )
+      MatrixCreateRoom args || return 1
     }
   }
   case "$room_preset" in
