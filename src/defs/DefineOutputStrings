@@ -39,6 +39,7 @@ DefineOutputStrings() {
         [public]='Public'
         [python_version]='Python version'
         [redact_id]='Redaction job ID'
+        [remaining]='Remaining'
         [results]='Results'
         [retry_interval]='Retry interval'
         [retry_last_ts]='Last retried at'
