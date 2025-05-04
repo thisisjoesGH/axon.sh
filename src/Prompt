@@ -4,7 +4,7 @@
 
 Prompt() {
   HISTCONTROL=ignoreboth
-  HISTFILE=${config[config_path]}/${config[history_file]}
+  HISTFILE=${config[log_path]}/${config[history_file]}
   history -n || Log warn "Failed to load history from '$HISTFILE'"
   while true; do
     local prompt="[axon]>"

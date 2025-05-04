@@ -11,15 +11,15 @@ CreateFiles() {
   )
   file_paths=(
     "${config[log_path]}/${config[log_file]}"
+    "${config[log_path]}/${config[history_file]}"
     "${config[config_path]}/${config[config_file]}"
-    "${config[config_path]}/${config[history_file]}"
   )
   local path
   for path in "${directory_paths[@]}"; do
     Log debug "Checking for directory at '$path'..."
     if [ ! -d "$path" ]; then
       Log info "Creating directory at '$path'..."
-      mkdir "$path" ||
+      (umask 077; mkdir --parents "$path") ||
         {
           Log fatal "Failed to create directory at '$path'"
           exit 1
