@@ -219,7 +219,7 @@ PrintHelp() {
                   printf '%s\n' '             `human`, `json`, `pairs`, `plain`, `raw`'
                   printf '\n'
                   printf '%s\n' '    [keys]   The keys which should be returned in command output.'
-                  printf '%s\n' '             Valid keys for a command can be easily discovered by using the `plain` output format.'
+                  printf '%s\n' '             Valid keys for a command can be easily discovered by using the `pairs` output format.'
                 ;;
     *           ) Log error "Unknown subcommand '$subcommand'. Type 'help' with no options for a list of commands."
                 ;;
