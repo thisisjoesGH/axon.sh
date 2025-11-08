@@ -27,7 +27,7 @@ PrintHelp() {
                   printf '%s\n' '      Options:'
                   printf '%s\n' '        [type]  The notice event type. Defaults to `m.room.message`.'
                   printf '%s\n' '        [body]  The notice content. Newlines may be inserted with `\n`.'
-                  printf '%s\n' '        [users] A comma separated list of local usernames. For'
+                  printf '%s\n' '        [users] A comma separated list of local usernames.'
                   printf '\n'
                   printf '%s\n' '    reports [limit=<integer>] OR [details|delete] [id=<report ID>]'
                   printf '%s\n' '      Gets event reports.'
