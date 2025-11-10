@@ -25,6 +25,14 @@ DefineSynapseEndpoints() {
     [minimum_version]="1.52.0rc1"
   )
 
+  declare -Agr s_destination_rooms_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/federation/destinations/DESTINATION/rooms"
+    [url_params]="s_destination_rooms_url_params"
+    [body_params]=""
+    [minimum_version]="1.52.0rc1"
+  )
+
   declare -Agr s_server_notice_api=(
     [method]="POST"
     [path]="/_synapse/admin/v1/send_server_notice"

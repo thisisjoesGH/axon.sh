@@ -12,6 +12,7 @@ DestinationCommandHandler() {
     discover ) MatrixDiscover __DestinationCommandHandler_args;;
     details  ) SynapseDestinationDetails __DestinationCommandHandler_args;;
     reset    ) SynapseDestinationReset __DestinationCommandHandler_args;;
+    rooms    ) SynapseDestinationRooms __DestinationCommandHandler_args;;
     version  ) MatrixServerVersion __DestinationCommandHandler_args;;
     ''       ) Log error "Subcommand required. Type 'help destination' for a list of subcommands.";;
     *        ) Log error "Unrecognized subcommand '$subcommand'. Type 'help destination' for a list of subcommands.";;

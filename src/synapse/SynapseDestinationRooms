@@ -1,0 +1,108 @@
+#!/bin/bash
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+SynapseDestinationRooms() {
+  Log debug "Got args '$*'"
+
+  local -n __SynapseDestinationRooms_args="$1"
+
+  # copy api map to local map
+  local -A api
+  CopyArray s_destination_rooms_api api
+  # copy url parameters to local map
+  local -A url_params
+  CopyArray s_destination_rooms_url_params url_params
+
+  CheckLoginStatus || return 1
+  CheckServerSupport 'api[minimum_version]' || {
+    ConfirmContinue || return 1
+  }
+
+  Log info "Getting rooms for destination from ${config[homeserver]}"
+
+  local -A options
+  ParseOptions __SynapseDestinationRooms_args options
+
+  local destination="${options[destination]}"
+  [[ -n "$destination" ]] || {
+    Read -r -p "Destination:" destination
+  }
+  ValidateInput host "$destination" || return 1
+  url_params[destination]="$destination"
+  Log debug "Destination is '${url_params[destination]}'"
+
+  local limit="${options[limit]}"
+  [[ -n "$limit" ]] && {
+    ValidateInput integer "$limit" || return 1
+    url_params[limit]="$limit"
+  }
+  Log debug "Limit is '${url_params[limit]}'"
+
+  local from="${options[from]}"
+  [[ -n "$from" ]] && {
+    ValidateInput integer "$from" || return 1
+    url_params[from]="$from"
+  }
+  Log debug "From is '${url_params[from]}'"
+
+  SetPathParameters url_params api[path]
+  SetQueryString url_params api[path]
+
+  # set request parameters
+  local -A params=(
+    [method]="${api[method]}"
+    [path]="${api[path]}"
+  )
+  # make request
+  local -A response
+  Request params response || return 1
+  CheckStatusCode "${response[status]}" || {
+    HandleMatrixError response[body]
+    return 1
+  }
+
+  # get the values for the keys we are interested in
+  local -a keys=(rooms total next_token)
+  [[ -z "${options[keys]}" ]] || {
+    Explode ',' "${options[keys]}" keys
+  }
+  local -A values
+  ProcessResponse response[body] keys values || return 1
+
+  local total="${values[total]}"
+  ValidateInput integer "$total" || return 1
+  local next_token="${values[next_token]}"
+  [[ "$next_token" == 'null' ]] || {
+    ValidateInput integer "$next_token" || return 1
+    keys+=(remaining)
+    values+=([remaining]="$(( $total - $next_token ))")
+  }
+
+  # output
+  output="${response[body]}"
+  Log debug "Next token is '$next_token'"
+  FormatOutput "${options[format]}" keys values output
+  printf '%s\n' "$output"
+
+  # paginate if necessary
+  Log debug "Call stack is '${FUNCNAME[*]}'."
+  if [[ "${FUNCNAME[*]}" =~ 'Prompt' && "$next_token" != 'null' ]]; then
+    local input_paginate
+    Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+      case "$input_paginate" in
+        [Nn] )
+          local -a args=(
+            "destination=$destination"
+            "limit=$limit"
+            "from=$next_token"
+            "format=${options[format]}"
+            "keys=${options[keys]}"
+          )
+          SynapseDestinationRooms args
+          ;;
+        [Rr] ) return 0;;
+        *    ) return 0;;
+      esac
+  fi
+}

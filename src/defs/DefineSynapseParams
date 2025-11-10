@@ -18,6 +18,12 @@ DefineSynapseParams() {
     [destination]=""
   )
 
+  declare -Agr s_destination_rooms_url_params=(
+    [from]="0"
+    [limit]="30"
+    [dir]="f"
+  )
+
   declare -Agr s_event_reports_url_params=(
     [from]="0"
     [limit]="3"

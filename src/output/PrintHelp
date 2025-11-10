@@ -46,6 +46,7 @@ PrintHelp() {
                   printf '%s\n' '    version     Prints software version information for the given federation destination.'
                   printf '%s\n' '    details     Prints federation details about the given federation destination.'
                   printf '%s\n' '    reset       Resets the timeout for the given federation destination.'
+                  printf '%s\n' '    rooms       Gets rooms that are federated with the given federation destination.'
                   printf '%s\n' '  Options:'
                   printf '%s\n' '    [destination] A homeserver name. For user `@joe:example.org`, `example.org` is the homeserver name.'
                 ;;
