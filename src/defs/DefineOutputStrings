@@ -43,6 +43,7 @@ DefineOutputStrings() {
         [results]='Results'
         [retry_interval]='Retry interval'
         [retry_last_ts]='Last retried at'
+        [rooms]='Rooms'
         [room_id]='Room ID'
         [room_type]='Room type'
         [servers]='Servers'
