@@ -42,9 +42,9 @@ SynapseUserDeactivate() {
   [[ -n "$erase_profile" ]] || {
     local input
     Read -r -p "Erase user profile? (Y/n):" input
-    case "$input" in
-      [yY]|[Yy][Ee][Ss] ) erase_profile="true";;
-      [Nn]|[Nn][Oo]     ) erase_profile="false";;
+    case "${input^^}" in
+      Y|YES|'') erase_profile="true";;
+      N|NO)     erase_profile="false";;
     esac
   }
   ValidateInput boolean "$erase_profile" || return 1

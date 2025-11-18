@@ -61,9 +61,9 @@ MatrixLogin() {
   [[ -n "$save_token" ]] || {
     local input
     Read -r -p "$(printf '%s' 'Save access token to local config file? (Y/n)')" input
-    case "$input" in
-      [yY]|[Yy][Ee][Ss]|'') save_token="true";;
-      [Nn]|[Nn][Oo]       ) save_token="false";;
+    case "${input^^}" in
+      Y|YES|'') save_token="true";;
+      N|NO)     save_token="false";;
     esac
   }
   ValidateInput boolean "$save_token" || return 1

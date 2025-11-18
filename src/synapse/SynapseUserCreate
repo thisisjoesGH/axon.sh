@@ -71,9 +71,9 @@ SynapseUserCreate() {
   [[ -n "$admin" ]] || {
     local input
     Read -r -p "Make new user admin? (Y/n):" input
-    case "$input" in
-      [yY]|[Yy][Ee][Ss] ) admin="true";;
-      [Nn]|[Nn][Oo]     ) admin="false";;
+    case "${input^^}" in
+      Y|YES|'') admin="true";;
+      N|NO)     admin="false";;
     esac
   }
   ValidateInput boolean "$admin" || return 1

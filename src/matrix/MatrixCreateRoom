@@ -73,9 +73,9 @@ MatrixCreateRoom() {
   [[ -n "$federate" ]] || {
     local input
     Read -r -p "$(printf '%s' 'Allow other homeservers to participate? (Y/n): ')" input
-    case "$input" in
-      [yY]|[Yy][Ee][Ss]|'') federate="true";;
-      [Nn]|[Nn][Oo]       ) federate="false";;
+    case "${input^^}" in
+      Y|YES|'') federate="true";;
+      N|NO)     federate="false";;
     esac
   }
   ValidateInput boolean "$federate" || return 1
