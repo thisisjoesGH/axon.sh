@@ -10,6 +10,14 @@ DefineSynapseEndpoints() {
     [body_params]=""
   )
 
+  declare -Agr s_destination_list_api=(
+    [method]="GET"
+    [path]="/_synapse/admin/v1/federation/destinations"
+    [url_params]="s_destination_list_url_params"
+    [body_params]=""
+    [minimum_version]="1.49.0rc1"
+  )
+
   declare -Agr s_destination_details_api=(
     [method]="GET"
     [path]="/_synapse/admin/v1/federation/destinations/DESTINATION"

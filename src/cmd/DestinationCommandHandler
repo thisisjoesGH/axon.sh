@@ -10,6 +10,7 @@ DestinationCommandHandler() {
   Log debug "Testing '$subcommand'"
   case "$subcommand" in
     discover ) MatrixDiscover __DestinationCommandHandler_args;;
+    list     ) SynapseDestinationList __DestinationCommandHandler_args;;
     details  ) SynapseDestinationDetails __DestinationCommandHandler_args;;
     reset    ) SynapseDestinationReset __DestinationCommandHandler_args;;
     rooms    ) SynapseDestinationRooms __DestinationCommandHandler_args;;

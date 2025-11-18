@@ -13,6 +13,7 @@ DefineOutputStrings() {
         [deleted]='Deleted'
         [delete_id]='Deletion job ID'
         [destination]='Destination'
+        [destinations]='Destinations'
         [encryption]='Encryption'
         [error]='Error'
         [event_id]='Event ID'
