@@ -13,7 +13,7 @@ ValidateJSON() {
   local std_out
   local std_err
 
-  CatchStream std_out std_err jq -e type <<<"$json" || {
+  CatchStream std_out std_err jq --exit-status type <<<"$json" || {
     Log error "Invalid JSON. jq returned message '$std_err'"
     return 1
   }

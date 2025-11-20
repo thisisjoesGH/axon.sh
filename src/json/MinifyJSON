@@ -12,7 +12,7 @@ MinifyJSON() {
   local std_out
   local std_err
 
-  CatchStream std_out std_err jq -c . <<<"$__MinifyJSON_json" || {
+  CatchStream std_out std_err jq --compact-output . <<<"$__MinifyJSON_json" || {
     Log error "Invalid JSON. jq returned message '$std_err'"
     return 1
   }
