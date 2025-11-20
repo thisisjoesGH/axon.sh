@@ -18,7 +18,7 @@ ModifyJSON() {
     Log debug "Trying filter '$filter'"
     local std_out=''
     local std_err=''
-    CatchStream std_out std_err jq "$filter" <<<"$json_object" || {
+    CatchStream std_out std_err jq -- "$filter" <<<"$json_object" || {
       Log error "Failed to modify JSON object. Bad filter or invalid object."
       Log debug "jq returned message '$std_err'"
       return 1

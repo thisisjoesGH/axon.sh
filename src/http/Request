@@ -82,7 +82,7 @@ Request() {
   Log debug "Assembled request '--show-error'"
   Log debug "Assembled request '--connect-timeout 15'"
   Log debug "Assembled request '--max-time 300'"
-  Log debug "Assembled request '$uri'"
+  Log debug "Assembled request '-- $uri'"
 
   local std_out
   local std_err
@@ -97,7 +97,7 @@ Request() {
                                    --show-error \
                                    --connect-timeout 15 \
                                    --max-time 300 \
-                                   "$uri"
+                                   -- "$uri"
 
   local return_code="$?"
   if (( "$return_code" > 0 )); then
