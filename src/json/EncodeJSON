@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 EncodeJSON() {
+  Log debug "Got args '$*'."
   local string="$1"
   local -n __EncodeJSON_json="$2"
   local std_out
