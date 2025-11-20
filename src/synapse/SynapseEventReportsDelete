@@ -26,7 +26,7 @@ SynapseEventReportsDelete() {
   local report_id="${options[id]}"
   [[ -n "$report_id" ]] || {
     local input_report_id
-    Read -r -p "Report ID to delete:" input_report_id
+    Read -r -p "Report ID to delete: " input_report_id
       report_id="$input_report_id"
   }
   ValidateInput integer "$report_id" || return 1

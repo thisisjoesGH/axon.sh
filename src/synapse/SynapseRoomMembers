@@ -24,7 +24,7 @@ SynapseRoomMembers() {
   # input
   local room="${options[room]:-${options[id]}}"
   [[ -n "$room" ]] || {
-    Read -r -p "Room:" room
+    Read -r -p "Room: " room
   }
   [[ "${room:0:1}" == '#' ]] && {
     local -a args=(

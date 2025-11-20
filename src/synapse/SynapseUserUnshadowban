@@ -25,7 +25,7 @@ SynapseUserUnshadowban() {
   # input
   local username="${options[user]}"
   [[ -n "$username" ]] || {
-    Read -r -p "Username to un-shadowban:" username
+    Read -r -p "Username to un-shadowban: " username
   }
   local user_id="@$username:${config[homeserver]}"
   Log debug "User ID is '$user_id'"

@@ -25,7 +25,7 @@ SynapsePurgeHistoryStatus() {
   local job_id="${options[id]}"
   # ask for job ID if not passed
   [[ -n "$job_id" ]] || {
-    Read -r -p "Job ID:" input_job_id
+    Read -r -p "Job ID: " input_job_id
     job_id="$input_job_id"
   }
   url_params[job_id]="$job_id"

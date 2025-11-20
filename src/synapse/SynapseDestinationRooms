@@ -26,7 +26,7 @@ SynapseDestinationRooms() {
 
   local destination="${options[destination]}"
   [[ -n "$destination" ]] || {
-    Read -r -p "Destination:" destination
+    Read -r -p "Destination: " destination
   }
   ValidateInput host "$destination" || return 1
   url_params[destination]="$destination"

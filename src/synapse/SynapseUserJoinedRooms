@@ -26,7 +26,7 @@ SynapseUserJoinedRooms() {
   local username="${options[user]}"
   [[ -n "$username" ]] || {
     local input_username
-    Read -r -p "User name:" input_username
+    Read -r -p "User name: " input_username
     username="$input_username"
   }
   ValidateInput text "$username" || return 1

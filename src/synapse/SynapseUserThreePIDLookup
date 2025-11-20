@@ -26,12 +26,12 @@ SynapseUserThreePIDLookup() {
   # ask for medium if not passed
   local medium="${options[medium]}"
   [[ -n "$medium" ]] || {
-    Read -r -p "Medium:" medium
+    Read -r -p "Medium: " medium
   }
   # ask for address if not passed
   local address="${options[address]}"
   [[ -n "$address" ]] || {
-    Read -r -p "Address:" address
+    Read -r -p "Address: " address
   }
   url_params[medium]="$medium"
   Log debug "URL 'medium' param set to '${url_params[medium]}'"

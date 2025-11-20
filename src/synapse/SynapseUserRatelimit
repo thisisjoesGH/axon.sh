@@ -38,7 +38,7 @@ SynapseUserRatelimit() {
   local user="${options[user]}"
   [[ -n "$user" ]] || {
     local input_user
-    Read -r -p "Username:" input_user
+    Read -r -p "Username: " input_user
       user="$input_user"
       Log debug "User is '$user'"
   }

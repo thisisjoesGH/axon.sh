@@ -25,7 +25,7 @@ SynapseDeleteForwardExtremities() {
   # ask for room ID or alias if not passed
   [[ -n "${options[room]}" ]] || {
     local input_room
-    Read -r -p "Room ID or alias:" input_room
+    Read -r -p "Room ID or alias: " input_room
       options[room]="$input_room"
       Log debug "Room is '${options[room]}'"
   }

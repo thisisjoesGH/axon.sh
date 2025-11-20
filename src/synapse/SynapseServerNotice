@@ -27,7 +27,7 @@ SynapseServerNotice() {
   # only prompt for type if no body passed
   [[ -n "${options[body]}" ]] || {
     local input_message_type
-    Read -r -p "Message type (m.room.message):" input_message_type
+    Read -r -p "Message type (m.room.message): " input_message_type
     [[ -z "$input_message_type" ]] || {
       ValidateInput text "$input_message_type" || return 1
       message_type="$input_message_type"
@@ -37,7 +37,7 @@ SynapseServerNotice() {
 
   local message_body="${options[body]}"
   [[ -n "$message_body" ]] || {
-    Read -r -p "Message body:" message_body
+    Read -r -p "Message body: " message_body
   }
   ValidateInput text "$message_body" || return 1
   EncodeJSON "$message_body" body_params[body] || return 1
@@ -45,7 +45,7 @@ SynapseServerNotice() {
   local -a usernames
   Explode ',' "${options[users]}" usernames
   [[ -n "${usernames[*]}" ]] || {
-    Read -r -p "Target username(s):" usernames
+    Read -r -p "Target username(s): " usernames
     Explode ',' "$usernames" usernames
   }
 

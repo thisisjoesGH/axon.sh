@@ -19,7 +19,7 @@ MatrixLogin() {
   # input
   local mxid="${options[mxid]}"
   [[ -n "$mxid" ]] || {
-    Read -r -p "MXID (@user:example.com):" mxid
+    Read -r -p "MXID (@user:example.com): " mxid
   }
   local localpart
   local domainpart
@@ -46,7 +46,7 @@ MatrixLogin() {
     password="$(ReadFile "$path")"
   }
   [[ -n "$password" ]] || {
-    while Read -s -r -p "password:" password; do
+    while Read -s -r -p "password: " password; do
       if [[ -n "$password" ]]; then
         break
       else

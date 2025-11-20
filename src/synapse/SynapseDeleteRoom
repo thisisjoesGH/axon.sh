@@ -33,7 +33,7 @@ SynapseDeleteRoom() {
   # input
   local room="${options[room]}"
   [[ -n "$room" ]] || {
-    Read -r -p "Room:" room
+    Read -r -p "Room: " room
   }
   [[ "${room:0:1}" == '#' ]] && {
     local -a args=(
@@ -49,7 +49,7 @@ SynapseDeleteRoom() {
   local block="${options[block]}"
   [[ -n "$block" ]] || {
     local input_block_joins
-    Read -r -p "Block users from rejoining the room? (y/N):" input_block_joins
+    Read -r -p "Block users from rejoining the room? (y/N): " input_block_joins
     case "${input_block_joins^^}" in
       Y|YES)   block='true';;
       N|NO|'') block='false';;
@@ -61,7 +61,7 @@ SynapseDeleteRoom() {
   local purge="${options[purge]}"
   [[ -n "$purge" ]] || {
     local input_purge
-    Read -r -p "Purge all events? (y/N):" input_purge
+    Read -r -p "Purge all events? (y/N): " input_purge
     case "${input_purge^^}" in
       Y|YES)   purge='true';;
       N|NO|'') purge='false';;
@@ -73,7 +73,7 @@ SynapseDeleteRoom() {
   local migrate="${options[migrate]}"
   [[ -n "$migrate" ]] || {
     local input_migrate
-    Read -r -p "Migrate users to new room? (y/N):" input_migrate
+    Read -r -p "Migrate users to new room? (y/N): " input_migrate
     case "${input_migrate^^}" in
       Y|YES)   migrate='true';;
       N|NO|'') migrate='false';;
@@ -83,20 +83,20 @@ SynapseDeleteRoom() {
   if [[ "$migrate" == true ]]; then
     local mxid="${options[mxid]}"
     [[ -n "$mxid" ]] || {
-      Read -r -p "New room user MXID:" mxid
+      Read -r -p "New room user MXID: " mxid
     }
     body_params[new_room_user_id]="$mxid"
 
     local room_name="${options[room_name]}"
     [[ -n "$room_name" ]] || {
-      Read -r -p "New room name:" room_name
+      Read -r -p "New room name: " room_name
     }
     ValidateInput text "$room_name" || return 1
     body_params[room_name]="$room_name"
 
     local message="${options[message]}"
     [[ -n "$message" ]] || {
-      Read -r -p "New room message:" message
+      Read -r -p "New room message: " message
     }
     ValidateInput text "$message" || return 1
     body_params[message]="$message"

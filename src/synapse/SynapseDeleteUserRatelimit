@@ -24,7 +24,7 @@ SynapseDeleteUserRatelimit() {
   ParseOptions __SynapseDeleteUserRatelimit_args options || return 1
   # ask for username if not passed
   [[ -n "${options[user]}" ]] || {
-    Read -r -p "Username:" input_user
+    Read -r -p "Username: " input_user
       options[user]="$input_user"
       Log debug "Username is '${options[user]}'"
   }

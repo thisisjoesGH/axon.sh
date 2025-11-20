@@ -28,7 +28,7 @@ SynapseSetUserRatelimit() {
   # input
   [[ -n "${options[user]}" ]] || {
     local input_user
-    Read -r -p "Username:" input_user
+    Read -r -p "Username: " input_user
       options[user]="$input_user"
       Log debug "User is '$user'"
   }
@@ -38,7 +38,7 @@ SynapseSetUserRatelimit() {
 
   [[ -n "${options[messages_per_second]}" ]] || {
     local input_messages_per_second
-    Read -r -p "Max messages per second:" input_messages_per_second
+    Read -r -p "Max messages per second: " input_messages_per_second
       options[messages_per_second]="$input_messages_per_second"
   }
   body_params[messages_per_second]="${options[messages_per_second]}"
@@ -46,7 +46,7 @@ SynapseSetUserRatelimit() {
 
   [[ -n "${options[burst_count]}" ]] || {
     local input_burst_count
-    Read -r -p "Burst count:" input_burst_count
+    Read -r -p "Burst count: " input_burst_count
       options[burst_count]="$input_burst_count"
   }
   body_params[burst_count]="${options[burst_count]}"

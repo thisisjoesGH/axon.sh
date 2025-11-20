@@ -28,7 +28,7 @@ SynapseUserCreate() {
   # input
   local username="${options[user]}"
   [[ -n "$username" ]] || {
-    Read -r -p "New user name:" username
+    Read -r -p "New user name: " username
   }
   local user_id="@$username:${config[homeserver]}"
   Log debug "User ID is '$user_id'"
@@ -48,20 +48,20 @@ SynapseUserCreate() {
     password="$(ReadFile "$path")"
   }
   [[ -n "$password" ]] || {
-    Read -r -p "New user password:" password
+    Read -r -p "New user password: " password
   }
   body_params[password]="$password"
 
   local threepid_medium="${options[threepid_medium]}"
   [[ -n "$threepid_medium" ]] || {
-    Read -r -p "Add third-party ID? (email/None):" threepid_medium
+    Read -r -p "Add third-party ID? (email/None): " threepid_medium
   }
   case "$threepid_medium" in
     email )
       body_params[threepid.medium]="email"
       local threepid_address="${options[threepid_address]}"
       [[ -n "$threepid_address" ]] || {
-        Read -r -p "Address:" threepid_address
+        Read -r -p "Address: " threepid_address
       }
       body_params[threepid.address]="$threepid_address";;
     *     ) : ;;
@@ -70,7 +70,7 @@ SynapseUserCreate() {
   local admin="${options[admin]}"
   [[ -n "$admin" ]] || {
     local input
-    Read -r -p "Make new user admin? (Y/n):" input
+    Read -r -p "Make new user admin? (Y/n): " input
     case "${input^^}" in
       Y|YES|'') admin="true";;
       N|NO)     admin="false";;

@@ -40,7 +40,7 @@ SynapseEventReports() {
   local limit="${options[limit]}"
   [[ -n "$limit" ]] || {
     local input_limit
-    Read -r -p "Maximum reports to return at once:" input_limit
+    Read -r -p "Maximum reports to return at once: " input_limit
       limit="$input_limit"
   }
   ValidateInput integer "$limit" || return 1

@@ -28,7 +28,7 @@ SynapseUserDeactivate() {
   # input
   local username="${options[user]}"
   [[ -n "$username" ]] || {
-    Read -r -p "Username to deactivate:" username
+    Read -r -p "Username to deactivate: " username
   }
   if [[ "$username" == "${config[admin_user]}" ]]; then
     LogTerm warn "You are about to deactivate the account you are currently using! Deactivation is intended to be permanent and will likely have irreversible consequences."
@@ -41,7 +41,7 @@ SynapseUserDeactivate() {
   local erase_profile="${options[erase]}"
   [[ -n "$erase_profile" ]] || {
     local input
-    Read -r -p "Erase user profile? (Y/n):" input
+    Read -r -p "Erase user profile? (Y/n): " input
     case "${input^^}" in
       Y|YES|'') erase_profile="true";;
       N|NO)     erase_profile="false";;

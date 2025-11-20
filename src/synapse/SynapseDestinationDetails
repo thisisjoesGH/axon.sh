@@ -25,7 +25,7 @@ SynapseDestinationDetails() {
   # input
   [[ -n "${options[destination]}" ]] || {
     local input_destination
-    Read -r -p "Destination:" input_destination
+    Read -r -p "Destination: " input_destination
       options[destination]="$input_destination"
   }
   Log debug "Destination is '${options[destination]}'"
