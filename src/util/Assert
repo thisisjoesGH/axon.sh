@@ -14,7 +14,7 @@ Assert() {
         local varbase="${variable_name%%\[*]}"
         Log debug "varbase is '$varbase'"
         local type
-        CheckType "$varbase" type
+        GetType "$varbase" type
         if [[ "$type" =~ (ARRAY|HASH) ]]; then
           Log debug "Type is '$type'."
           Log debug "Variable name is '$variable_name'."
@@ -41,7 +41,7 @@ Assert() {
         Log debug "Value is '$value'"
         local varbase="${variable_name%%\[*]}"
         local type
-        CheckType "$varbase" type
+        GetType "$varbase" type
         Log debug "Type is '$type'"
         local desired_type="$2"
         Log debug "Desired type is '$desired_type'"
