@@ -6,7 +6,7 @@ setup() {
   PATH="$PROJECT_ROOT/src/synapse:$PROJECT_ROOT/src/util:$PATH"
 
   load Assert
-  load CheckType
+  load GetType
   load $PROJECT_ROOT/src/logging/Log
   load $PROJECT_ROOT/src/logging/LogTerm
   load $PROJECT_ROOT/src/logging/LogFile

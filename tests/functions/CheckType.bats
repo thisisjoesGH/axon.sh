@@ -12,62 +12,62 @@ setup() {
 }
 
 @test "returns type ARRAY for array" {
-  load CheckType
+  load GetType
   declare -a array
   declare type
-  CheckType array type
+  GetType array type
   [[ "$type" == ARRAY ]]
 }
 
 @test "returns type HASH for hashmap" {
-  load CheckType
+  load GetType
   declare -A hash
   declare type
-  CheckType hash type
+  GetType hash type
   [[ "$type" == HASH ]]
 }
 
 @test "returns type INT for integer" {
-  load CheckType
+  load GetType
   declare -i integer
   declare type
-  CheckType integer type
+  GetType integer type
   [[ "$type" == INT ]]
 }
 
 @test "returns type EXPORT for export" {
-  load CheckType
+  load GetType
   declare -x export
   declare type
-  CheckType export type
+  GetType export type
   [[ "$type" == EXPORT ]]
 }
 
 @test "returns type OTHER for string" {
-  load CheckType
+  load GetType
   declare string
   declare type
-  CheckType string type
+  GetType string type
   [[ "$type" == OTHER ]]
 }
 
 @test "returns type of reference variable for name reference" {
-  load CheckType
+  load GetType
   declare -A hash
   declare -n ref=hash
   declare type
-  CheckType ref type
+  GetType ref type
   [[ "$type" == HASH ]]
 }
 
 @test "returns error for undefined variable" {
-  load CheckType
+  load GetType
   declare type
-  run -1 CheckType undefined type
+  run -1 GetType undefined type
 }
 
 @test "returns error when name reference not passed" {
-  load CheckType
+  load GetType
   declare var
-  run -1 CheckType var
+  run -1 GetType var
 }
