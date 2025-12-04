@@ -24,7 +24,7 @@ MatrixResolveAlias() {
   CopyArray m_resolve_alias_api api
   # copy url parameters to local map
   local -A url_params
-  CopyArray m_resolve_url_params url_params
+  CopyArray m_resolve_alias_url_params url_params
 
   CheckLoginStatus || return 1
 
