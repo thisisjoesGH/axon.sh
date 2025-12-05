@@ -13,26 +13,25 @@ Assert() {
         Log debug "Value is '$value'"
         local varbase="${variable_name%%\[*]}"
         Log debug "varbase is '$varbase'"
-        local type
+        local type defined='false'
         GetType "$varbase" type
-        if [[ "$type" =~ (ARRAY|HASH) ]]; then
+        if [[ "$type" =~ (ARRAY|HASH) && "$varbase" != "$variable_name" ]]; then
           Log debug "Type is '$type'."
-          Log debug "Variable name is '$variable_name'."
           if [[ -v "$variable_name" ]]; then
-            Log debug "Variable '$variable_name' is defined."
-            return 0
-          else
-            Log debug "Variable '$variable_name' is not defined."
-            return 1
+            defined='true'
           fi
         else
-          if declare -p "${varbase}" &>/dev/null; then
-            Log debug "Variable '$variable_name' is defined."
-            return 0
-          else
-            Log debug "Variable '$variable_name' is not defined."
-            return 1
+          if declare -p "$variable_name" &>/dev/null; then
+            defined='true'
           fi
+        fi
+
+        if [[ "$defined" == 'true' ]]; then
+          Log debug "Variable '$variable_name' is defined."
+          return 0
+        else
+          Log debug "Variable '$variable_name' is not defined."
+          return 1
         fi
       ;;
     2 ) local variable_name="$1"
