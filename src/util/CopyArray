@@ -9,10 +9,10 @@ CopyArray() {
   Assert __CopyArray_source_array LIST
   Assert __CopyArray_new_array LIST
 
-  Log debug "Copying source array '${__CopyArray_source_array[*]}'"
+  Log debug "Copying source array '$(for i in "${!__CopyArray_source_array[@]}"; do printf '[%s] => %s ' "$i" "${__CopyArray_source_array[$i]}"; done)'"
   for i in "${!__CopyArray_source_array[@]}"; do
     __CopyArray_new_array[$i]="${__CopyArray_source_array[$i]}"
   done
 
-  Log debug "New array is '${__CopyArray_new_array[*]}'"
+  Log debug "New array is '$(for i in "${!__CopyArray_source_array[@]}"; do printf '[%s] => %s ' "$i" "${__CopyArray_source_array[$i]}"; done)'"
 }
