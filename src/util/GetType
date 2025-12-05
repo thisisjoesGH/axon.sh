@@ -8,8 +8,7 @@ GetType() {
   local var
   var="$(declare -p "$1" 2>/dev/null)"
   [[ -n "$var" ]] || {
-    Log error "Cannot get type of undefined variable."
-    return 1
+    Log warn "Cannot get type of undeclared variable."
   }
   local -n __GetType_type="$2" || return 1
 
@@ -26,7 +25,8 @@ GetType() {
     A* ) __GetType_type='HASH';;
     i* ) __GetType_type='INT';;
     x* ) __GetType_type='EXPORT';;
-    *  ) __GetType_type='OTHER';;
+    -* ) __GetType_type='OTHER';;
+    *  ) __GetType_type='UNDECLARED';;
   esac
 
   Log debug "Variable type is '$__GetType_type'."
