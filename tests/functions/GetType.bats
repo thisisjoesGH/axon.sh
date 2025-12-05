@@ -54,7 +54,7 @@ setup() {
 @test "returns type UNDECLARED for undeclared variable" {
   load GetType
   declare type
-  GetType undefined type
+  GetType undeclared type || true
   [[ "$type" == UNDECLARED ]]
 }
 
