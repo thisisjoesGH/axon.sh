@@ -65,3 +65,33 @@ setup() {
   declare -A hash=([bash]='mash')
   run -1 Assert hash[balderdash]
 }
+
+@test "returns true for matching type" {
+  declare -A hash
+  Assert hash HASH
+}
+
+@test "errors on mismatched type" {
+  declare -i integer
+  run -1 Assert integer ARRAY
+}
+
+@test "returns true for ARRAY when desired type is LIST" {
+  declare -a array
+  Assert array LIST
+}
+
+@test "returns true for HASH when desired type is LIST" {
+  declare -A hash
+  Assert hash LIST
+}
+
+@test "errors for OTHER when desired type is LIST" {
+  declare variable
+  run -1 Assert variable LIST
+}
+
+@test "errors on invalid type" {
+  declare variable
+  run -1 Assert variable BOOL
+}
