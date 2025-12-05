@@ -51,6 +51,13 @@ setup() {
   [[ "$type" == OTHER ]]
 }
 
+@test "returns type UNDECLARED for undeclared variable" {
+  load GetType
+  declare type
+  GetType undefined type
+  [[ "$type" == UNDECLARED ]]
+}
+
 @test "returns type of reference variable for name reference" {
   load GetType
   declare -A hash
@@ -58,12 +65,6 @@ setup() {
   declare type
   GetType ref type
   [[ "$type" == HASH ]]
-}
-
-@test "returns error for undefined variable" {
-  load GetType
-  declare type
-  run -1 GetType undefined type
 }
 
 @test "returns error when name reference not passed" {
