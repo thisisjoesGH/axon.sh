@@ -6,8 +6,8 @@ CopyArray() {
   local -n __CopyArray_source_array="$1"
   local -n __CopyArray_new_array="$2"
 
-  Assert __CopyArray_source_array LIST
-  Assert __CopyArray_new_array LIST
+  Assert "${!__CopyArray_source_array}" LIST
+  Assert "${!__CopyArray_new_array}" LIST
 
   Log debug "Copying source array '$(for i in "${!__CopyArray_source_array[@]}"; do printf '[%s] => %s ' "$i" "${__CopyArray_source_array[$i]}"; done)'"
   for i in "${!__CopyArray_source_array[@]}"; do
