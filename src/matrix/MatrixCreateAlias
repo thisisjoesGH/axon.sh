@@ -25,7 +25,7 @@ MatrixCreateAlias() {
   [[ -n "$alias" ]] || {
     Read -r -p "$(printf '%s' 'Alias to create:')" alias
   }
-  url_params[alias]="${options[alias]}"
+  url_params[alias]="$alias"
 
   local room="${options[room]:-${options[id]}}"
   [[ -n "$room" ]] || {
