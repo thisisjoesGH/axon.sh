@@ -1,9 +1,9 @@
 #!/bin/bash
-# Copyright (C) 2021-2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 GenDeviceId() {
-  if [ -z "${config[device_id]}" ]; then
+  if [[ -z "${config[device_id]}" ]]; then
     local device_id="axon-"
     local random_string
     GenerateRandomAlphanumericString 6 random_string

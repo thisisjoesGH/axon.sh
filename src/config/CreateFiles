@@ -17,7 +17,7 @@ CreateFiles() {
   local path
   for path in "${directory_paths[@]}"; do
     Log debug "Checking for directory at '$path'..."
-    if [ ! -d "$path" ]; then
+    if [[ ! -d "$path" ]]; then
       Log info "Creating directory at '$path'..."
       (umask 077; mkdir --parents "$path") ||
         {
@@ -31,7 +31,7 @@ CreateFiles() {
   unset path
   for path in "${file_paths[@]}"; do
     Log debug "Checking for file at '$path'..."
-    if [ ! -f "$path" ]; then
+    if [[ ! -f "$path" ]]; then
       Log info "Creating file at '$path'..."
       (umask 066; touch "$path") ||
         {
