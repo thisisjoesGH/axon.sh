@@ -69,7 +69,7 @@ MatrixLogin() {
   ValidateInput boolean "$save_token" || return 1
   config[save_token]="$save_token"
 
-  GenDeviceId
+  GenerateDeviceID
   body_params[device_id]="${config[device_id]}"
 
   WriteConfiguration

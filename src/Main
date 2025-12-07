@@ -10,7 +10,7 @@ Main() {
   CreateFiles
   Log config "Log level set to '${config[log_level]}'"
   Log config "Verbosity set to '${config[verbosity]}'"
-  GenDeviceId
+  GenerateDeviceID
   WriteConfiguration
   DefineStatusCodes
   DefineObjects
