@@ -4,7 +4,7 @@
 
 ShiftArray() {
   local -n __ShiftArray_array="$1"
-  local shift_by=${2:-1}
+  local shift_by="${2:-1}"
   (( "${#__ShiftArray_array[@]}" > 0 )) || {
     Log fatal "Cannot shift empty array."
     exit 1
