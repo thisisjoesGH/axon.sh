@@ -23,14 +23,13 @@ SynapseDestinationDetails() {
   local -A options
   ParseOptions __SynapseDestinationDetails_args options || return 1
   # input
-  [[ -n "${options[destination]}" ]] || {
-    local input_destination
-    Read -r -p "Destination: " input_destination
-      options[destination]="$input_destination"
+  local destination="${options[destination]}"
+  [[ -n "$destination" ]] || {
+    Read -r -p "Destination: " destination
   }
-  Log debug "Destination is '${options[destination]}'"
-  ValidateInput host "${options[destination]}" || return 1
-  url_params[destination]="${options[destination]}"
+  Log debug "Destination is '$destination'"
+  ValidateInput host "$destination" || return 1
+  url_params[destination]="$destination"
   Log debug "URL 'destination' param set to '${url_params[destination]}'"
 
   SetPathParameters url_params api[path]
