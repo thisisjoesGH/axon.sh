@@ -21,7 +21,7 @@ MatrixSetRoomVisibility() {
   local -A options
   ParseOptions __MatrixSetRoomVisibility_args options
   # ask for values if not passed
-  room="${options[room]}"
+  local room="${options[room]}"
   [[ -n "$room" ]] || {
     Read -r -p "$(printf '%s' 'Room: ')" room
   }
