@@ -16,7 +16,7 @@ MatrixServerVersion() {
   local destination="${options[destination]}"
   [[ -n "$destination" ]] || {
     local input_server
-    Read -r -p "Destination:" destination
+    Read -r -p "Destination: " destination
   }
   ValidateInput host "$destination" || return 1
 
