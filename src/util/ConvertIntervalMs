@@ -1,12 +1,16 @@
 #!/bin/bash
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConvertIntervalMs() {
-  local unit
-  local interval
-  interval="$1"
+  Log debug "Got args '$*'"
+  local interval="$1"
+  [[ -n "$interval" ]] || {
+    Log error "Cannot convert empty interval."
+    return 1
+  }
 
+  local unit
   if (( "$interval" >= 86400000 )); then
     interval=$(( "${interval::-3}"  / 86400))
     unit="days"
@@ -23,5 +27,5 @@ ConvertIntervalMs() {
     unit="milliseconds"
   fi
 
-  printf '%s\n' "$interval $unit"
+  printf '%s %s' "$interval" "$unit"
 }
