@@ -1,27 +1,26 @@
 #!/bin/bash
-# Copyright (C) 2022 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConvertUnixTimestampMs() {
-  local -n ref
-  ref="$1"
+  local timestamp="$1"
+  [[ -n "$timestamp" ]] || {
+    Log error "Cannot convert empty timestamp."
+    return 1
+  }
+  (( "$timestamp" >= 1000 )) || {
+    Log error "Timestamp value too low, got '$timestamp', minimum 1000"
+    return 1
+  }
 
-  (( "$ref" >= 1000 )) ||
-    {
-      Log error "Timestamp value too low, got '$ref', minimum 1000"
-      return 1
-    }
-
-  ref="${ref::-3}"
+  timestamp="${timestamp::-3}"
 
   local stdout
   local stderr
+  CatchStream stdout stderr date -d "@$timestamp" +'%c' || {
+    Log error "Encountered error while converting Unix timestamp: '$stderr'"
+    return 1
+  }
 
-  CatchStream stdout stderr date -d "@$ref" +'%c' ||
-    {
-      Log error "Encountered error while converting Unix timestamp: '$stderr'"
-      return 1
-    }
-
-  ref="$stdout"
+  printf '%s' "$stdout"
 }

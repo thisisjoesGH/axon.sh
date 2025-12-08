@@ -58,8 +58,8 @@ SynapseDestinationDetails() {
     keys=(destination failed failure_ts retry_last_ts retry_interval last_successful_stream_ordering)
     values[failed]=true
     values[retry_interval]="$(ConvertIntervalMs "${values[retry_interval]}")" || return 1
-    ConvertUnixTimestampMs values[failure_ts]
-    ConvertUnixTimestampMs values[retry_last_ts]
+    values[failure_ts]="$(ConvertUnixTimestampMs "${values[failure_ts]}")" || return 1
+    values[retry_last_ts]="$(ConvertUnixTimestampMs "${values[retry_last_ts]}")" || return 1
   else
     values[failed]=false
     unset -v 'keys[1]' 'keys[2]' 'keys[3]'
