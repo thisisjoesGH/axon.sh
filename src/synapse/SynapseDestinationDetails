@@ -57,7 +57,7 @@ SynapseDestinationDetails() {
   if [[ "${values[failure_ts]}" != "null" ]]; then
     keys=(destination failed failure_ts retry_last_ts retry_interval last_successful_stream_ordering)
     values[failed]=true
-    values[retry_interval]="$(ConvertIntervalMs "${values[retry_interval]}")"
+    values[retry_interval]="$(ConvertIntervalMs "${values[retry_interval]}")" || return 1
     ConvertUnixTimestampMs values[failure_ts]
     ConvertUnixTimestampMs values[retry_last_ts]
   else
