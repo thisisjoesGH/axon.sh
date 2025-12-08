@@ -25,7 +25,7 @@ MatrixCreateAlias() {
   [[ -n "$alias" ]] || {
     Read -r -p "$(printf '%s' 'Alias to create:')" alias
   }
-  url_params[alias]="$alias"
+  PutArray url_params[alias] "$alias"
 
   local room="${options[room]:-${options[id]}}"
   [[ -n "$room" ]] || {
@@ -39,7 +39,7 @@ MatrixCreateAlias() {
     )
     room="$(MatrixResolveAlias args)" || return 1
   }
-  body_params[room_id]="$room"
+  PutArray body_params[room_id] "$room"
 
   SetPathParameters url_params api[path]
 

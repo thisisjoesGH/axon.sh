@@ -36,7 +36,7 @@ SynapseUserJoinRoom() {
   [[ -n "$room" ]] || {
     Read -r -p "Room ID or alias: " room
   }
-  url_params[room_id_or_alias]="$room"
+  PutArray url_params[room_id_or_alias] "$room"
   Log debug "URL 'room_id_or_alias' param set to ${url_params[room_id_or_alias]}"
 
   local username="${options[user]}"
@@ -47,7 +47,7 @@ SynapseUserJoinRoom() {
       Log debug "User name is '$username'"
   }
   local user_id="@$username:${config[homeserver]}"
-  body_params[user_id]="$user_id"
+  PutArray body_params[user_id] "$user_id"
   Log debug "Body 'user_id' param set to '${body_params[user_id]}'"
 
   SetPathParameters url_params api[path]

@@ -43,7 +43,7 @@ SynapseDeleteRoom() {
     )
     room="$(MatrixResolveAlias args)" || return 1
   }
-  url_params[room_id]="$room"
+  PutArray url_params[room_id] "$room"
   Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
 
   local block="${options[block]}"
@@ -56,7 +56,7 @@ SynapseDeleteRoom() {
     esac
   }
   ValidateInput boolean "$block" || return 1
-  body_params[block]="$block"
+  PutArray body_params[block] "$block"
 
   local purge="${options[purge]}"
   [[ -n "$purge" ]] || {
@@ -68,7 +68,7 @@ SynapseDeleteRoom() {
     esac
   }
   ValidateInput boolean "$purge" || return 1
-  body_params[purge]="$purge"
+  PutArray body_params[purge] "$purge"
 
   local migrate="${options[migrate]}"
   [[ -n "$migrate" ]] || {
@@ -85,21 +85,21 @@ SynapseDeleteRoom() {
     [[ -n "$mxid" ]] || {
       Read -r -p "New room user MXID: " mxid
     }
-    body_params[new_room_user_id]="$mxid"
+    PutArray body_params[new_room_user_id] "$mxid"
 
     local room_name="${options[room_name]}"
     [[ -n "$room_name" ]] || {
       Read -r -p "New room name: " room_name
     }
     ValidateInput text "$room_name" || return 1
-    body_params[room_name]="$room_name"
+    PutArray body_params[room_name] "$room_name"
 
     local message="${options[message]}"
     [[ -n "$message" ]] || {
       Read -r -p "New room message: " message
     }
     ValidateInput text "$message" || return 1
-    body_params[message]="$message"
+    PutArray body_params[message] "$message"
   fi
 
   SetPathParameters url_params api[path]

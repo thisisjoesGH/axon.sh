@@ -29,7 +29,7 @@ SynapseDeleteForwardExtremities() {
       options[room]="$input_room"
       Log debug "Room is '${options[room]}'"
   }
-  url_params[room_id_or_alias]="${options[room]}"
+  PutArray url_params[room_id_or_alias] "${options[room]}"
   Log debug "URL 'room_id_or_alias' param set to '${url_params[room_id_or_alias]}'"
 
   SetPathParameters url_params api[path]

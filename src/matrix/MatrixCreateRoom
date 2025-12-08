@@ -25,13 +25,13 @@ MatrixCreateRoom() {
   [[ -n "$room_name" ]] || {
     Read -r -p "$(printf '%s' 'Room name:')" room_name
   }
-  body_params[name]="$room_name"
+  PutArray body_params[name] "$room_name"
 
   local room_topic="${options[topic]}"
   [[ -n "$room_topic" ]] || {
     Read -r -p "$(printf '%s' 'Room description:')" room_topic
   }
-  body_params[topic]="$room_topic"
+  PutArray body_params[topic] "$room_topic"
 
   local room_preset="${options[preset]}"
   [[ -n "$room_preset" ]] || {
@@ -55,13 +55,13 @@ MatrixCreateRoom() {
   }
   case "$room_preset" in
       public)
-        body_params[preset]='public_chat'
+        PutArray body_params[preset] 'public_chat'
       ;;
       private)
-        body_params[preset]='private_chat'
+        PutArray body_params[preset] 'private_chat'
       ;;
       trusted)
-        body_params[preset]='trusted_private_chat'
+        PutArray body_params[preset] 'trusted_private_chat'
       ;;
       *)
         Log error "Invalid preset '$room_preset', must be one of 'public', 'private', 'trusted'."
@@ -79,7 +79,7 @@ MatrixCreateRoom() {
     esac
   }
   ValidateInput boolean "$federate" || return 1
-  body_params[creation_content.m.federate]="$federate"
+  PutArray body_params[creation_content.m.federate] "$federate"
 
   # construct request body
   local object

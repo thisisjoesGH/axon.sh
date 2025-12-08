@@ -43,7 +43,7 @@ SynapseUserRatelimit() {
       Log debug "User is '$user'"
   }
   local mxid="@${user}:${config[homeserver]}"
-  url_params[user_id]="$mxid"
+  PutArray url_params[user_id] "$mxid"
   Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   SetPathParameters url_params api[path]

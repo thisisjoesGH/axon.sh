@@ -23,7 +23,7 @@ MatrixDeleteAlias() {
     Read -r -p "$(printf '%s' 'Alias to delete:')" input_alias
     options[alias]="$input_alias"
   }
-  url_params[alias]="${options[alias]}"
+  PutArray url_params[alias] "${options[alias]}"
 
   SetPathParameters url_params api[path]
 

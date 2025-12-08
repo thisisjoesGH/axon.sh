@@ -33,7 +33,7 @@ SynapseSetUserRatelimit() {
       Log debug "User is '$user'"
   }
   local mxid="@${options[user]}:${config[homeserver]}"
-  url_params[user_id]="$mxid"
+  PutArray url_params[user_id] "$mxid"
   Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   [[ -n "${options[messages_per_second]}" ]] || {
@@ -41,7 +41,7 @@ SynapseSetUserRatelimit() {
     Read -r -p "Max messages per second: " input_messages_per_second
       options[messages_per_second]="$input_messages_per_second"
   }
-  body_params[messages_per_second]="${options[messages_per_second]}"
+  PutArray body_params[messages_per_second] "${options[messages_per_second]}"
   Log debug "Body 'messages_per_second' param set to '${body_params[messages_per_second]}'"
 
   [[ -n "${options[burst_count]}" ]] || {
@@ -49,7 +49,7 @@ SynapseSetUserRatelimit() {
     Read -r -p "Burst count: " input_burst_count
       options[burst_count]="$input_burst_count"
   }
-  body_params[burst_count]="${options[burst_count]}"
+  PutArray body_params[burst_count] "${options[burst_count]}"
   Log debug "Body 'burst_count' param set to '${body_params[burst_count]}'"
 
   SetPathParameters url_params api[path]

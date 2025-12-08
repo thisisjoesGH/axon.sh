@@ -29,7 +29,7 @@ SynapseUserShadowban() {
   }
   local user_id="@$username:${config[homeserver]}"
   Log debug "User ID is '$user_id'"
-  url_params[user_id]="$user_id"
+  PutArray url_params[user_id] "$user_id"
   Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   SetPathParameters url_params api[path]

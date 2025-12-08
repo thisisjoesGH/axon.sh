@@ -33,7 +33,7 @@ SynapseServerNotice() {
       message_type="$input_message_type"
     }
   }
-  body_params[msg_type]="$message_type"
+  PutArray body_params[msg_type] "$message_type"
 
   local message_body="${options[body]}"
   [[ -n "$message_body" ]] || {
@@ -56,7 +56,7 @@ SynapseServerNotice() {
 
   for user_id in "${user_ids[@]}"; do
     Log debug "User ID is '$user_id'"
-    body_params[user_id]="$user_id"
+    PutArray body_params[user_id] "$user_id"
     Log debug "Body 'user_id' param set to '${body_params[user_id]}'"
     Log info "Sending server notice to '${body_params[user_id]}'."
 

@@ -30,7 +30,7 @@ SynapseEventReportsDelete() {
       report_id="$input_report_id"
   }
   ValidateInput integer "$report_id" || return 1
-  url_params[report_id]="$report_id"
+  PutArray url_params[report_id] "$report_id"
   Log debug "Report ID is '${url_params[report_id]}'"
 
   SetPathParameters url_params api[path]

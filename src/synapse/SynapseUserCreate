@@ -32,14 +32,14 @@ SynapseUserCreate() {
   }
   local user_id="@$username:${config[homeserver]}"
   Log debug "User ID is '$user_id'"
-  url_params[user_id]="$user_id"
+  PutArray url_params[user_id] "$user_id"
   Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   local displayname="${options[displayname]}"
   [[ -n "$displayname" ]] || {
     displayname="$username"
   }
-  body_params[displayname]="$displayname"
+  PutArray body_params[displayname] "$displayname"
   Log debug "Body 'displayname' param set to '${body_params[displayname]}'"
 
   local password
@@ -50,7 +50,7 @@ SynapseUserCreate() {
   [[ -n "$password" ]] || {
     Read -r -p "New user password: " password
   }
-  body_params[password]="$password"
+  PutArray body_params[password] "$password"
 
   local threepid_medium="${options[threepid_medium]}"
   [[ -n "$threepid_medium" ]] || {
@@ -58,12 +58,12 @@ SynapseUserCreate() {
   }
   case "$threepid_medium" in
     email )
-      body_params[threepid.medium]="email"
+      PutArray body_params[threepid.medium] "email"
       local threepid_address="${options[threepid_address]}"
       [[ -n "$threepid_address" ]] || {
         Read -r -p "Address: " threepid_address
       }
-      body_params[threepid.address]="$threepid_address";;
+      PutArray body_params[threepid.address] "$threepid_address";;
     *     ) : ;;
   esac
 
@@ -77,7 +77,7 @@ SynapseUserCreate() {
     esac
   }
   ValidateInput boolean "$admin" || return 1
-  body_params[admin]="$admin"
+  PutArray body_params[admin] "$admin"
 
   SetPathParameters url_params api[path]
 

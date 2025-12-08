@@ -28,7 +28,7 @@ SynapsePurgeHistoryStatus() {
     Read -r -p "Job ID: " input_job_id
     job_id="$input_job_id"
   }
-  url_params[job_id]="$job_id"
+  PutArray url_params[job_id] "$job_id"
   Log debug "URL 'job_id' param set to '${url_params[job_id]}'"
 
   SetPathParameters url_params api[path]

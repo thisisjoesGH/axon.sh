@@ -30,7 +30,7 @@ SynapseDestinationReset() {
   }
   Log debug "Destination is '${options[destination]}'"
   ValidateInput host "${options[destination]}" || return 1
-  url_params[destination]="${options[destination]}"
+  PutArray url_params[destination] "${options[destination]}"
   Log debug "URL 'destination' param set to '${url_params[destination]}'"
 
   SetPathParameters url_params api[path]

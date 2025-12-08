@@ -36,7 +36,7 @@ MatrixGetRoomVisibility() {
     )
     room="$(MatrixResolveAlias args)" || return 1
   }
-  url_params[room_id]="$room"
+  PutArray url_params[room_id] "$room"
 
   SetPathParameters url_params api[path]
 

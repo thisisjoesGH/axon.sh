@@ -40,7 +40,7 @@ SynapseUserRedact() {
       Log debug "User name is '$username'"
   }
   local user_id="@$username:${config[homeserver]}"
-  url_params[user_id]="$user_id"
+  PutArray url_params[user_id] "$user_id"
   Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
 
   local redaction_reason="${options[reason]}"
@@ -52,7 +52,7 @@ SynapseUserRedact() {
   if [[ -n "$redaction_reason" ]]; then
     ValidateInput text "$redaction_reason" || return 1
   fi
-  body_params[reason]="$redaction_reason"
+  PutArray body_params[reason] "$redaction_reason"
   Log debug "Body 'reason' param set to ${body_params[reason]}"
 
   SetPathParameters url_params api[path]

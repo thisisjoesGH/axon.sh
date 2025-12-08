@@ -29,7 +29,7 @@ SynapseDeleteRoomStatus() {
     Read -r -p "Job ID: " input_job_id
     options[id]="$input_job_id"
   }
-  url_params[job_id]="${options[id]}"
+  PutArray url_params[job_id] "${options[id]}"
   Log debug "URL 'job_id' param set to '${url_params[job_id]}'"
 
   SetPathParameters url_params api[path]

@@ -33,14 +33,14 @@ MatrixSetRoomVisibility() {
     )
     room="$(MatrixResolveAlias args)" || return 1
   }
-  url_params[room_id]="$room"
+  PutArray url_params[room_id] "$room"
 
   [[ -n "${options[visibility]}" ]] || {
     local input_visibility
     Read -r -p "$(printf '%s' 'Room visibility (public/private): ')" input_visibility
     options[visibility]="$input_visibility"
   }
-  body_params[visibility]="${options[visibility]}"
+  PutArray body_params[visibility] "${options[visibility]}"
 
   # construct request body
   local object

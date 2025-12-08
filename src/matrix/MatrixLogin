@@ -26,7 +26,7 @@ MatrixLogin() {
   ParseMXID "$mxid" localpart domainpart || return 1
   config[admin_user]="$localpart"
   Log debug "Admin user set to '${config[admin_user]}'."
-  body_params[user]="${config[admin_user]}"
+  PutArray body_params[user] "${config[admin_user]}"
   config[homeserver]="$domainpart"
 
   local homeserver
@@ -55,7 +55,7 @@ MatrixLogin() {
       fi
     done
   }
-  body_params[password]="$password"
+  PutArray body_params[password] "$password"
 
   local save_token="${options[save_token]}"
   [[ -n "$save_token" ]] || {
@@ -70,7 +70,7 @@ MatrixLogin() {
   config[save_token]="$save_token"
 
   GenerateDeviceID
-  body_params[device_id]="${config[device_id]}"
+  PutArray body_params[device_id] "${config[device_id]}"
 
   WriteConfiguration
   Log debug "Save ID preference is '${config[save_id]}'"

@@ -33,9 +33,9 @@ SynapseUserThreePIDLookup() {
   [[ -n "$address" ]] || {
     Read -r -p "Address: " address
   }
-  url_params[medium]="$medium"
+  PutArray url_params[medium] "$medium"
   Log debug "URL 'medium' param set to '${url_params[medium]}'"
-  url_params[address]="$address"
+  PutArray url_params[address] "$address"
   Log debug "URL 'address' param set to '${url_params[address]}'"
 
   SetPathParameters url_params api[path]

@@ -36,7 +36,7 @@ SynapseRoomMembers() {
   }
   Log debug "Room ID is '$room'"
   ValidateInput text "$room" || return 1
-  url_params[room_id]="$room"
+  PutArray url_params[room_id] "$room"
   Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
 
   SetPathParameters url_params api[path]
