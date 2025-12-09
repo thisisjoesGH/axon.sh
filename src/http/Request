@@ -60,12 +60,12 @@ Request() {
     Log debug "Not following redirects for this request"
   fi
 
-  # use auth unless asked not to
-  if [[ "$auth" == 'false' ]]; then
-    Log info "Not sending authorization header for this request"
-  else
+  # don't use auth unless asked to
+  if [[ "$auth" == 'true' ]]; then
     Log debug "Sending authorization header for this request"
     local auth_header="Authorization: Bearer ${config[admin_token]}"
+  else
+    Log info "Not sending authorization header for this request"
   fi
 
   local field_separator

@@ -89,6 +89,7 @@ SynapseUserCreate() {
   local -A params=(
     [method]="${api[method]}"
     [path]="${api[path]}"
+    [auth]='true'
     [data]="$object"
   )
   # make request

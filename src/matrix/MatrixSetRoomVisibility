@@ -52,6 +52,7 @@ MatrixSetRoomVisibility() {
   local -A params=(
     [method]="PUT"
     [path]="${api[path]}"
+    [auth]='true'
     [data]="$object"
   )
   # make request

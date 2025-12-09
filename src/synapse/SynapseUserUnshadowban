@@ -37,6 +37,7 @@ SynapseUserUnshadowban() {
   local -A params=(
     [method]="${api[method]}"
     [path]="${api[path]}"
+    [auth]='true'
   )
   local -A response
   Request params response || return 1

@@ -41,6 +41,7 @@ SynapseUserJoinedRooms() {
   local -A params=(
     [method]="${api[method]}"
     [path]="${api[path]}"
+    [auth]='true'
   )
   # make request
   local -A response
