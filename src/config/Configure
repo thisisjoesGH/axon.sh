@@ -33,7 +33,7 @@ Configure() {
           return 1
         fi
       ;;
-    * ) Log error "Too many arguments! Type 'help config' for usage info."
+    * ) Log error "Too many arguments. Type 'help config' for usage info."
         return 1
       ;;
   esac
