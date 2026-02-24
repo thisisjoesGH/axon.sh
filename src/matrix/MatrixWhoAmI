@@ -18,9 +18,9 @@ MatrixWhoAmI() {
     return 1
   fi
 
-  local -n __MatrixSetRoomVisibility_args="$1"
+  local -n __MatrixWhoAmI_args="$1"
   local -A options
-  ParseOptions __MatrixSetRoomVisibility_args options
+  ParseOptions __MatrixWhoAmI_args options
 
   # copy api map to local map
   local -A api
