@@ -62,14 +62,14 @@ SynapseDestinationList() {
   local -A values
   ProcessResponse response[body] keys values || return 1
 
-  local total="${values[total]}"
-  ValidateInput integer "$total" || return 1
-  local next_token="${values[next_token]}"
-  [[ "$next_token" == 'null' ]] || {
+  local total="${values[total]:-null}"
+  local next_token="${values[next_token]:-null}"
+  if [[ "$next_token" != 'null' && "$total" != 'null' ]]; then
     ValidateInput integer "$next_token" || return 1
+    ValidateInput integer "$total" || return 1
     keys+=(remaining)
     values+=([remaining]="$(( $total - $next_token ))")
-  }
+  fi
 
   # output
   output="${response[body]}"
