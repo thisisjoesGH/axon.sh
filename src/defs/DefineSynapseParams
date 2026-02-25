@@ -26,6 +26,7 @@ DefineSynapseParams() {
   )
 
   declare -Agr s_destination_rooms_url_params=(
+    [destination]=""
     [from]="0"
     [limit]="30"
     [dir]="f"
