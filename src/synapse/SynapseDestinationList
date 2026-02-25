@@ -78,22 +78,14 @@ SynapseDestinationList() {
   printf '%s\n' "$output"
 
   # paginate if necessary
-  Log debug "Call stack is '${FUNCNAME[*]}'."
   if [[ "${FUNCNAME[*]}" =~ 'Prompt' && "$next_token" != 'null' ]]; then
-    local input_paginate
-    Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
-      case "${input_paginate^^}" in
-        N)
-          local -a args=(
-            "limit=$limit"
-            "from=$next_token"
-            "format=${options[format]}"
-            "keys=${options[keys]}"
-          )
-          SynapseDestinationList args
-          ;;
-        R) return 0;;
-        *) return 0;;
-      esac
+    local -a args=(
+      "destination=$destination"
+      "limit=$limit"
+      "from=$next_token"
+      "format=${options[format]}"
+      "keys=${options[keys]}"
+    )
+    Paginate args
   fi
 }

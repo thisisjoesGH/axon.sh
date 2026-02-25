@@ -1,0 +1,18 @@
+#!/bin/bash
+# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+Paginate() {
+	Log debug "Got args '$*'"
+
+  local -n __Paginate_args="$1"
+  local callback="${FUNCNAME[1]}"
+
+  Log debug "Call stack is '${FUNCNAME[*]}'."
+  local input_paginate
+  Read -r -p "$(printf '%b' '\e[4mN\e[0mext/\e[4mR\e[0meturn: ')" input_paginate
+  case "${input_paginate^^}" in
+    N) "$callback" __Paginate_args;;
+    R) return 0;;
+    *) return 0;;
+  esac
+}
