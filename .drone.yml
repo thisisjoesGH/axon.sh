@@ -61,8 +61,8 @@ steps:
     commands:
       - generate_config --generate-secrets --report-stats no --server-name synapse.thisisjoes.test --data-dir /data --config-dir /data --output-file /data/homeserver.yaml
       - 'sed -i "s/registration_shared_secret:.*/registration_shared_secret: \"$SECRET\"/g" /data/homeserver.yaml'
-      - 'sed -i "s/''127.0.0.1''//g" /data/homeserver.yaml'
-      - 'sed -i "s/''    - ::1''/''0.0.0.0''/g" /data/homeserver.yaml'
+      - 'sed -i "s/''    - 127.0.0.1''//g" /data/homeserver.yaml'
+      - 'sed -i "s/''::1''/''0.0.0.0''/g" /data/homeserver.yaml'
       - 'sed -i "s/8008/443/g" /data/homeserver.yaml'
       - 'echo "serve_server_wellknown: true" >> /data/homeserver.yaml'
 
