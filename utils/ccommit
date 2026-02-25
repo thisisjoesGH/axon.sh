@@ -1,0 +1,23 @@
+#!/bin/bash
+
+GitCommitWithConventionalPrefix() {
+  (( $# >= 3 )) || {
+    echo "Wrong number of args. Got $#, need at least 3."
+    exit 1
+  }
+  local type="$1"
+  local scope="$2"
+  local description="$3"
+  [[ -n "$4" ]] && local message="$4"
+
+  local prefix
+  prefix="$type"
+  [[ -n "$scope" ]] && {
+    prefix+="($scope)"
+  }
+  prefix+=': '
+
+  git commit -m "${prefix}${description}" ${message+-m "$message"} || exit 1
+}
+
+GitCommitWithConventionalPrefix "$@"
