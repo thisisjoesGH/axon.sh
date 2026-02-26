@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright (C) 2021-2024,2026 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+DefineMatrixPathParameters() {
+  declare -Agr m_resolve_alias_path_params=(
+    [alias]=""
+  )
+
+  declare -Agr m_create_alias_path_params=(
+    [alias]=""
+  )
+
+  declare -Agr m_delete_alias_path_params=(
+    [alias]=""
+  )
+
+  declare -Agr m_room_visibility_path_params=(
+    [room_id]=""
+  )
+}
