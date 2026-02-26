@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserDeactivate() {
@@ -8,9 +8,9 @@ SynapseUserDeactivate() {
   # copy api map to local map
   local -A api
   CopyArray s_user_deactivate_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_user_deactivate_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_user_deactivate_path_params path_params
   # copy body parameters to local map
   local -A body_params
   CopyArray s_user_deactivate_body_params body_params
@@ -36,8 +36,8 @@ SynapseUserDeactivate() {
   fi
   local user_id="@$username:${config[homeserver]}"
   Log debug "User ID is '$user_id'"
-  PutArray url_params[user_id] "$user_id"
-  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  PutArray path_params[user_id] "$user_id"
+  Log debug "URL 'user_id' path param set to '${path_params[user_id]}'"
   local erase_profile="${options[erase]}"
   [[ -n "$erase_profile" ]] || {
     local input
@@ -50,7 +50,7 @@ SynapseUserDeactivate() {
   ValidateInput boolean "$erase_profile" || return 1
   PutArray body_params[erase] "$erase_profile"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # construct request body
   local object

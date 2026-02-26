@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDeleteForwardExtremities() {
@@ -8,9 +8,9 @@ SynapseDeleteForwardExtremities() {
   # copy api map to local map
   local -A api
   CopyArray s_delete_forward_extremities_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_delete_forward_extremities_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_delete_forward_extremities_path_params path_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -29,10 +29,10 @@ SynapseDeleteForwardExtremities() {
       options[room]="$input_room"
       Log debug "Room is '${options[room]}'"
   }
-  PutArray url_params[room_id_or_alias] "${options[room]}"
-  Log debug "URL 'room_id_or_alias' param set to '${url_params[room_id_or_alias]}'"
+  PutArray path_params[room_id_or_alias] "${options[room]}"
+  Log debug "URL 'room_id_or_alias' path param set to '${path_params[room_id_or_alias]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDestinationDetails() {
@@ -8,9 +8,9 @@ SynapseDestinationDetails() {
   # copy api map to local map
   local -A api
   CopyArray s_destination_details_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_destination_details_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_destination_details_path_params path_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -29,10 +29,10 @@ SynapseDestinationDetails() {
   }
   Log debug "Destination is '$destination'"
   ValidateInput host "$destination" || return 1
-  PutArray url_params[destination] "$destination"
-  Log debug "URL 'destination' param set to '${url_params[destination]}'"
+  PutArray path_params[destination] "$destination"
+  Log debug "URL 'destination' path param set to '${path_params[destination]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

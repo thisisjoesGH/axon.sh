@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 __LINAC_Entrypoint() {
@@ -14,9 +14,12 @@ __LINAC_Entrypoint() {
   WriteConfiguration
   DefineStatusCodes
   DefineObjects
-  DefineMatrixParams
+  DefineMatrixBodyParameters
+  DefineMatrixPathParameters
   DefineMatrixEndpoints
-  DefineSynapseParams
+  DefineSynapseBodyParameters
+  DefineSynapsePathParameters
+  DefineSynapseQueryParameters
   DefineSynapseEndpoints
   DefineOutputStrings
   CheckDependencies

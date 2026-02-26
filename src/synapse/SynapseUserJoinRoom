@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserJoinRoom() {
@@ -15,9 +15,9 @@ SynapseUserJoinRoom() {
   # copy api map to local map
   local -A api
   CopyArray s_user_join_room_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_user_join_room_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_user_join_room_path_params path_params
   # copy body parameters to local map
   local -A body_params
   CopyArray s_user_join_room_body_params body_params
@@ -36,8 +36,8 @@ SynapseUserJoinRoom() {
   [[ -n "$room" ]] || {
     Read -r -p "Room ID or alias: " room
   }
-  PutArray url_params[room_id_or_alias] "$room"
-  Log debug "URL 'room_id_or_alias' param set to ${url_params[room_id_or_alias]}"
+  PutArray path_params[room_id_or_alias] "$room"
+  Log debug "URL 'room_id_or_alias' path param set to ${path_params[room_id_or_alias]}"
 
   local username="${options[user]}"
   [[ -n "$username" ]] || {
@@ -48,9 +48,9 @@ SynapseUserJoinRoom() {
   }
   local user_id="@$username:${config[homeserver]}"
   PutArray body_params[user_id] "$user_id"
-  Log debug "Body 'user_id' param set to '${body_params[user_id]}'"
+  Log debug "Body 'user_id' path param set to '${body_params[user_id]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # construct request body
   local object

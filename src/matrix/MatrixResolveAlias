@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixResolveAlias() {
@@ -22,9 +22,9 @@ MatrixResolveAlias() {
   # copy api map to local map
   local -A api
   CopyArray m_resolve_alias_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray m_resolve_alias_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray m_resolve_alias_path_params path_params
 
   CheckLoginStatus || return 1
 
@@ -38,9 +38,9 @@ MatrixResolveAlias() {
     Read -r -p "$(printf '%s' 'Alias to resolve:')" input_alias
     options[alias]="$input_alias"
   }
-  PutArray url_params[alias] "${options[alias]}"
+  PutArray path_params[alias] "${options[alias]}"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

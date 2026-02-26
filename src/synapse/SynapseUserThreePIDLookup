@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserThreePIDLookup() {
@@ -8,9 +8,9 @@ SynapseUserThreePIDLookup() {
   # copy api map to local map
   local -A api
   CopyArray s_user_threepid_lookup_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_user_threepid_lookup_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_user_threepid_lookup_path_params path_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -33,12 +33,12 @@ SynapseUserThreePIDLookup() {
   [[ -n "$address" ]] || {
     Read -r -p "Address: " address
   }
-  PutArray url_params[medium] "$medium"
-  Log debug "URL 'medium' param set to '${url_params[medium]}'"
-  PutArray url_params[address] "$address"
-  Log debug "URL 'address' param set to '${url_params[address]}'"
+  PutArray path_params[medium] "$medium"
+  Log debug "URL 'medium' path param set to '${path_params[medium]}'"
+  PutArray path_params[address] "$address"
+  Log debug "URL 'address' path param set to '${path_params[address]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDestinationRooms() {
@@ -10,9 +10,12 @@ SynapseDestinationRooms() {
   # copy api map to local map
   local -A api
   CopyArray s_destination_rooms_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_destination_rooms_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_destination_rooms_path_params path_params
+  # copy query parameters to local map
+  local -A query_params
+  CopyArray s_destination_rooms_query_params query_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -29,25 +32,25 @@ SynapseDestinationRooms() {
     Read -r -p "Destination: " destination
   }
   ValidateInput host "$destination" || return 1
-  PutArray url_params[destination] "$destination"
-  Log debug "Destination is '${url_params[destination]}'"
+  PutArray path_params[destination] "$destination"
+  Log debug "Destination is '${path_params[destination]}'"
 
   local limit="${options[limit]}"
   [[ -n "$limit" ]] && {
     ValidateInput integer "$limit" || return 1
-    PutArray url_params[limit] "$limit"
+    PutArray query_params[limit] "$limit"
   }
-  Log debug "Limit is '${url_params[limit]}'"
+  Log debug "Limit is '${query_params[limit]}'"
 
   local from="${options[from]}"
   [[ -n "$from" ]] && {
     ValidateInput integer "$from" || return 1
-    PutArray url_params[from] "$from"
+    PutArray query_params[from] "$from"
   }
-  Log debug "From is '${url_params[from]}'"
+  Log debug "From is '${query_params[from]}'"
 
-  SetPathParameters url_params api[path]
-  SetQueryString url_params api[path]
+  SetPathParameters path_params api[path]
+  SetQueryString query_params api[path]
 
   # set request parameters
   local -A params=(

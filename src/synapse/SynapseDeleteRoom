@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDeleteRoom() {
@@ -14,9 +14,9 @@ SynapseDeleteRoom() {
   # copy api map to local map
   local -A api
   CopyArray s_delete_room_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_delete_room_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_delete_room_path_params path_params
   # copy body parameters to local map
   local -A body_params
   CopyArray s_delete_room_body_params body_params
@@ -43,8 +43,8 @@ SynapseDeleteRoom() {
     )
     room="$(MatrixResolveAlias args)" || return 1
   }
-  PutArray url_params[room_id] "$room"
-  Log debug "URL 'room_id' param set to '${url_params[room_id]}'"
+  PutArray path_params[room_id] "$room"
+  Log debug "URL 'room_id' path param set to '${path_params[room_id]}'"
 
   local block="${options[block]}"
   [[ -n "$block" ]] || {
@@ -102,7 +102,7 @@ SynapseDeleteRoom() {
     PutArray body_params[message] "$message"
   fi
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # construct request body
   local object

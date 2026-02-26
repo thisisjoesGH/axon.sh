@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseEventReportsDelete() {
@@ -8,9 +8,9 @@ SynapseEventReportsDelete() {
   # copy api map to local map
   local -A api
   CopyArray s_event_reports_delete_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_event_reports_delete_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_event_reports_delete_path_params path_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -30,10 +30,10 @@ SynapseEventReportsDelete() {
       report_id="$input_report_id"
   }
   ValidateInput integer "$report_id" || return 1
-  PutArray url_params[report_id] "$report_id"
-  Log debug "Report ID is '${url_params[report_id]}'"
+  PutArray path_params[report_id] "$report_id"
+  Log debug "Report ID is '${path_params[report_id]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

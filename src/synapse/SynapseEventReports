@@ -22,9 +22,9 @@ SynapseEventReports() {
   # copy api map to local map
   local -A api
   CopyArray s_event_reports_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_event_reports_url_params url_params
+  # copy query parameters to local map
+  local -A query_params
+  CopyArray s_event_reports_query_params query_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -44,18 +44,18 @@ SynapseEventReports() {
       limit="$input_limit"
   }
   ValidateInput integer "$limit" || return 1
-  PutArray url_params[limit] "$limit"
-  Log debug "Limit is '${url_params[limit]}'"
+  PutArray query_params[limit] "$limit"
+  Log debug "Limit is '${query_params[limit]}'"
 
   # use default `from` value if not passed
   local from="${options[from]}"
   [[ -n "$from" ]] && {
     ValidateInput integer "$from" || return 1
-    PutArray url_params[from] "$from"
+    PutArray query_params[from] "$from"
   }
-  Log debug "From is '${url_params[from]}'"
+  Log debug "From is '${query_params[from]}'"
 
-  SetQueryString url_params api[path]
+  SetQueryString query_params api[path]
 
   # set request parameters
   local -A params=(

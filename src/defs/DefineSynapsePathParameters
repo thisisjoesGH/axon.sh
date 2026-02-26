@@ -1,0 +1,114 @@
+#!/bin/bash
+# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+DefineSynapsePathParameters() {
+  declare -Agr s_destination_details_path_params=(
+    [destination]=""
+  )
+
+  declare -Agr s_destination_reset_path_params=(
+    [destination]=""
+  )
+
+  declare -Agr s_destination_rooms_path_params=(
+    [destination]=""
+  )
+
+  declare -Agr s_event_reports_details_path_params=(
+    [report_id]=""
+  )
+
+  declare -Agr s_event_reports_delete_path_params=(
+    [report_id]=""
+  )
+
+  declare -Agr s_room_details_path_params=(
+    [room_id]=""
+  )
+
+  declare -Agr s_room_members_path_params=(
+    [room_id]=""
+  )
+
+  declare -Agr s_purge_history_path_params=(
+    [room_id]=""
+  )
+
+  declare -Agr s_purge_history_status_path_params=(
+    [job_id]=""
+  )
+
+  declare -Agr s_delete_room_path_params=(
+    [room_id]=""
+  )
+
+  declare -Agr s_delete_room_status_path_params=(
+    [job_id]=""
+  )
+
+  declare -Agr s_forward_extremities_path_params=(
+    [room_id_or_alias]=""
+  )
+
+  declare -Agr s_delete_forward_extremities_path_params=(
+    [room_id_or_alias]=""
+  )
+
+  declare -Agr s_user_query_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_joined_rooms_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_threepid_lookup_path_params=(
+    [medium]=""
+    [address]=""
+  )
+
+  declare -Agr s_user_create_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_reset_password_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_ratelimit_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_set_user_ratelimit_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_delete_user_ratelimit_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_deactivate_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_shadowban_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_unshadowban_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_redact_path_params=(
+    [user_id]=""
+  )
+
+  declare -Agr s_user_redact_status_path_params=(
+    [job_id]=""
+  )
+
+  declare -Agr s_user_join_room_path_params=(
+    [room_id_or_alias]=""
+  )
+}

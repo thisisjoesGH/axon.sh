@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixSetRoomVisibility() {
@@ -8,9 +8,9 @@ MatrixSetRoomVisibility() {
   # copy api map to local map
   local -A api
   CopyArray m_room_visibility_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray m_room_visibility_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray m_room_visibility_path_params path_params
   # copy body parameters to local map
   local -A body_params
   CopyArray m_room_visibility_body_params body_params
@@ -33,7 +33,7 @@ MatrixSetRoomVisibility() {
     )
     room="$(MatrixResolveAlias args)" || return 1
   }
-  PutArray url_params[room_id] "$room"
+  PutArray path_params[room_id] "$room"
 
   [[ -n "${options[visibility]}" ]] || {
     local input_visibility
@@ -46,7 +46,7 @@ MatrixSetRoomVisibility() {
   local object
   ConstructObject m_room_visibility body_params object || return 1
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

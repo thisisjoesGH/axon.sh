@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseSetUserRatelimit() {
@@ -8,9 +8,9 @@ SynapseSetUserRatelimit() {
   # copy api map to local map
   local -A api
   CopyArray s_set_user_ratelimit_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_set_user_ratelimit_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_set_user_ratelimit_path_params path_params
   # copy body parameters to local map
   local -A body_params
   CopyArray s_set_user_ratelimit_body_params body_params
@@ -33,8 +33,8 @@ SynapseSetUserRatelimit() {
       Log debug "User is '$user'"
   }
   local mxid="@${options[user]}:${config[homeserver]}"
-  PutArray url_params[user_id] "$mxid"
-  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  PutArray path_params[user_id] "$mxid"
+  Log debug "URL 'user_id' path param set to '${path_params[user_id]}'"
 
   [[ -n "${options[messages_per_second]}" ]] || {
     local input_messages_per_second
@@ -42,7 +42,7 @@ SynapseSetUserRatelimit() {
       options[messages_per_second]="$input_messages_per_second"
   }
   PutArray body_params[messages_per_second] "${options[messages_per_second]}"
-  Log debug "Body 'messages_per_second' param set to '${body_params[messages_per_second]}'"
+  Log debug "Body 'messages_per_second' path param set to '${body_params[messages_per_second]}'"
 
   [[ -n "${options[burst_count]}" ]] || {
     local input_burst_count
@@ -50,9 +50,9 @@ SynapseSetUserRatelimit() {
       options[burst_count]="$input_burst_count"
   }
   PutArray body_params[burst_count] "${options[burst_count]}"
-  Log debug "Body 'burst_count' param set to '${body_params[burst_count]}'"
+  Log debug "Body 'burst_count' path param set to '${body_params[burst_count]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # construct request body
   local object

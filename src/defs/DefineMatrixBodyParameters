@@ -1,7 +1,8 @@
 #!/bin/bash
-# Copyright (C) 2021-2024 joe <joe@thisisjoes.site># SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2021-2024,2026 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
 
-DefineMatrixParams() {
+DefineMatrixBodyParameters() {
   declare -Agr m_login_body_params=(
     [type]="m.login.password"
     [identifier]="m.id.user"
@@ -11,23 +12,7 @@ DefineMatrixParams() {
     [device_id]=""
   )
 
-  declare -Agr m_resolve_alias_url_params=(
-    [alias]=""
-  )
-
-  declare -Agr m_create_alias_url_params=(
-    [alias]=""
-  )
-
   declare -Agr m_create_alias_body_params=(
-    [room_id]=""
-  )
-
-  declare -Agr m_delete_alias_url_params=(
-    [alias]=""
-  )
-
-  declare -Agr m_room_visibility_url_params=(
     [room_id]=""
   )
 

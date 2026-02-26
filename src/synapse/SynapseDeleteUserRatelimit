@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseDeleteUserRatelimit() {
@@ -8,9 +8,9 @@ SynapseDeleteUserRatelimit() {
   # copy api map to local map
   local -A api
   CopyArray s_delete_user_ratelimit_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_delete_user_ratelimit_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_delete_user_ratelimit_path_params path_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -29,10 +29,10 @@ SynapseDeleteUserRatelimit() {
       Log debug "Username is '${options[user]}'"
   }
   local mxid="@${options[user]}:${config[homeserver]}"
-  PutArray url_params[user_id] "$mxid"
-  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  PutArray path_params[user_id] "$mxid"
+  Log debug "URL 'user_id' path param set to '${path_params[user_id]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # set request parameters
   local -A params=(

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 SynapseUserShadowban() {
@@ -8,9 +8,9 @@ SynapseUserShadowban() {
   # copy api map to local map
   local -A api
   CopyArray s_user_shadowban_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray s_user_shadowban_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray s_user_shadowban_path_params path_params
 
   CheckLoginStatus || return 1
   CheckServerSupport 'api[minimum_version]' || {
@@ -29,10 +29,10 @@ SynapseUserShadowban() {
   }
   local user_id="@$username:${config[homeserver]}"
   Log debug "User ID is '$user_id'"
-  PutArray url_params[user_id] "$user_id"
-  Log debug "URL 'user_id' param set to '${url_params[user_id]}'"
+  PutArray path_params[user_id] "$user_id"
+  Log debug "URL 'user_id' path param set to '${path_params[user_id]}'"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   local -A params=(
     [method]="${api[method]}"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixCreateAlias() {
@@ -8,9 +8,9 @@ MatrixCreateAlias() {
   # copy api map to local map
   local -A api
   CopyArray m_create_alias_api api
-  # copy url parameters to local map
-  local -A url_params
-  CopyArray m_create_alias_url_params url_params
+  # copy path parameters to local map
+  local -A path_params
+  CopyArray m_create_alias_path_params path_params
   # copy body parameters to local map
   local -A body_params
   CopyArray m_create_alias_body_params body_params
@@ -25,7 +25,7 @@ MatrixCreateAlias() {
   [[ -n "$alias" ]] || {
     Read -r -p "$(printf '%s' 'Alias to create:')" alias
   }
-  PutArray url_params[alias] "$alias"
+  PutArray path_params[alias] "$alias"
 
   local room="${options[room]:-${options[id]}}"
   [[ -n "$room" ]] || {
@@ -41,7 +41,7 @@ MatrixCreateAlias() {
   }
   PutArray body_params[room_id] "$room"
 
-  SetPathParameters url_params api[path]
+  SetPathParameters path_params api[path]
 
   # construct request body
   local object
