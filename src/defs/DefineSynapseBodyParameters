@@ -1,0 +1,73 @@
+#!/bin/bash
+# Copyright (C) 2021-2023,2025,2026 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+DefineSynapseBodyParameters() {
+
+  declare -Agr s_server_notice_body_params=(
+    [user_id]=""
+    [msg_type]="m.room.message"
+    [body]=""
+  )
+
+  declare -Agr s_purge_history_body_params=(
+    [delete_local_events]="false"
+    [purge_up_to_ts]=""
+  )
+
+  declare -Agr s_delete_room_body_params=(
+    [new_room_user_id]=""
+    [room_name]=""
+    [message]=""
+    [block]="false"
+    [purge]="false"
+  )
+
+  declare -Agr s_user_modify_body_params=(
+    [user_id]=""
+    [password]=""
+    [displayname]=""
+    [avatar_url]=""
+    [admin]="false"
+    [deactivated]="false"
+    [list_from]="0"
+    [list_limit]="5"
+    [list_name]=""
+    [list_guests]="false"
+    [list_deactivated]="false"
+    [order_by]="name"
+    [order_dir]="f"
+  )
+
+  declare -Agr s_user_create_body_params=(
+    [password]=""
+    [displayname]=""
+    [threepid.medium]=""
+    [threepid.address]=""
+    [admin]="false"
+  )
+
+  declare -Agr s_user_reset_password_body_params=(
+    [password]=""
+    [logout]="true"
+  )
+
+  declare -Agr s_set_user_ratelimit_body_params=(
+    [messages_per_second]="0"
+    [burst_count]="0"
+  )
+
+  declare -Agr s_user_deactivate_body_params=(
+    [erase]="false"
+  )
+
+  declare -Agr s_user_redact_body_params=(
+    [rooms]=""
+    [limit]=1000
+    [reason]=""
+  )
+
+  declare -Agr s_user_join_room_body_params=(
+    [user_id]=""
+  )
+}
