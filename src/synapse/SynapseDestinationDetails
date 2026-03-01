@@ -49,22 +49,23 @@ SynapseDestinationDetails() {
   }
 
   # get key values
-  local -a keys=(destination retry_last_ts retry_interval failure_ts last_successful_stream_ordering)
+  local -a keys=(destination failed failure_ts retry_last_ts retry_interval last_successful_stream_ordering)
   [[ -z "${options[keys]}" ]] || {
     Explode ',' "${options[keys]}" keys
   }
   local -A values
   ProcessResponse response[body] keys values || return 1
   if [[ "${values[failure_ts]}" != "null" ]]; then
-    keys=(destination failed failure_ts retry_last_ts retry_interval last_successful_stream_ordering)
-    values[failed]=true
-    values[retry_interval]="$(ConvertIntervalMs "${values[retry_interval]}")" || return 1
-    values[failure_ts]="$(ConvertUnixTimestampMs "${values[failure_ts]}")" || return 1
-    values[retry_last_ts]="$(ConvertUnixTimestampMs "${values[retry_last_ts]}")" || return 1
+    Assert keys[failed] && values[failed]=true
+    Assert values[retry_interval] && PutArray values[retry_interval] "$(ConvertIntervalMs "${values[retry_interval]}")"
+    Assert values[failure_ts] && PutArray values[failure_ts] "$(ConvertUnixTimestampMs "${values[failure_ts]}")"
+    Assert values[retry_last_ts] && PutArray values[retry_last_ts] "$(ConvertUnixTimestampMs "${values[retry_last_ts]}")"
   else
-    values[failed]=false
-    unset -v 'keys[1]' 'keys[2]' 'keys[3]'
-    keys=(destination failed "${keys[@]:1}")
+    Assert keys[failed] && values[failed]=false
+    [[ -n "${options[keys]}" ]] || {
+      unset -v 'keys[2]' 'keys[3]' 'keys[4]' # retry_last_ts, retry_interval, failure_ts
+      keys=(destination failed "${keys[@]:2}")
+    }
   fi
 
   local output="${response[body]}"
