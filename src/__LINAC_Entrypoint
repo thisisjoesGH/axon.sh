@@ -32,6 +32,6 @@ __LINAC_Entrypoint() {
   fi
 }
 
-trap CancelPrompt SIGINT SIGQUIT SIGTERM
+trap Exit SIGINT SIGQUIT SIGTERM
 
 __LINAC_Entrypoint "$@"
