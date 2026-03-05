@@ -23,7 +23,7 @@ HandleCommand() {
     user        ) UserCommandHandler __HandleCommand_args;;
     config      ) Configure __HandleCommand_args;;
     version     ) printf '%s\n' "$projectName v$projectVersion";;
-    help        ) PrintHelp __HandleCommand_args;;
+    *help|-h    ) PrintHelp __HandleCommand_args;;
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
     exit        ) Exit;;
