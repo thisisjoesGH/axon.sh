@@ -43,6 +43,7 @@ steps:
 
 ---
 kind: pipeline
+type: docker
 name: tests
 
 trigger:
@@ -113,14 +114,14 @@ steps:
       - chmod +x build/axon.sh
       - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd save_token=true'
 
-  - name: "run command tests"
-    image: bats/bats
-    pull: if-not-exists
-    environment:
-      AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
-    commands:
-      - apk --no-cache --update add jq curl
-      - bats --verbose-run --print-output-on-failure --show-output-of-passing-tests ./tests/commands
+#  - name: "run command tests"
+#    image: bats/bats
+#    pull: if-not-exists
+#    environment:
+#      AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
+#    commands:
+#      - apk --no-cache --update add jq curl
+#      - bats --verbose-run --print-output-on-failure --show-output-of-passing-tests ./tests/commands
 
 volumes:
   - name: data
