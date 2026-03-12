@@ -114,7 +114,7 @@ steps:
       - 'build/axon.sh login mxid="@admin:synapse.thisisjoes.test" password_file=passwd save_token=true'
 
   - name: "run command tests"
-    image: bats/bats:1.12.0
+    image: bats/bats
     pull: if-not-exists
     environment:
       AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
