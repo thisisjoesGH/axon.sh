@@ -7,7 +7,6 @@ setup() {
 }
 
 @test "creates room successfully" {
-  run axon.sh room create name="Chinese Room" topic="thought experiments" preset="private" federate="false"
-  echo "$output"
-  assert_output --partial "Room ID: !"
+  result="$(axon.sh room create name="Chinese Room" topic="thought experiments" preset="private" federate="false")"
+  [[ "$result" =~ 'Room ID: !' ]]
 }
