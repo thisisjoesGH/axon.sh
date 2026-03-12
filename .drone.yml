@@ -120,7 +120,7 @@ steps:
       AXON_CONFIG: 'verbosity=debug:scheme=http:config_path=axon:log_level=none'
     commands:
       - apk --no-cache --update add jq curl
-      - bats --verbose-run --trace ./tests/commands
+      - bats --verbose-run --print-output-on-failure --show-output-of-passing-tests ./tests/commands
 
 volumes:
   - name: data
