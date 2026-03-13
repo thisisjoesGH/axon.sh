@@ -2,7 +2,7 @@
 PrintInfo() {
   local info="$1"
   case "$info" in
-    short      ) printf '%s\n' "${projectName} Copyright (C) 2021-2025 ${projectAuthor}"
+    short      ) printf '%s\n' "${projectName} Copyright (C) 2021-2026 ${projectAuthor}"
                  printf '\n%s\n' "This program comes with ABSOLUTELY NO WARRANTY; for details type 'warranty'."
                  printf '\n%s\n' 'This is free software, and you are welcome to redistribute it under certain conditions;'
                  printf '%s\n' "type 'conditions' for details."
