@@ -95,7 +95,6 @@ SynapseEventReports() {
   printf '%s\n' "$output"
 
   # paginate if necessary
-  Log debug "Call stack is '${FUNCNAME[*]}'."
   if [[ "${FUNCNAME[*]}" =~ 'Prompt' && "$next_token" != 'null' ]]; then
     local -a args=(
       "limit=$limit"
