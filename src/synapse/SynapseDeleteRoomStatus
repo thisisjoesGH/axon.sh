@@ -49,7 +49,7 @@ SynapseDeleteRoomStatus() {
   }
 
   # get key values
-  local -a keys=(status shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error)
+  local -a keys=(status room_id shutdown_room.kicked_users shutdown_room.failed_to_kick_users shutdown_room.local_aliases shutdown_room.new_room_id error)
   [[ -z "${options[keys]}" ]] || {
     Explode ',' "${options[keys]}" keys
   }
