@@ -27,6 +27,6 @@ HandleCommand() {
     warranty    ) PrintInfo warranty;;
     conditions  ) PrintInfo conditions;;
     exit        ) Exit;;
-    *           ) printf '%s\n' "Unrecognized command '$command'. Type 'help' for help.";;
+    *           ) printf '%s\n' "Unrecognized command '$command'. Type 'help' for help."; return 1;;
   esac
 }

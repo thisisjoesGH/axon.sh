@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2025.2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 UserCommandHandler() {
@@ -20,7 +20,7 @@ UserCommandHandler() {
     shadowban  ) SynapseUserShadowban __UserCommandHandler_args;;
     unshadowban) SynapseUserUnshadowban __UserCommandHandler_args;;
     join       ) SynapseUserJoinRoom __UserCommandHandler_args;;
-    ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands.";;
-    *          ) Log error "Unrecognized subcommand '$subcommand'. Type 'help user' for a list of subcommands.";;
+    ''         ) Log error "Subcommand required. Type 'help user' for a list of subcommands."; return 1;;
+    *          ) Log error "Unrecognized subcommand '$subcommand'. Type 'help user' for a list of subcommands."; return 1;;
   esac
 }

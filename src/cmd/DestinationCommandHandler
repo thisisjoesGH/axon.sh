@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 DestinationCommandHandler() {
@@ -15,7 +15,7 @@ DestinationCommandHandler() {
     reset    ) SynapseDestinationReset __DestinationCommandHandler_args;;
     rooms    ) SynapseDestinationRooms __DestinationCommandHandler_args;;
     version  ) MatrixServerVersion __DestinationCommandHandler_args;;
-    ''       ) Log error "Subcommand required. Type 'help destination' for a list of subcommands.";;
-    *        ) Log error "Unrecognized subcommand '$subcommand'. Type 'help destination' for a list of subcommands.";;
+    ''       ) Log error "Subcommand required. Type 'help destination' for a list of subcommands."; return 1;;
+    *        ) Log error "Unrecognized subcommand '$subcommand'. Type 'help destination' for a list of subcommands."; return 1;;
   esac
 }

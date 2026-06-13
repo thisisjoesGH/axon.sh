@@ -20,7 +20,7 @@ RoomCommandHandler() {
     visibility  ) MatrixGetRoomVisibility __RoomCommandHandler_args;;
     members     ) SynapseRoomMembers __RoomCommandHandler_args;;
     create      ) MatrixCreateRoom __RoomCommandHandler_args;;
-    ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands.";;
-    *           ) Log error "Unrecognized subcommand '$subcommand'. Type 'help room' for a list of subcommands.";;
+    ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands."; return 1;;
+    *           ) Log error "Unrecognized subcommand '$subcommand'. Type 'help room' for a list of subcommands."; return 1;;
   esac
 }

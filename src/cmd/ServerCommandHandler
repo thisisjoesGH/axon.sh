@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ServerCommandHandler() {
@@ -13,8 +13,8 @@ ServerCommandHandler() {
     version ) SynapseVersion __ServerCommandHandler_args;;
     reports ) SynapseEventReports __ServerCommandHandler_args;;
     notice  ) SynapseServerNotice __ServerCommandHandler_args;;
-    address ) if [[ -z "${config[homeserver]}" ]]; then Log error "No homeserver configured!"; else printf '%s\n' "${config[homeserver]}"; fi;;
-    ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands.";;
-    *       ) Log error "Unrecognized subcommand '$subcommand'. Type 'help server' for a list of subcommands.";;
+    address ) if [[ -z "${config[homeserver]}" ]]; then Log error "No homeserver configured."; return 1; else printf '%s\n' "${config[homeserver]}"; fi;;
+    ''      ) Log error "Subcommand required. Type 'help server' for a list of subcommands."; return 1;;
+    *       ) Log error "Unrecognized subcommand '$subcommand'. Type 'help server' for a list of subcommands."; return 1;;
   esac
 }
