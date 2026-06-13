@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 HandleCommand() {
