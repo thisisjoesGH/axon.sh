@@ -1,26 +1,32 @@
 #!/bin/bash
-# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Prompt() {
   HISTCONTROL=ignoreboth
   HISTFILE=${config[log_path]}/${config[history_file]}
   history -n || Log warn "Failed to load history from '$HISTFILE'"
+  local initial_text="$1"
   while true; do
     local prompt="[axon]>"
     local user_input
-    Read -e -r -p "$prompt" user_input
-    # create array from input, escape special characters
-    # TODO: handle unmatched quotes?
-    local -a input="(${user_input//[()<>&]/\\&})"
-    local index
-    for index in "${!input[@]}"; do
-      # unescape characters in array elements
-      local char
-      for char in '(' ')' '<' '>' '&'; do
-        input[$index]="${input[$index]//\\"$char"/"$char"}"
-      done
-    done
+    Read -e -r -p "$prompt" -i "$initial_text" user_input
+    # handle unmatched quotes
+    local position
+    FindUnmatchedQuotes "$user_input" position || {
+      Log error "Unmatched quote in input at position '$position'."
+      local padding=$(( "${#prompt}" + "$position" ))
+      printf "%${padding}s\n" 'v'
+      initial_text="$user_input"
+      continue
+    }
+    initial_text=''
+
+    [[ "${config[verbosity]^^}" == 'DEBUG' ]] && local debug='true'
+    readarray -t -d $'\0' ${debug:+-c 1 -C 'printf "DEBUG - input[%s] => %s\n"'} input < <(xargs -n1 printf '%s\0' <<< "$user_input" 2>/dev/null) || {
+      Log fatal "Failed while reading user input into array."
+      exit 1
+    }
     [[ -n "${input[*]}" ]] || {
       PrintHelp input
       continue

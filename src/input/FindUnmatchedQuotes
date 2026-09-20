@@ -1,0 +1,64 @@
+#!/bin/bash
+# Copyright (C) 2026 joe <joe@thisisjoes.site>
+# SPDX-License-Identifier: GPL-3.0-only
+
+FindUnmatchedQuotes() {
+  Log debug "Got args '$*'"
+  local string="$1"
+  local -n __FindUnmatchedQuotes_position="$2"
+  local cursor='0'
+  local squote_count='0' open_squote='0' close_squote='0' last_squote='0'
+  local dquote_count='0' open_dquote='0' close_dquote='0' last_dquote='0'
+  local IFS=
+  while read -r -n1 -d '' character; do
+    ((cursor++))
+    Log debug "Cursor at character '$cursor'"
+    if [[ "$character" == "'" ]]; then
+      last_squote="$cursor"
+      if (( "$open_squote" != 0 && "$close_squote" == 0 )); then
+        close_squote="$cursor"
+        Log debug "Close squote at '$close_squote'"
+      fi
+      if (( "$cursor" > "$close_squote" )); then
+        open_squote="$cursor"
+        Log debug "Open squote at '$open_squote'"
+      fi
+      if (( "$close_dquote" > 0 && "$cursor" > "$close_dquote" ))  || (( "$dquote_count" == 0 )); then
+        ((squote_count++))
+        Log debug "Single quote count is '$squote_count'"
+      fi
+    fi
+    if [[ "$character" == '"' ]]; then
+      last_dquote="$cursor"
+      if (( "$open_dquote" != 0 && "$close_dquote" == 0 )); then
+        close_dquote="$cursor"
+        Log debug "Close dquote at '$close_dquote'"
+      fi
+      if (( "$cursor" > "$close_dquote" )); then
+        open_dquote="$cursor"
+        Log debug "Open dquote at '$open_dquote'"
+      fi
+      if (( "$close_squote" > 0 && "$cursor" > "$close_squote" )) || (( "$squote_count" == 0 )); then
+        ((dquote_count++))
+        Log debug "Double quote count is '$dquote_count'"
+      fi
+    fi
+  done <<< "$string"
+  unset IFS
+
+  local _position
+  if (( "$squote_count" % 2 != 0 && "$last_squote" < "$close_dquote" )); then
+    _position="$open_squote"
+  elif (( "$squote_count" % 2 != 0 )); then
+    _position="$last_squote"
+  elif (( "$dquote_count" % 2 != 0 && "$last_dquote" < "$close_squote" )); then
+    _position="$open_dquote"
+  elif (( "$dquote_count" % 2 != 0 )); then
+    _position="$last_dquote"
+  fi
+  if [[ -n "$_position" ]]; then
+    __FindUnmatchedQuotes_position="$_position"
+    Log debug "Unmatched quote at position '$__FindUnmatchedQuotes_position'"
+    return 1
+  fi
+}
