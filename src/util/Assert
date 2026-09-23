@@ -71,8 +71,7 @@ Assert() {
         return 0
       else
         Log fatal "Assertion failed, variable '$variable_name' is of type '$type', expected '$desired_type'."
-        [[ "${config[verbosity]}" == 'DEBUG' ]] && PrintStackTrace
-        HandleError || Exit 1
+        exit 1
       fi
     ;;
     *)
