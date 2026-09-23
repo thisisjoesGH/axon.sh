@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2024 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2023,2024 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckStatusCode() {
@@ -7,27 +7,27 @@ CheckStatusCode() {
   local status_code="$1"
 
   case "$status_code" in
-    1?? )
+    1??)
       Log error "Server returned unsupported status code '$status_code'"
       return 1
     ;;
-    2?? )
+    2??)
       Log info "Server returned success, continuing..."
       return 0
     ;;
-    3?? )
+    3??)
       Log error "Server returned unsupported status code '$status_code'"
       return 1
     ;;
-    4?? )
+    4??)
       Log error "Server returned client error '$status_code','${http_status_codes[$status_code]}'"
       return 1
     ;;
-    5?? )
+    5??)
       Log error "Server returned server error. '$status_code','${http_status_codes[$status_code]}'"
       return 1
     ;;
-    *   )
+    *)
       Log error "Received malformed or unknown status code '$status_code'"
       return 1
     ;;

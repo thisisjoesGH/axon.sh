@@ -10,17 +10,19 @@ RoomCommandHandler() {
   Log debug "Testing '$subcommand'"
 
   case "$subcommand" in
-    purge       ) SynapsePurgeHistory __RoomCommandHandler_args;;
-    delete      ) Log warn "The 'delete' subcommand is deprecated and will not continue to work in the future. Please use 'evacuate' instead."
-                  SynapseDeleteRoom __RoomCommandHandler_args;;
-    evacuate    ) SynapseDeleteRoom __RoomCommandHandler_args;;
-    extremities ) SynapseForwardExtremities __RoomCommandHandler_args;;
-    details     ) SynapseRoomDetails __RoomCommandHandler_args;;
-    alias       ) MatrixResolveAlias __RoomCommandHandler_args;;
-    visibility  ) MatrixGetRoomVisibility __RoomCommandHandler_args;;
-    members     ) SynapseRoomMembers __RoomCommandHandler_args;;
-    create      ) MatrixCreateRoom __RoomCommandHandler_args;;
-    ''          ) Log error "Subcommand required. Type 'help room' for a list of subcommands."; return 1;;
-    *           ) Log error "Unrecognized subcommand '$subcommand'. Type 'help room' for a list of subcommands."; return 1;;
+    delete)
+      Log warn "The 'delete' subcommand is deprecated and will not continue to work in the future. Please use 'evacuate' instead."
+      SynapseDeleteRoom __RoomCommandHandler_args
+    ;;
+    purge)       SynapsePurgeHistory __RoomCommandHandler_args;;
+    evacuate)    SynapseDeleteRoom __RoomCommandHandler_args;;
+    extremities) SynapseForwardExtremities __RoomCommandHandler_args;;
+    details)     SynapseRoomDetails __RoomCommandHandler_args;;
+    alias)       MatrixResolveAlias __RoomCommandHandler_args;;
+    visibility)  MatrixGetRoomVisibility __RoomCommandHandler_args;;
+    members)     SynapseRoomMembers __RoomCommandHandler_args;;
+    create)      MatrixCreateRoom __RoomCommandHandler_args;;
+    '')          Log error "Subcommand required. Type 'help room' for a list of subcommands."; return 1;;
+    *)           Log error "Unrecognized subcommand '$subcommand'. Type 'help room' for a list of subcommands."; return 1;;
   esac
 }

@@ -9,13 +9,13 @@ DestinationCommandHandler() {
   ShiftArray __DestinationCommandHandler_args
   Log debug "Testing '$subcommand'"
   case "$subcommand" in
-    discover ) MatrixDiscover __DestinationCommandHandler_args;;
-    list     ) SynapseDestinationList __DestinationCommandHandler_args;;
-    details  ) SynapseDestinationDetails __DestinationCommandHandler_args;;
-    reset    ) SynapseDestinationReset __DestinationCommandHandler_args;;
-    rooms    ) SynapseDestinationRooms __DestinationCommandHandler_args;;
-    version  ) MatrixServerVersion __DestinationCommandHandler_args;;
-    ''       ) Log error "Subcommand required. Type 'help destination' for a list of subcommands."; return 1;;
-    *        ) Log error "Unrecognized subcommand '$subcommand'. Type 'help destination' for a list of subcommands."; return 1;;
+    discover) MatrixDiscover options;;
+    list)     SynapseDestinationList __DestinationCommandHandler_args;;
+    details)  SynapseDestinationDetails __DestinationCommandHandler_args;;
+    reset)    SynapseDestinationReset __DestinationCommandHandler_args;;
+    rooms)    SynapseDestinationRooms __DestinationCommandHandler_args;;
+    version)  MatrixServerVersion __DestinationCommandHandler_args;;
+    '')       Log error "Subcommand required. Type 'help destination' for a list of subcommands."; return 1;;
+    *)        Log error "Unrecognized subcommand '$subcommand'. Type 'help destination' for a list of subcommands."; return 1;;
   esac
 }

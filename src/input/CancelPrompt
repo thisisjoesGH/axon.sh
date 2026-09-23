@@ -7,10 +7,10 @@ CancelPrompt() {
   Log debug "Called in context '$context'."
 
   case "$context" in
-    Prompt )
+    Prompt)
       Exit
     ;;
-    *      )
+    *)
       unset IFS
       printf '\n'
       Log info "Cancelling current prompt."

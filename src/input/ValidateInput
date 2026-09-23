@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ValidateInput() {
@@ -12,7 +12,7 @@ ValidateInput() {
   local -r ip_pattern='^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$'
 
   case "$type" in
-    integer  )
+    integer)
       [[ "$input" =~ ^[0123456789]+$ ]] || {
         Log error "Expected integer but got '$input'."
         return 1
@@ -22,56 +22,48 @@ ValidateInput() {
         return 1
       }
     ;;
-
-    boolean  )
+    boolean)
       [[ "$input" =~ ^(true|false)$ ]] || {
         Log error "Expected 'true' or 'false' but got '$input'."
         return 1
       }
     ;;
-
-    text     )
+    text)
       [[ "$input" =~ ^[[:print:]]+$ ]] || {
         Log error "Expected text but got something else."
         return 1
       }
     ;;
-
-    json     )
+    json)
       ValidateJSON "$input" || {
         Log error "Expected JSON but got something else. The output from jq above may help identify syntax errors."
         return 1
       }
     ;;
-
-    host     )
+    host)
       ( [[ "$input" =~ $hostname_pattern || "$input" =~ $ip_pattern ]] && (( "${#input}" <= 253 )) ) || {
         Log error "Expected hostname or IP literal but got '$input'."
         return 1
       }
     ;;
-
-    hostname )
+    hostname)
       ( [[ "$input" =~ $hostname_pattern ]] && (( "${#input}" <= 253 )) ) || {
         Log error "Expected hostname but got '$input'."
         return 1
       }
     ;;
-
-    ip       )
+    ip)
       [[ "$input" =~ $ip_pattern ]] || {
         Log error "Expected IP address but got '$input'."
         return 1
       }
     ;;
-
-    port     )
+    port)
       ( [[ "$input" =~ ^[0123456789]+$ ]] && (( "$input" < 65536 )) && (( "$input" > 0 )) ) || {
         Log error "Expected Internet port but got '$input'."
         return 1
       }
     ;;
-
-    *        ) Log error "Unknown type '$type'."; return 1 ;;
+    *) Log error "Unknown type '$type'."; return 1 ;;
   esac
 }

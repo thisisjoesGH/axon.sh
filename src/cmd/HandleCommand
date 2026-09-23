@@ -10,23 +10,23 @@ HandleCommand() {
   ShiftArray __HandleCommand_args
 
   case "$command" in
-    login       ) MatrixLogin __HandleCommand_args;;
-    logout      )
+    login) MatrixLogin __HandleCommand_args;;
+    logout)
       LogTerm warn "Your local session will be erased and your access token will be invalidated."
       ConfirmContinue || return 1
       DestroySession
     ;;
-    whoami      ) MatrixWhoAmI __HandleCommand_args;;
-    server      ) ServerCommandHandler __HandleCommand_args;;
-    destination ) DestinationCommandHandler __HandleCommand_args;;
-    room        ) RoomCommandHandler __HandleCommand_args;;
-    user        ) UserCommandHandler __HandleCommand_args;;
-    config      ) Configure __HandleCommand_args;;
-    version     ) printf '%s\n' "$projectName v$projectVersion";;
-    *help|-h    ) PrintHelp __HandleCommand_args;;
-    warranty    ) PrintInfo warranty;;
-    conditions  ) PrintInfo conditions;;
-    exit        ) Exit;;
-    *           ) printf '%s\n' "Unrecognized command '$command'. Type 'help' for help."; return 1;;
+    whoami)      MatrixWhoAmI __HandleCommand_args;;
+    server)      ServerCommandHandler __HandleCommand_args;;
+    destination) DestinationCommandHandler __HandleCommand_args;;
+    room)        RoomCommandHandler __HandleCommand_args;;
+    user)        UserCommandHandler __HandleCommand_args;;
+    config)      Configure __HandleCommand_args;;
+    version)     printf '%s\n' "$projectName v$projectVersion";;
+    *help|-h)    PrintHelp __HandleCommand_args;;
+    warranty)    PrintInfo warranty;;
+    conditions)  PrintInfo conditions;;
+    exit)        Exit;;
+    *)           printf '%s\n' "Unrecognized command '$command'. Type 'help' for help."; return 1;;
   esac
 }
