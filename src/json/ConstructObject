@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2023,2024,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 ConstructObject() {
@@ -14,7 +14,7 @@ ConstructObject() {
   local constructed_object
 
   case "$object_to_construct" in
-    m_login )
+    m_login)
       EncodeJSON "${parameters[password]}" parameters[password]
       local -a filters=(
         ".type = \"${parameters[type]}\""
@@ -25,22 +25,19 @@ ConstructObject() {
       )
       ModifyJSON "$m_login_object" filters constructed_object || return 1
     ;;
-
-    m_create_alias )
+    m_create_alias)
       local -a filters=(
         ".room_id = \"${parameters[room_id]}\""
       )
       ModifyJSON "$m_create_alias_object" filters constructed_object || return 1
     ;;
-
-    m_room_visibility )
+    m_room_visibility)
       local -a filters=(
         ".visibility = \"${parameters[visibility]}\""
       )
       ModifyJSON "$m_room_visibility_object" filters constructed_object || return 1
     ;;
-
-    m_room_create )
+    m_room_create)
       local -a filters=(
         ".creation_content.\"m.federate\" = ${parameters[creation_content.m.federate]}"
         ".preset = \"${parameters[preset]}\""
@@ -49,8 +46,7 @@ ConstructObject() {
       )
       ModifyJSON "$m_room_create_object" filters constructed_object || return 1
     ;;
-
-    s_server_notice )
+    s_server_notice)
       parameters[body]="${parameters[body]//\\\\n/\\n}" # unescape newline
       local -a filters=(
         ".user_id = \"${parameters[user_id]}\""
@@ -59,16 +55,14 @@ ConstructObject() {
       )
       ModifyJSON "$s_server_notice_object" filters constructed_object || return 1
     ;;
-
-    s_purge_history )
+    s_purge_history)
       local -a filters=(
         ".delete_local_events = ${parameters[delete_local_events]}"
         ".purge_up_to_ts = ${parameters[purge_up_to_ts]}"
       )
       ModifyJSON "$s_purge_history_object" filters constructed_object || return 1
     ;;
-
-    s_delete_room )
+    s_delete_room)
       EncodeJSON "${parameters[room_name]}" parameters[room_name]
       EncodeJSON "${parameters[message]}" parameters[message]
       parameters[message]="${parameters[message]//\\\\n/\\n}" # unescape newline
@@ -91,8 +85,7 @@ ConstructObject() {
       fi
       ModifyJSON "$s_delete_room_object" filters constructed_object || return 1
     ;;
-
-    s_user_create )
+    s_user_create)
       EncodeJSON "${parameters[password]}" parameters[password]
       EncodeJSON "${parameters[displayname]}" parameters[displayname]
       local -a filters=(
@@ -112,8 +105,7 @@ ConstructObject() {
       fi
       ModifyJSON "$s_user_create_object" filters constructed_object || return 1
     ;;
-
-    s_user_reset_password )
+    s_user_reset_password)
       EncodeJSON "${parameters[password]}" parameters[password]
       local -a filters=(
         ".new_password = ${parameters[password]}"
@@ -121,23 +113,20 @@ ConstructObject() {
       )
       ModifyJSON "$s_user_reset_password_object" filters constructed_object || return 1
     ;;
-
-    s_set_user_ratelimit )
+    s_set_user_ratelimit)
       local -a filters=(
         ".messages_per_second = ${parameters[messages_per_second]}"
         ".burst_count = ${parameters[burst_count]}"
       )
       ModifyJSON "$s_set_user_ratelimit_object" filters constructed_object || return 1
     ;;
-
-    s_user_deactivate )
+    s_user_deactivate)
       local -a filters=(
         ".erase = ${parameters[erase]}"
       )
       ModifyJSON "$s_user_deactivate_object" filters constructed_object || return 1
     ;;
-
-    s_user_redact )
+    s_user_redact)
       EncodeJSON "${parameters[reason]}" parameters[reason]
       parameters[reason]="${parameters[reason]//\\\\n/\\n}" # unescape newline
       local -a filters=(
@@ -147,12 +136,12 @@ ConstructObject() {
       )
       ModifyJSON "$s_user_redact_object" filters constructed_object || return 1
     ;;
-
-    s_user_join_room )
+    s_user_join_room)
       local -a filters=(
         ".user_id = \"${parameters[user_id]}\""
       )
     ModifyJSON "$s_user_join_room_object" filters constructed_object || return 1
+    ;;
   esac
 
   MinifyJSON constructed_object || return 1

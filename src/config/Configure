@@ -12,29 +12,33 @@ Configure() {
   fi
 
   case "${#__Configure_args[@]}" in
-    0 ) for config_key in "${!config[@]}"; do
-          printf "%-20s %s\n" "$config_key" "${config[$config_key]}"
-        done
-      ;;
-    1 ) if [[ -v config["$key"] ]]; then
-          printf '%s\n' "${config[$key]}"
-        else
-          Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
-          return 1
-        fi
-      ;;
-    2 ) if [[ -v config["$key"] ]]; then
-           config["$key"]="$value"
-           WriteConfiguration
-           ReadConfiguration
-           Log info "Set '$key' to '${config[$key]}'"
-        else
-          Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
-          return 1
-        fi
-      ;;
-    * ) Log error "Too many arguments. Type 'help config' for usage info."
+    0)
+      for config_key in "${!config[@]}"; do
+        printf "%-20s %s\n" "$config_key" "${config[$config_key]}"
+      done
+    ;;
+    1)
+      if [[ -v config["$key"] ]]; then
+        printf '%s\n' "${config[$key]}"
+      else
+        Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
         return 1
-      ;;
+      fi
+    ;;
+    2)
+      if [[ -v config["$key"] ]]; then
+         PutArray config["$key"] "$value"
+         WriteConfiguration
+         ReadConfiguration
+         Log info "Set '$key' to '${config[$key]}'"
+      else
+        Log error "'$key' is not a valid configuration option. Type 'help config' for usage info."
+        return 1
+      fi
+    ;;
+    *)
+      Log error "Too many arguments. Type 'help config' for usage info."
+      return 1
+    ;;
   esac
 }
