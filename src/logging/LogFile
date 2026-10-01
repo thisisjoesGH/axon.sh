@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 LogFile() {
@@ -15,14 +15,49 @@ LogFile() {
   local log_level="${config[log_level]^^}"
 #  echo "Log level is ${config[log_level]^^}"
 
-  case $file_log_type in
-    DEBUG  ) if [[ "$log_level" != @(DEBUG) ]]; then return 0; fi;;
-    INFO   ) if [[ "$log_level" != @(DEBUG|INFO) ]]; then return 0; fi;;
-    WARN   ) if [[ "$log_level" != @(DEBUG|INFO|WARN) ]]; then return 0; fi;;
-    ERROR  ) if [[ "$log_level" != @(DEBUG|INFO|WARN|ERROR) ]]; then return 0; fi;;
-    FATAL  ) if [[ "$log_level" != @(DEBUG|INFO|WARN|ERROR|FATAL) ]]; then return 0; fi;;
-    CONFIG ) if [[ "$log_level" = @(NONE) ]]; then return 0; fi;;
-    *      ) if [[ "$log_level" != @(DEBUG) ]]; then return 0; else Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}', line number '${BASH_LINENO[1]}'"; fi;;
+  case "$file_log_type" in
+    TRACE)
+      if [[ "$log_level" != @(TRACE) ]]; then
+        return 0
+      fi
+    ;;
+    DEBUG)
+      if [[ "$log_level" != @(TRACE|DEBUG) ]]; then
+        return 0
+      fi
+    ;;
+    INFO)
+      if [[ "$log_level" != @(TRACE|DEBUG|INFO) ]]; then
+        return 0
+      fi
+    ;;
+    WARN)
+      if [[ "$log_level" != @(TRACE|DEBUG|INFO|WARN) ]]; then
+        return 0
+      fi
+    ;;
+    ERROR)
+      if [[ "$log_level" != @(TRACE|DEBUG|INFO|WARN|ERROR) ]]; then
+        return 0
+      fi
+    ;;
+    FATAL)
+      if [[ "$log_level" != @(TRACE|DEBUG|INFO|WARN|ERROR|FATAL) ]]; then
+        return 0
+      fi
+    ;;
+    CONFIG)
+      if [[ "$log_level" == @(NONE) ]]; then
+        return 0
+      fi
+    ;;
+    *)
+      if [[ "$log_level" != @(TRACE|DEBUG) ]]; then
+        return 0
+      else
+        Log debug "Invalid file log type '$file_log_type' in context '${FUNCNAME[2]}', line number '${BASH_LINENO[1]}'"
+      fi
+    ;;
   esac
 
   printf '%s\n' "[$(date '+%d/%b/%Y:%H:%M:%S.%3N')] ${file_log_type} - ${FUNCNAME[3]} -> ${FUNCNAME[2]}: $file_log_message" 2>/dev/null 3<"${config[log_path]}/${config[log_file]}" 3<&- >> "${config[log_path]}/${config[log_file]}" || return 1
