@@ -12,7 +12,7 @@ FindUnmatchedQuotes() {
   local IFS=
   while read -r -n1 -d '' character; do
     ((cursor++))
-    Log debug "Cursor at character '$cursor'"
+    Log trace "Cursor at character '$cursor'"
     if [[ "$character" == "'" ]]; then
       last_squote="$cursor"
       if (( "$open_squote" != 0 && "$close_squote" == 0 )); then

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2022,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Assert() {
@@ -46,9 +46,9 @@ Assert() {
       local varbase="${variable_name%%\[*]}"
       local type
       GetType "$varbase" type
-      Log debug "Type is '$type'"
+      Log trace "Type is '$type'"
       local desired_type="${2^^}" match='false'
-      Log debug "Desired type is '$desired_type'"
+      Log trace "Desired type is '$desired_type'"
       case "$desired_type" in
         ARRAY|HASH|INT|EXPORT|OTHER)
           if [[ "$type" == "$desired_type" ]]; then
