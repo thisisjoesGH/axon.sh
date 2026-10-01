@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2023,2024,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 Request() {
@@ -113,7 +113,7 @@ Request() {
   local -a response_data
   local part
   while read -r -d $'\t' part; do
-    Log debug "Part is '$part'."
+    Log trace "Part is '$part'."
     response_data+=("$part")
   done <<<"$std_out"
   local body="${response_data[0]}"
