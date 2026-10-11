@@ -6,12 +6,12 @@ SynapseUserRatelimit() {
   Log debug "Got args '$*'"
   local -n __SynapseUserRatelimit_args="$1"
   case "${__SynapseUserRatelimit_args[0]}" in
-    'set')
+    set)
       ShiftArray __SynapseUserRatelimit_args || return 1
       SynapseSetUserRatelimit __SynapseUserRatelimit_args || return 1
       return 0
     ;;
-    'delete')
+    delete)
       ShiftArray __SynapseUserRatelimit_args
       SynapseDeleteUserRatelimit __SynapseUserRatelimit_args || return 1
       return 0

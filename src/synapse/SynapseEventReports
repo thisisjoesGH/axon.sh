@@ -7,12 +7,12 @@ SynapseEventReports() {
 
   local -n __SynapseEventReports_args="$1"
   case "${__SynapseEventReports_args[0]}" in
-    details )
+    details)
       ShiftArray __SynapseEventReports_args || return 1
       SynapseEventReportsDetails __SynapseEventReports_args || return 1
       return 0
     ;;
-    delete )
+    delete)
       ShiftArray __SynapseEventReports_args || return 1
       SynapseEventReportsDelete __SynapseEventReports_args || return 1
       return 0

@@ -57,14 +57,14 @@ SynapseUserCreate() {
     Read -r -p "Add third-party ID? (email/None): " threepid_medium
   }
   case "$threepid_medium" in
-    email )
+    email)
       PutArray body_params[threepid.medium] "email"
       local threepid_address="${options[threepid_address]}"
       [[ -n "$threepid_address" ]] || {
         Read -r -p "Address: " threepid_address
       }
       PutArray body_params[threepid.address] "$threepid_address";;
-    *     ) : ;;
+    *) : ;;
   esac
 
   local admin="${options[admin]}"
