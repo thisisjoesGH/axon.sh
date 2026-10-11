@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2024-2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2024,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixServerVersion() {
@@ -26,8 +26,8 @@ MatrixServerVersion() {
   local host
   local port
   {
-    GetWellKnown "$destination" homeserver && \
-    ParseServerName "$homeserver" host port
+    GetWellKnown "$destination" homeserver &&
+      ParseServerName "$homeserver" host port
   } || {
     Log info "Falling back to default S2S port"
     host="$destination"

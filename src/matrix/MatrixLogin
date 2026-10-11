@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2021-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2021,2022,2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixLogin() {
@@ -62,8 +62,8 @@ MatrixLogin() {
     local input
     Read -r -p "$(printf '%s' 'Save access token to local config file? (Y/n)')" input
     case "${input^^}" in
-      Y|YES|'') save_token="true";;
-      N|NO)     save_token="false";;
+      Y | YES | '') save_token="true" ;;
+      N | NO) save_token="false" ;;
     esac
   }
   ValidateInput boolean "$save_token" || return 1

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025,2026 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2023,2025,2026 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixResolveAlias() {
@@ -11,12 +11,12 @@ MatrixResolveAlias() {
       ShiftArray __MatrixResolveAlias_args || return 1
       MatrixCreateAlias __MatrixResolveAlias_args || return 1
       return 0
-    ;;
+      ;;
     delete)
       ShiftArray __MatrixResolveAlias_args || return 1
       MatrixDeleteAlias __MatrixResolveAlias_args || return 1
       return 0
-    ;;
+      ;;
   esac
 
   # copy api map to local map

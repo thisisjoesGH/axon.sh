@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023,2025 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2023,2025 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 MatrixCreateRoom() {
@@ -54,18 +54,18 @@ MatrixCreateRoom() {
     }
   }
   case "$room_preset" in
-      public)
-        PutArray body_params[preset] 'public_chat'
+    public)
+      PutArray body_params[preset] 'public_chat'
       ;;
-      private)
-        PutArray body_params[preset] 'private_chat'
+    private)
+      PutArray body_params[preset] 'private_chat'
       ;;
-      trusted)
-        PutArray body_params[preset] 'trusted_private_chat'
+    trusted)
+      PutArray body_params[preset] 'trusted_private_chat'
       ;;
-      *)
-        Log error "Invalid preset '$room_preset', must be one of 'public', 'private', 'trusted'."
-        return 1
+    *)
+      Log error "Invalid preset '$room_preset', must be one of 'public', 'private', 'trusted'."
+      return 1
       ;;
   esac
 
@@ -74,8 +74,8 @@ MatrixCreateRoom() {
     local input
     Read -r -p "$(printf '%s' 'Allow other homeservers to participate? (Y/n): ')" input
     case "${input^^}" in
-      Y|YES|'') federate="true";;
-      N|NO)     federate="false";;
+      Y | YES | '') federate="true" ;;
+      N | NO) federate="false" ;;
     esac
   }
   ValidateInput boolean "$federate" || return 1
