@@ -11,16 +11,16 @@ ConvertIntervalMs() {
   }
 
   local unit
-  if (( "$interval" >= 86400000 )); then
-    interval=$(( "${interval::-3}"  / 86400))
+  if (("$interval" >= 86400000)); then
+    interval=$(("${interval::-3}" / 86400))
     unit="days"
-  elif (( "$interval" >= 3600000 )); then
-    interval=$(( "${interval::-3}" / 3600  ))
+  elif (("$interval" >= 3600000)); then
+    interval=$(("${interval::-3}" / 3600))
     unit="hours"
-  elif (( "$interval" >= 60000 )); then
-    interval=$(( "${interval::-3}" / 60 ))
+  elif (("$interval" >= 60000)); then
+    interval=$(("${interval::-3}" / 60))
     unit="minutes"
-  elif (( "$interval" >= 1000 )); then
+  elif (("$interval" >= 1000)); then
     interval="${interval::-3}"
     unit="seconds"
   else

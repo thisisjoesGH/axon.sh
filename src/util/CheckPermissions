@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2022-2023 joe <joe@thisisjoes.site>
+# Copyright (C) 2022,2023 joe <joe@thisisjoes.site>
 # SPDX-License-Identifier: GPL-3.0-only
 
 CheckPermissions() {
@@ -16,8 +16,7 @@ CheckPermissions() {
 
   local std_out
   local std_err
-  CatchStream std_out std_err stat -c '%a' "$path" ||
-  {
+  CatchStream std_out std_err stat -c '%a' "$path" || {
     Log warn "Failed to check permissions on '$path'. stat returned error '$std_err'."
     return 1
   }
@@ -28,8 +27,7 @@ CheckPermissions() {
     Log warn "Permissions on '$path' differ ('$std_out', $permissions'). Attempting to correct this..."
     std_out=""
     std_err=""
-    CatchStream std_out std_err chmod "$permissions" "$path" ||
-    {
+    CatchStream std_out std_err chmod "$permissions" "$path" || {
       Log error "Failed to set permissions '$permissions' on '$path'. chmod returned error '$std_err'."
       return 1
     }

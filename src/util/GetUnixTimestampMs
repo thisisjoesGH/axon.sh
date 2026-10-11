@@ -15,5 +15,5 @@ GetUnixTimestampMs() {
       return 1
     }
 
-  ref=$(( "$stdout" * 1000 ))
+  ref=$(("$stdout" * 1000))
 }

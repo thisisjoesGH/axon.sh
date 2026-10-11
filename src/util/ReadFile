@@ -5,7 +5,7 @@
 ReadFile() {
   local path="$1"
   # does this file exist?
-  [[ -a "$path" ]] || {
+  [[ -e "$path" ]] || {
     Log error "File '$path' not found."
     return 1
   }
@@ -15,7 +15,7 @@ ReadFile() {
     Log error "File '$path' is not readable."
     return 1
   }
-  local output="$(<"$path")" || {
+  local output="$(< "$path")" || {
     Log error "Failed to read from '$path'."
     return 1
   }

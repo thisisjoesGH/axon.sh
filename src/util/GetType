@@ -6,7 +6,7 @@ GetType() {
   Log debug "Got args '$*'"
 
   local var
-  var="$(declare -p "$1" 2>/dev/null)"
+  var="$(declare -p "$1" 2> /dev/null)"
   [[ -n "$var" ]] || {
     Log warn "Cannot get type of undeclared variable."
   }
@@ -21,12 +21,12 @@ GetType() {
   Log debug "Getting type of variable declared by '${var%%=*}'."
 
   case "${var#declare -}" in
-    a* ) __GetType_type='ARRAY';;
-    A* ) __GetType_type='HASH';;
-    i* ) __GetType_type='INT';;
-    x* ) __GetType_type='EXPORT';;
-    -* ) __GetType_type='OTHER';;
-    *  ) __GetType_type='UNDECLARED';;
+    a*) __GetType_type='ARRAY' ;;
+    A*) __GetType_type='HASH' ;;
+    i*) __GetType_type='INT' ;;
+    x*) __GetType_type='EXPORT' ;;
+    -*) __GetType_type='OTHER' ;;
+    *) __GetType_type='UNDECLARED' ;;
   esac
 
   Log debug "Variable type is '$__GetType_type'."

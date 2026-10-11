@@ -23,20 +23,20 @@ GetWellKnown() {
     [auth]="false"
     [redirect]="true"
   )
-    local -A response
-    Request params response || {
-      Log error "Well-known discovery failed."
-      return 1
-    }
-    CheckStatusCode "${response[status]}" || {
-      Log error "Well-known discovery failed."
-      return 1
-    }
+  local -A response
+  Request params response || {
+    Log error "Well-known discovery failed."
+    return 1
+  }
+  CheckStatusCode "${response[status]}" || {
+    Log error "Well-known discovery failed."
+    return 1
+  }
 
-    local -a keys=(m.server)
-    local -A values
-    ProcessResponse response[body] keys values || return 1
+  local -a keys=(m.server)
+  local -A values
+  ProcessResponse response[body] keys values || return 1
 
-  __GetWellKnown_homeserver="${values[m.server]}"
+  __GetWellKnown_homeserver="${values['m.server']}"
   Log info "Server is '$__GetWellKnown_homeserver'"
 }

@@ -7,7 +7,7 @@ ParseMXID() {
   local -n __ParseMXID_localpart="$2"
   local -n __ParseMXID_homeserver="$3"
 
-  (( $# == 3 )) || {
+  (($# == 3)) || {
     Log error "Invalid number of arguments passed. Must pass 3."
     return 1
   }
@@ -15,7 +15,7 @@ ParseMXID() {
   [[ "$mxid" ]] || {
     Log error "No MXID passed."
     return 1
-	}
+  }
 
   local -r mxid_pattern='^@[a-z0-9./=_-]+:[a-zA-Z0-9.-]+$'
 

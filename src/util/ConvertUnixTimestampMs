@@ -8,7 +8,7 @@ ConvertUnixTimestampMs() {
     Log error "Cannot convert empty timestamp."
     return 1
   }
-  (( "$timestamp" >= 1000 )) || {
+  (("$timestamp" >= 1000)) || {
     Log error "Timestamp value too low, got '$timestamp', minimum 1000"
     return 1
   }

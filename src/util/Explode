@@ -13,7 +13,7 @@ Explode() {
     Log error "Cannot use empty string as delimiter."
     return 1
   }
-  (( "${#delimiter}" == 1 )) || {
+  (("${#delimiter}" == 1)) || {
     Log error "Delimiter must not be longer than one character."
     return 1
   }
@@ -24,6 +24,6 @@ Explode() {
   Log debug "Exploding string '$string' with delimiter '$delimiter'."
 
   local IFS="$delimiter"
-  read -r -a __Explode_array <<<"$string"
+  read -r -a __Explode_array <<< "$string"
   unset IFS
 }
