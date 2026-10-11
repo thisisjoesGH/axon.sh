@@ -42,21 +42,21 @@ CheckServerSupport() {
     server_release_candidate="${server_release_candidate:=99}"
   }
 
-   Log debug "Minimum version parts are '$minimum_major $minimum_minor $minimum_patch', release candidate '$minimum_release_candidate'"
-   Log debug "Server version parts are '$server_major $server_minor $server_patch', release candidate '$server_release_candidate'"
+  Log debug "Minimum version parts are '$minimum_major $minimum_minor $minimum_patch', release candidate '$minimum_release_candidate'"
+  Log debug "Server version parts are '$server_major $server_minor $server_patch', release candidate '$server_release_candidate'"
 
   shopt -s extglob
   local adequate
-  if (( "$server_major" > "$minimum_major" )); then
+  if (("$server_major" > "$minimum_major")); then
     Log debug "Major part is greater"
     adequate="true"
-  elif (( "$server_major" == "$minimum_major" )) && (( "$server_minor" > "$minimum_minor" )); then
+  elif (("$server_major" == "$minimum_major")) && (("$server_minor" > "$minimum_minor")); then
     Log debug "Major part is equal and minor part is equal or greater"
     adequate="true"
-  elif [[ "${server_major}${server_minor}" == "${minimum_major}${minimum_minor}" ]] && (( "$server_patch" > "$minimum_patch" )); then
+  elif [[ "${server_major}${server_minor}" == "${minimum_major}${minimum_minor}" ]] && (("$server_patch" > "$minimum_patch")); then
     Log debug "Major part and minor part are equal and patch part is greater"
     adequate="true"
-  elif [[ "${server_version%%rc+(*)}" == "${__CheckServerSupport_version%%rc+(*)}" ]] && (( "$server_release_candidate" >= "$minimum_release_candidate" )); then
+  elif [[ "${server_version%%rc+(*)}" == "${__CheckServerSupport_version%%rc+(*)}" ]] && (("$server_release_candidate" >= "$minimum_release_candidate")); then
     Log debug "Major part, minor part, and patch part are equal and release candidate is equal or greater"
     adequate="true"
   else

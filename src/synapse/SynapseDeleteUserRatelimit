@@ -25,8 +25,8 @@ SynapseDeleteUserRatelimit() {
   # ask for username if not passed
   [[ -n "${options[user]}" ]] || {
     Read -r -p "Username: " input_user
-      options[user]="$input_user"
-      Log debug "Username is '${options[user]}'"
+    options[user]="$input_user"
+    Log debug "Username is '${options[user]}'"
   }
   local mxid="@${options[user]}:${config[homeserver]}"
   PutArray path_params[user_id] "$mxid"

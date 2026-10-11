@@ -51,8 +51,8 @@ SynapseDeleteRoom() {
     local input_block_joins
     Read -r -p "Block users from rejoining the room? (y/N): " input_block_joins
     case "${input_block_joins^^}" in
-      Y|YES)   block='true';;
-      N|NO|'') block='false';;
+      Y | YES) block='true' ;;
+      N | NO | '') block='false' ;;
     esac
   }
   ValidateInput boolean "$block" || return 1
@@ -63,8 +63,8 @@ SynapseDeleteRoom() {
     local input_purge
     Read -r -p "Purge all events? (y/N): " input_purge
     case "${input_purge^^}" in
-      Y|YES)   purge='true';;
-      N|NO|'') purge='false';;
+      Y | YES) purge='true' ;;
+      N | NO | '') purge='false' ;;
     esac
   }
   ValidateInput boolean "$purge" || return 1
@@ -75,8 +75,8 @@ SynapseDeleteRoom() {
     local input_migrate
     Read -r -p "Migrate users to new room? (y/N): " input_migrate
     case "${input_migrate^^}" in
-      Y|YES)   migrate='true';;
-      N|NO|'') migrate='false';;
+      Y | YES) migrate='true' ;;
+      N | NO | '') migrate='false' ;;
     esac
   }
   ValidateInput boolean "$migrate" || return 1

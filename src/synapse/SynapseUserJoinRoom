@@ -43,8 +43,8 @@ SynapseUserJoinRoom() {
   [[ -n "$username" ]] || {
     local input_username
     Read -r -p "User name: " input_username
-      local username="$input_username"
-      Log debug "User name is '$username'"
+    local username="$input_username"
+    Log debug "User name is '$username'"
   }
   local user_id="@$username:${config[homeserver]}"
   PutArray body_params[user_id] "$user_id"

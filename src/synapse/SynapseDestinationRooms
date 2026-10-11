@@ -80,7 +80,7 @@ SynapseDestinationRooms() {
     ValidateInput integer "$next_token" || return 1
     ValidateInput integer "$total" || return 1
     keys+=(remaining)
-    values+=([remaining]="$(( $total - $next_token ))")
+    values+=([remaining]="$(($total - $next_token))")
   fi
 
   # output

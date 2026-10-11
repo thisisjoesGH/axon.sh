@@ -63,7 +63,8 @@ SynapseUserCreate() {
       [[ -n "$threepid_address" ]] || {
         Read -r -p "Address: " threepid_address
       }
-      PutArray body_params[threepid.address] "$threepid_address";;
+      PutArray body_params[threepid.address] "$threepid_address"
+      ;;
     *) : ;;
   esac
 
@@ -72,8 +73,8 @@ SynapseUserCreate() {
     local input
     Read -r -p "Make new user admin? (Y/n): " input
     case "${input^^}" in
-      Y|YES|'') admin="true";;
-      N|NO)     admin="false";;
+      Y | YES | '') admin="true" ;;
+      N | NO) admin="false" ;;
     esac
   }
   ValidateInput boolean "$admin" || return 1

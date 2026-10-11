@@ -11,12 +11,12 @@ SynapseEventReports() {
       ShiftArray __SynapseEventReports_args || return 1
       SynapseEventReportsDetails __SynapseEventReports_args || return 1
       return 0
-    ;;
+      ;;
     delete)
       ShiftArray __SynapseEventReports_args || return 1
       SynapseEventReportsDelete __SynapseEventReports_args || return 1
       return 0
-    ;;
+      ;;
   esac
 
   # copy api map to local map
@@ -41,7 +41,7 @@ SynapseEventReports() {
   [[ -n "$limit" ]] || {
     local input_limit
     Read -r -p "Maximum reports to return at once: " input_limit
-      limit="$input_limit"
+    limit="$input_limit"
   }
   ValidateInput integer "$limit" || return 1
   PutArray query_params[limit] "$limit"
@@ -85,7 +85,7 @@ SynapseEventReports() {
     ValidateInput integer "$next_token" || return 1
     ValidateInput integer "$total" || return 1
     keys+=(remaining)
-    values+=([remaining]="$(( $total - $next_token ))")
+    values+=([remaining]="$(($total - $next_token))")
   fi
 
   # output

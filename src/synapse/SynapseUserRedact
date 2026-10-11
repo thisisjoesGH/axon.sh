@@ -36,8 +36,8 @@ SynapseUserRedact() {
   [[ -n "$username" ]] || {
     local input_username
     Read -r -p "User name: " input_username
-      local username="$input_username"
-      Log debug "User name is '$username'"
+    local username="$input_username"
+    Log debug "User name is '$username'"
   }
   local user_id="@$username:${config[homeserver]}"
   PutArray path_params[user_id] "$user_id"
@@ -45,8 +45,8 @@ SynapseUserRedact() {
 
   local redaction_reason="${options[reason]}"
   [[ -n "$redaction_reason" ]] || {
-  local input_redaction_reason
-  Read -r -p "Reason for redaction? (Defaults to empty string): " input_redaction_reason
+    local input_redaction_reason
+    Read -r -p "Reason for redaction? (Defaults to empty string): " input_redaction_reason
     redaction_reason="$input_redaction_reason"
   }
   if [[ -n "$redaction_reason" ]]; then
