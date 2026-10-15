@@ -14,14 +14,14 @@ ProcessResponse() {
     Log debug "Trying key '$key'"
     local parts
     local IFS='.'
-    read -r -a parts <<<"${key#.}"
+    read -r -a parts <<< "${key#.}"
     unset IFS
-    if (( "${#parts[@]}" > 1 )); then
+    if (("${#parts[@]}" > 1)); then
       Log debug "Got multipart key selector."
       local arg=''
       for part in "${parts[@]}"; do
         Log debug "Part is '$part'."
-        if [[ "$part" == 'm'  ]]; then
+        if [[ "$part" == 'm' ]]; then
           Log debug "Part is 'm' prefix."
           arg+="\"$key\""
           Log debug "Arg is '$arg'."
